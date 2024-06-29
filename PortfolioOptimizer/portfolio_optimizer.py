@@ -1,7 +1,6 @@
-# ETFPortfolioOptimizer
+# PortfolioOptimizer
 # 
-# このプログラムは複数のETFデータを使用して、
-# 効率的フロンティアを計算し、最適なポートフォリオ配分を提示します。
+# このプログラムは効率的フロンティアを計算し、最適なポートフォリオ配分を提示します。
 # 最大シャープレシオポートフォリオと最小分散ポートフォリオを特定し、
 # 結果をグラフィカルに表示します。
 # このプログラムは情報提供のみを目的としており、取引や投資のアドバイスには使用しないでください。
@@ -109,7 +108,7 @@ def display_efficient_frontier(mean_returns, cov_matrix, num_portfolios, risk_fr
     plt.show()
 
 # メイン処理
-tickers = ['VT', 'EDV', 'GLDM']  # ETFのティッカーシンボル
+tickers = ['VT', 'EDV', 'GLDM']  # ティッカーシンボル
 start_date = '2023-01-01'
 end_date = '2023-12-31'
 risk_free_rate = 0.01  # 1%と仮定
