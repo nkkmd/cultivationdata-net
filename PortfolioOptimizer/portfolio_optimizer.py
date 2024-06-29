@@ -81,14 +81,14 @@ def display_efficient_frontier(mean_returns, cov_matrix, num_portfolios, risk_fr
     
     print("-"*80)
     print("Maximum Sharpe Ratio Portfolio Allocation\n")
-    print("Annualized Return:", round(rp,2))
-    print("Annualized Volatility:", round(sdp,2))
+    print("Annualized Return: {:.2f}%".format(rp * 100))
+    print("Annualized Volatility: {:.2f}%".format(sdp * 100))
     print("\n")
     print(max_sharpe_allocation)
     print("-"*80)
     print("Minimum Volatility Portfolio Allocation\n")
-    print("Annualized Return:", round(rp_min,2))
-    print("Annualized Volatility:", round(sdp_min,2))
+    print("Annualized Return: {:.2f}%".format(rp_min * 100))
+    print("Annualized Volatility: {:.2f}%".format(sdp_min * 100))
     print("\n")
     print(min_vol_allocation)
     
