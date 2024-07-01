@@ -58,7 +58,7 @@ def efficient_frontier(mean_returns, cov_matrix, returns_range):
         efficients.append(result['fun'])
     return efficients
 
-def display_efficient_frontier(mean_returns, cov_matrix, num_portfolios, risk_free_rate):
+def display_efficient_frontier(mean_returns, cov_matrix, num_portfolios, risk_free_rate, tickers, start_date, end_date):
     returns = []
     volatilities = []
     for _ in range(num_portfolios):
@@ -83,28 +83,39 @@ def display_efficient_frontier(mean_returns, cov_matrix, num_portfolios, risk_fr
     print("Maximum Sharpe Ratio Portfolio Allocation\n")
     print("Annualized Return: {:.2f}%".format(rp * 100))
     print("Annualized Volatility: {:.2f}%".format(sdp * 100))
+    print("Sharpe Ratio: {:.2f}".format((rp - risk_free_rate) / sdp))
     print("\n")
     print(max_sharpe_allocation)
     print("-"*80)
     print("Minimum Variance Portfolio Allocation\n")
     print("Annualized Return: {:.2f}%".format(rp_min * 100))
     print("Annualized Volatility: {:.2f}%".format(sdp_min * 100))
+    print("Sharpe Ratio: {:.2f}".format((rp_min - risk_free_rate) / sdp_min))
     print("\n")
     print(min_vari_allocation)
     
-    plt.figure(figsize=(10, 7))
-    plt.scatter(volatilities, returns, c=(np.array(returns)-risk_free_rate)/np.array(volatilities), cmap='YlGnBu', marker='o', s=10, alpha=0.3)
-    plt.colorbar()
+    plt.figure(figsize=(12, 8))
+    scatter = plt.scatter(volatilities, returns, c=(np.array(returns)-risk_free_rate)/np.array(volatilities), cmap='YlGnBu', marker='o', s=10, alpha=0.3)
+    plt.colorbar(scatter, label='Sharpe Ratio')
     plt.scatter(sdp, rp, marker='*', color='r', s=500, label='Maximum Sharpe Ratio')
     plt.scatter(sdp_min, rp_min, marker='*', color='g', s=500, label='Minimum Variance')
     
     target = np.linspace(rp_min, max(returns), 50)
     efficient_portfolios = efficient_frontier(mean_returns, cov_matrix, target)
-    plt.plot(efficient_portfolios, target, linestyle='-.', color='black', label='efficient frontier')
+    plt.plot(efficient_portfolios, target, linestyle='-.', color='black', label='Efficient Frontier')
     plt.title('Portfolio Optimization with the Efficient Frontier')
-    plt.xlabel('annualized volatility')
-    plt.ylabel('annualized returns')
+    plt.xlabel('Annualized Volatility')
+    plt.ylabel('Annualized Returns')
     plt.legend(labelspacing=0.8)
+    
+    # Add text box with additional information
+    info_text = f"Tickers: {', '.join(tickers)}\n"
+    info_text += f"Period: {start_date} to {end_date}\n"
+    info_text += f"Risk-free Rate: {risk_free_rate:.2%}"
+    plt.text(0.05, 0.05, info_text, transform=plt.gca().transAxes, 
+             bbox=dict(facecolor='white', alpha=0.8), fontsize=9)
+    
+    plt.tight_layout()
     plt.show()
 
 # メイン処理
@@ -121,4 +132,5 @@ mean_returns = returns.mean()
 cov_matrix = returns.cov()
 
 # 効率的フロンティアの表示
-display_efficient_frontier(mean_returns, cov_matrix, num_portfolios=25000, risk_free_rate=risk_free_rate)
+display_efficient_frontier(mean_returns, cov_matrix, num_portfolios=25000, risk_free_rate=risk_free_rate,
+                           tickers=tickers, start_date=start_date, end_date=end_date)
