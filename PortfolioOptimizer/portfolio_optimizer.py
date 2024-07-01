@@ -73,11 +73,11 @@ def display_efficient_frontier(mean_returns, cov_matrix, num_portfolios, risk_fr
     max_sharpe_allocation.allocation = [round(i*100,2)for i in max_sharpe_allocation.allocation]
     max_sharpe_allocation = max_sharpe_allocation.T
     
-    min_vol = min_variance(mean_returns, cov_matrix)
-    sdp_min, rp_min = portfolio_annualized_performance(min_vol['x'], mean_returns, cov_matrix)
-    min_vol_allocation = pd.DataFrame(min_vol['x'], index=mean_returns.index, columns=['allocation'])
-    min_vol_allocation.allocation = [round(i*100,2)for i in min_vol_allocation.allocation]
-    min_vol_allocation = min_vol_allocation.T
+    min_vari = min_variance(mean_returns, cov_matrix)
+    sdp_min, rp_min = portfolio_annualized_performance(min_vari['x'], mean_returns, cov_matrix)
+    min_vari_allocation = pd.DataFrame(min_vari['x'], index=mean_returns.index, columns=['allocation'])
+    min_vari_allocation.allocation = [round(i*100,2)for i in min_vari_allocation.allocation]
+    min_vari_allocation = min_vari_allocation.T
     
     print("-"*80)
     print("Maximum Sharpe Ratio Portfolio Allocation\n")
@@ -86,17 +86,17 @@ def display_efficient_frontier(mean_returns, cov_matrix, num_portfolios, risk_fr
     print("\n")
     print(max_sharpe_allocation)
     print("-"*80)
-    print("Minimum Volatility Portfolio Allocation\n")
+    print("Minimum Variance Portfolio Allocation\n")
     print("Annualized Return: {:.2f}%".format(rp_min * 100))
     print("Annualized Volatility: {:.2f}%".format(sdp_min * 100))
     print("\n")
-    print(min_vol_allocation)
+    print(min_vari_allocation)
     
     plt.figure(figsize=(10, 7))
     plt.scatter(volatilities, returns, c=(np.array(returns)-risk_free_rate)/np.array(volatilities), cmap='YlGnBu', marker='o', s=10, alpha=0.3)
     plt.colorbar()
-    plt.scatter(sdp, rp, marker='*', color='r', s=500, label='Maximum Sharpe ratio')
-    plt.scatter(sdp_min, rp_min, marker='*', color='g', s=500, label='Minimum volatility')
+    plt.scatter(sdp, rp, marker='*', color='r', s=500, label='Maximum Sharpe Ratio')
+    plt.scatter(sdp_min, rp_min, marker='*', color='g', s=500, label='Minimum Variance')
     
     target = np.linspace(rp_min, max(returns), 50)
     efficient_portfolios = efficient_frontier(mean_returns, cov_matrix, target)
