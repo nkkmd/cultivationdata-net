@@ -1,7 +1,7 @@
 # PortfolioOptimizer
 # 
 # このプログラムは効率的フロンティアを計算し、最適なポートフォリオ配分を提示します。
-# 最大シャープレシオポートフォリオと最小分散ポートフォリオを特定し、
+# 接点ポートフォリオと最小分散ポートフォリオを特定し、
 # 結果をグラフィカルに表示します。
 # このプログラムは情報提供のみを目的としており、取引や投資のアドバイスには使用しないでください。
 
@@ -25,7 +25,7 @@ def negative_sharpe_ratio(weights, mean_returns, cov_matrix, risk_free_rate):
     p_var, p_ret = portfolio_annualized_performance(weights, mean_returns, cov_matrix)
     return -(p_ret - risk_free_rate) / p_var
 
-def max_sharpe_ratio(mean_returns, cov_matrix, risk_free_rate):
+def tangency_portfolio(mean_returns, cov_matrix, risk_free_rate):
     num_assets = len(mean_returns)
     args = (mean_returns, cov_matrix, risk_free_rate)
     constraints = ({'type': 'eq', 'fun': lambda x: np.sum(x) - 1})
@@ -38,7 +38,7 @@ def max_sharpe_ratio(mean_returns, cov_matrix, risk_free_rate):
 def portfolio_volatility(weights, mean_returns, cov_matrix):
     return portfolio_annualized_performance(weights, mean_returns, cov_matrix)[0]
 
-def min_variance(mean_returns, cov_matrix):
+def min_variance_portfolio(mean_returns, cov_matrix):
     num_assets = len(mean_returns)
     args = (mean_returns, cov_matrix)
     constraints = ({'type': 'eq', 'fun': lambda x: np.sum(x) - 1})
@@ -67,20 +67,20 @@ def display_efficient_frontier(mean_returns, cov_matrix, num_portfolios, risk_fr
         returns.append(np.sum(mean_returns * weights) * 252)
         volatilities.append(np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights))) * np.sqrt(252))
     
-    max_sharpe = max_sharpe_ratio(mean_returns, cov_matrix, risk_free_rate)
+    max_sharpe = tangency_portfolio(mean_returns, cov_matrix, risk_free_rate)
     sdp, rp = portfolio_annualized_performance(max_sharpe['x'], mean_returns, cov_matrix)
     max_sharpe_allocation = pd.DataFrame(max_sharpe['x'], index=mean_returns.index, columns=['allocation'])
     max_sharpe_allocation.allocation = [round(i*100,2)for i in max_sharpe_allocation.allocation]
     max_sharpe_allocation = max_sharpe_allocation.T
     
-    min_vari = min_variance(mean_returns, cov_matrix)
+    min_vari = min_variance_portfolio(mean_returns, cov_matrix)
     sdp_min, rp_min = portfolio_annualized_performance(min_vari['x'], mean_returns, cov_matrix)
     min_vari_allocation = pd.DataFrame(min_vari['x'], index=mean_returns.index, columns=['allocation'])
     min_vari_allocation.allocation = [round(i*100,2)for i in min_vari_allocation.allocation]
     min_vari_allocation = min_vari_allocation.T
     
     print("-"*80)
-    print("Maximum Sharpe Ratio Portfolio Allocation\n")
+    print("Tangency Portfolio Allocation\n")
     print("Annualized Return: {:.2f}%".format(rp * 100))
     print("Annualized Volatility: {:.2f}%".format(sdp * 100))
     print("Sharpe Ratio: {:.2f}".format((rp - risk_free_rate) / sdp))
@@ -97,8 +97,8 @@ def display_efficient_frontier(mean_returns, cov_matrix, num_portfolios, risk_fr
     plt.figure(figsize=(12, 8))
     scatter = plt.scatter(volatilities, returns, c=(np.array(returns)-risk_free_rate)/np.array(volatilities), cmap='YlGnBu', marker='o', s=10, alpha=0.3)
     plt.colorbar(scatter, label='Sharpe Ratio')
-    plt.scatter(sdp, rp, marker='*', color='r', s=500, label='Maximum Sharpe Ratio')
-    plt.scatter(sdp_min, rp_min, marker='*', color='g', s=500, label='Minimum Variance')
+    plt.scatter(sdp, rp, marker='*', color='r', s=500, label='Tangency Portfolio')
+    plt.scatter(sdp_min, rp_min, marker='*', color='g', s=500, label='Minimum Variance Portfolio')
     
     target = np.linspace(rp_min, max(returns), 50)
     efficient_portfolios = efficient_frontier(mean_returns, cov_matrix, target)
