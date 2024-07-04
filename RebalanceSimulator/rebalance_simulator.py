@@ -77,14 +77,14 @@ def calculate_performance(portfolio_values, risk_free_rate):
 # シミュレーション設定
 initial_balance = 10000
 target_allocations = {
-    "SPY": 0.6,  # S&P 500 ETF
-    "AGG": 0.3,  # 債券ETF
-    "GLD": 0.1   # 金ETF
+    "VT": 0.7,  # 全世界株式ETF
+    "EDV": 0.2,  # 債券ETF
+    "GLDM": 0.1   # 金ETF
 }
 start_date = "2020-01-01"
 end_date = "2023-12-31"
-rebalance_frequency = 30  # 30営業日ごとにリバランス
-risk_free_rate = 0.02  # 2%の年間リスクフリーレートを設定（ユーザーが変更可能）
+rebalance_frequency = 90  # 90営業日ごとにリバランス
+risk_free_rate = 0.01  # 1%の年間リスクフリーレートを設定（ユーザーが変更可能）
 
 # データ取得
 historical_data = get_historical_data(list(target_allocations.keys()), start_date, end_date)
