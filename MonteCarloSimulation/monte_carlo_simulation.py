@@ -13,9 +13,25 @@ def calculate_portfolio_returns(data, weights):
     portfolio_returns = returns.dot(weights)
     return portfolio_returns
 
-def monte_carlo_simulation(initial_investment, years, num_simulations, expected_return, volatility):
-    daily_returns = np.random.normal(expected_return/252, volatility/np.sqrt(252), (252*years, num_simulations))
-    cumulative_returns = np.cumprod(1 + daily_returns, axis=0)
+def rebalance_portfolio(portfolio_values, target_weights):
+    total_value = np.sum(portfolio_values)
+    new_values = total_value * target_weights
+    return new_values
+
+def monte_carlo_simulation(initial_investment, months, num_simulations, expected_return, volatility, rebalance_months=None):
+    days = months * 21  # Assuming 21 trading days per month
+    daily_returns = np.random.normal(expected_return/252, volatility/np.sqrt(252), (days, num_simulations))
+    cumulative_returns = np.zeros((days, num_simulations))
+    
+    for sim in range(num_simulations):
+        portfolio_value = initial_investment
+        for day in range(days):
+            if rebalance_months and day % (rebalance_months * 21) == 0 and day > 0:
+                portfolio_value = portfolio_value * (1 + daily_returns[day, sim])
+            else:
+                portfolio_value *= (1 + daily_returns[day, sim])
+            cumulative_returns[day, sim] = portfolio_value / initial_investment
+
     final_values = initial_investment * cumulative_returns[-1]
     return cumulative_returns, final_values
 
@@ -43,17 +59,18 @@ volatility = portfolio_returns.std() * np.sqrt(252)  # Annualized volatility
 
 # Simulation parameters
 initial_investment = 10000  # Initial investment ($10,000)
-years = 10  # Simulation period (years)
+months = 120  # Simulation period (10 years * 12 months)
 num_simulations = 1000  # Number of simulations
+rebalance_months = 12  # Rebalance annually
 
 # Run simulation
-cumulative_returns, final_values = monte_carlo_simulation(initial_investment, years, num_simulations, expected_return, volatility)
+cumulative_returns, final_values = monte_carlo_simulation(initial_investment, months, num_simulations, expected_return, volatility, rebalance_months)
 
 # Visualize results
 plt.figure(figsize=(12, 7))
 plt.plot(cumulative_returns)
 portfolio_str = ', '.join([f'{ticker}: {weight:.1%}' for ticker, weight in portfolio.items()])
-plt.title(f'Monte Carlo Simulation of Portfolio Value\nPortfolio: {portfolio_str}\nSimulation Period: {years} years', fontsize=14)
+plt.title(f'Monte Carlo Simulation of Portfolio Value\nPortfolio: {portfolio_str}\nSimulation Period: {months} months, Rebalance: Every {rebalance_months} months', fontsize=14)
 plt.xlabel('Days', fontsize=12)
 plt.ylabel('Cumulative Return', fontsize=12)
 plt.show()
@@ -64,10 +81,10 @@ median_final_value = np.median(final_values)
 min_final_value = np.min(final_values)
 max_final_value = np.max(final_values)
 
-print(f"平均最終ポートフォリオ価値: ${mean_final_value:,.2f}")
-print(f"中央値最終ポートフォリオ価値: ${median_final_value:,.2f}")
-print(f"最小最終ポートフォリオ価値: ${min_final_value:,.2f}")
-print(f"最大最終ポートフォリオ価値: ${max_final_value:,.2f}")
+print(f"平均値: ${mean_final_value:,.2f}")
+print(f"中央値: ${median_final_value:,.2f}")
+print(f"最小値: ${min_final_value:,.2f}")
+print(f"最大値: ${max_final_value:,.2f}")
 
 # Calculate confidence interval
 confidence_interval = np.percentile(final_values, [5, 95])
