@@ -5,7 +5,9 @@ import matplotlib.pyplot as plt
 from scipy.stats import norm
 
 def get_stock_data(tickers, start_date, end_date):
+    print("株価データを取得中...")
     data = yf.download(tickers, start=start_date, end=end_date)['Adj Close']
+    print("データ取得完了")
     return data
 
 def calculate_portfolio_returns(data, weights):
@@ -35,6 +37,33 @@ def monte_carlo_simulation(initial_investment, months, num_simulations, expected
     final_values = initial_investment * cumulative_returns[-1]
     return cumulative_returns, final_values
 
+def calculate_risk_metrics(final_values, initial_investment, confidence_level=0.95):
+    mean_final_value = np.mean(final_values)
+    median_final_value = np.median(final_values)
+    min_final_value = np.min(final_values)
+    max_final_value = np.max(final_values)
+    
+    # Confidence Interval
+    confidence_interval = np.percentile(final_values, [(1-confidence_level)*100, confidence_level*100])
+    
+    # VaR
+    var = np.percentile(final_values, (1-confidence_level)*100)
+    var_loss = initial_investment - var
+    
+    # CVaR
+    cvar = np.mean(final_values[final_values <= var])
+    cvar_loss = initial_investment - cvar
+    
+    return {
+        "mean": mean_final_value,
+        "median": median_final_value,
+        "min": min_final_value,
+        "max": max_final_value,
+        "confidence_interval": confidence_interval,
+        "var": var_loss,
+        "cvar": cvar_loss
+    }
+
 # Portfolio configuration
 portfolio = {
     'VT': 0.7,
@@ -43,7 +72,7 @@ portfolio = {
 }
 
 # Data retrieval
-start_date = '2015-01-01'
+start_date = '2023-01-01'
 end_date = '2023-12-31'
 tickers = list(portfolio.keys())
 weights = list(portfolio.values())
@@ -60,11 +89,23 @@ volatility = portfolio_returns.std() * np.sqrt(252)  # Annualized volatility
 # Simulation parameters
 initial_investment = 10000  # Initial investment ($10,000)
 months = 120  # Simulation period (10 years * 12 months)
-num_simulations = 1000  # Number of simulations
+num_simulations = 10000  # Number of simulations
 rebalance_months = 12  # Rebalance annually
 
 # Run simulation
 cumulative_returns, final_values = monte_carlo_simulation(initial_investment, months, num_simulations, expected_return, volatility, rebalance_months)
+
+# Calculate risk metrics
+risk_metrics = calculate_risk_metrics(final_values, initial_investment)
+
+# Display results
+print(f"平均値: ${risk_metrics['mean']:,.2f}")
+print(f"中央値: ${risk_metrics['median']:,.2f}")
+print(f"最小値: ${risk_metrics['min']:,.2f}")
+print(f"最大値: ${risk_metrics['max']:,.2f}")
+print(f"90%信頼区間: ${risk_metrics['confidence_interval'][0]:,.2f} - ${risk_metrics['confidence_interval'][1]:,.2f}")
+print(f"95% VaR: ${risk_metrics['var']:,.2f}")
+print(f"95% CVaR: ${risk_metrics['cvar']:,.2f}")
 
 # Visualize results
 plt.figure(figsize=(12, 7))
@@ -74,22 +115,3 @@ plt.title(f'Monte Carlo Simulation of Portfolio Value\nPortfolio: {portfolio_str
 plt.xlabel('Days', fontsize=12)
 plt.ylabel('Cumulative Return', fontsize=12)
 plt.show()
-
-# Calculate and display statistics
-mean_final_value = np.mean(final_values)
-median_final_value = np.median(final_values)
-min_final_value = np.min(final_values)
-max_final_value = np.max(final_values)
-
-print(f"平均値: ${mean_final_value:,.2f}")
-print(f"中央値: ${median_final_value:,.2f}")
-print(f"最小値: ${min_final_value:,.2f}")
-print(f"最大値: ${max_final_value:,.2f}")
-
-# Calculate confidence interval
-confidence_interval = np.percentile(final_values, [5, 95])
-print(f"90%信頼区間: ${confidence_interval[0]:,.2f} - ${confidence_interval[1]:,.2f}")
-
-# Calculate Value at Risk (VaR)
-var_95 = norm.ppf(0.05, mean_final_value, np.std(final_values))
-print(f"95% VaR: ${initial_investment - var_95:,.2f}")
