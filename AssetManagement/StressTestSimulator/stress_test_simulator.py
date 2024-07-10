@@ -6,11 +6,11 @@ from dataclasses import dataclass
 class SimulationParams:
     initial_investment: float
     investment_period: int
-    monthly_contribution: float
     risk_tolerance: str
     asset_allocation: dict
     inflation_rate: float
     stress_scenario: str
+    rebalance_frequency: int
 
 def run_simulation(params):
     np.random.seed(42)  # For reproducibility
@@ -39,9 +39,14 @@ def run_simulation(params):
 
     # Simulate normal scenario
     normal_scenario = [params.initial_investment]
-    for _ in range(params.investment_period * 12):
+    for month in range(params.investment_period * 12):
         monthly_return = np.random.normal(portfolio_return / 12, portfolio_volatility / np.sqrt(12))
-        normal_scenario.append(normal_scenario[-1] * (1 + monthly_return) + params.monthly_contribution)
+        normal_scenario.append(normal_scenario[-1] * (1 + monthly_return))
+        
+        # Rebalance if it's time
+        if (month + 1) % params.rebalance_frequency == 0:
+            target_allocation = {asset: value * normal_scenario[-1] for asset, value in params.asset_allocation.items()}
+            normal_scenario[-1] = sum(target_allocation.values())
 
     # Simulate stress scenario
     stress_scenario = [params.initial_investment]
@@ -56,9 +61,14 @@ def run_simulation(params):
         stress_return = portfolio_return - params.inflation_rate / 100
         stress_volatility = portfolio_volatility
 
-    for _ in range(params.investment_period * 12):
+    for month in range(params.investment_period * 12):
         monthly_return = np.random.normal(stress_return / 12, stress_volatility / np.sqrt(12))
-        stress_scenario.append(stress_scenario[-1] * (1 + monthly_return) + params.monthly_contribution)
+        stress_scenario.append(stress_scenario[-1] * (1 + monthly_return))
+        
+        # Rebalance if it's time
+        if (month + 1) % params.rebalance_frequency == 0:
+            target_allocation = {asset: value * stress_scenario[-1] for asset, value in params.asset_allocation.items()}
+            stress_scenario[-1] = sum(target_allocation.values())
 
     return normal_scenario, stress_scenario
 
@@ -83,11 +93,13 @@ def main():
 
     initial_investment = float(input("初期投資額（円）を入力してください: "))
     investment_period = int(input("投資期間（年）を入力してください: "))
-    monthly_contribution = float(input("月々の積立額（円）を入力してください: "))
     
-    risk_tolerance = input("リスク許容度を選択してください（conservative/moderate/aggressive）: ").lower()
-    while risk_tolerance not in ['conservative', 'moderate', 'aggressive']:
-        risk_tolerance = input("無効な入力です。conservative、moderate、aggressiveのいずれかを入力してください: ").lower()
+    risk_tolerance_options = ['保守的', '中庸', '積極的']
+    print("リスク許容度を選択してください:")
+    for i, option in enumerate(risk_tolerance_options, 1):
+        print(f"{i}. {option}")
+    risk_choice = int(input("番号を入力してください: "))
+    risk_tolerance = ['conservative', 'moderate', 'aggressive'][risk_choice - 1]
 
     print("資産配分を入力してください（合計が100%になるようにしてください）")
     stocks = float(input("株式の割合（%）: "))
@@ -97,18 +109,23 @@ def main():
 
     inflation_rate = float(input("想定インフレ率（%）を入力してください: "))
 
-    stress_scenario = input("ストレスシナリオを選択してください（market_crash/prolonged_recession/high_inflation）: ").lower()
-    while stress_scenario not in ['market_crash', 'prolonged_recession', 'high_inflation']:
-        stress_scenario = input("無効な入力です。market_crash、prolonged_recession、high_inflationのいずれかを入力してください: ").lower()
+    stress_scenario_options = ['市場急落', '長期不況', '高インフレ']
+    print("ストレスシナリオを選択してください:")
+    for i, option in enumerate(stress_scenario_options, 1):
+        print(f"{i}. {option}")
+    scenario_choice = int(input("番号を入力してください: "))
+    stress_scenario = ['market_crash', 'prolonged_recession', 'high_inflation'][scenario_choice - 1]
+
+    rebalance_frequency = int(input("リバランス頻度（月）を入力してください: "))
 
     params = SimulationParams(
         initial_investment=initial_investment,
         investment_period=investment_period,
-        monthly_contribution=monthly_contribution,
         risk_tolerance=risk_tolerance,
         asset_allocation=asset_allocation,
         inflation_rate=inflation_rate,
-        stress_scenario=stress_scenario
+        stress_scenario=stress_scenario,
+        rebalance_frequency=rebalance_frequency
     )
 
     normal_scenario, stress_scenario = run_simulation(params)
