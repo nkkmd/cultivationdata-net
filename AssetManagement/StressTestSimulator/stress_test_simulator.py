@@ -27,11 +27,13 @@ def run_simulation(params):
         'cash': 0.01
     }
 
-    # Adjust returns based on risk tolerance
+    # Adjust returns and volatilities based on risk tolerance
     if params.risk_tolerance == 'conservative':
         asset_returns = {k: v * 0.8 for k, v in asset_returns.items()}
+        asset_volatilities = {k: v * 0.8 for k, v in asset_volatilities.items()}
     elif params.risk_tolerance == 'aggressive':
         asset_returns = {k: v * 1.2 for k, v in asset_returns.items()}
+        asset_volatilities = {k: v * 1.2 for k, v in asset_volatilities.items()}
 
     # Calculate portfolio return and volatility
     portfolio_return = sum(params.asset_allocation[asset] * asset_returns[asset] for asset in params.asset_allocation)
