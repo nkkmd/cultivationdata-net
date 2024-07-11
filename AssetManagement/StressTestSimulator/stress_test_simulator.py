@@ -53,7 +53,7 @@ def run_simulation(params):
     # Simulate stress scenario
     stress_scenario = [params.initial_investment]
     if params.stress_scenario == 'market_crash':
-        stress_scenario[0] *= 0.7  # 30% initial drop
+        stress_scenario[0] *= 0.6  # 40% initial drop
         stress_return = portfolio_return * 0.5
         stress_volatility = portfolio_volatility * 1.5
     elif params.stress_scenario == 'prolonged_recession':
