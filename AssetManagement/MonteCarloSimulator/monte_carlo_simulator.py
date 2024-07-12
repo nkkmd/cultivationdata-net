@@ -47,12 +47,15 @@ def calculate_risk_metrics(final_values, initial_investment, confidence_level=0.
     confidence_interval = np.percentile(final_values, [(1-confidence_level)*100, confidence_level*100])
     
     # VaR
-    var = np.percentile(final_values, (1-confidence_level)*100)
-    var_loss = initial_investment - var
+    var_percentile = np.percentile(final_values, (1-confidence_level)*100)
+    var = max(0, initial_investment - var_percentile)
     
-    # CVaR
-    cvar = np.mean(final_values[final_values <= var])
-    cvar_loss = initial_investment - cvar
+    # CVaR (Expected Shortfall)
+    cvar_values = final_values[final_values <= var_percentile]
+    if len(cvar_values) > 0:
+        cvar = max(0, initial_investment - np.mean(cvar_values))
+    else:
+        cvar = 0
     
     return {
         "mean": mean_final_value,
@@ -60,19 +63,18 @@ def calculate_risk_metrics(final_values, initial_investment, confidence_level=0.
         "min": min_final_value,
         "max": max_final_value,
         "confidence_interval": confidence_interval,
-        "var": var_loss,
-        "cvar": cvar_loss
+        "var": var,
+        "cvar": cvar
     }
 
 # Portfolio configuration
 portfolio = {
-    'VT': 0.7,
-    'EDV': 0.2,
-    'GLDM': 0.1
+    'VT': 0.6,
+    'EDV': 0.4,
 }
 
 # Data retrieval
-start_date = '2023-01-01'
+start_date = '2010-01-01'
 end_date = '2023-12-31'
 tickers = list(portfolio.keys())
 weights = list(portfolio.values())
@@ -99,13 +101,13 @@ cumulative_returns, final_values = monte_carlo_simulation(initial_investment, mo
 risk_metrics = calculate_risk_metrics(final_values, initial_investment)
 
 # Display results
-print(f"平均値: ${risk_metrics['mean']:,.2f}")
-print(f"中央値: ${risk_metrics['median']:,.2f}")
-print(f"最小値: ${risk_metrics['min']:,.2f}")
-print(f"最大値: ${risk_metrics['max']:,.2f}")
+print(f"平均値: ${risk_metrics['mean']:.2f}")
+print(f"中央値: ${risk_metrics['median']:.2f}")
+print(f"最小値: ${risk_metrics['min']:.2f}")
+print(f"最大値: ${risk_metrics['max']:.2f}")
 print(f"90%信頼区間: ${risk_metrics['confidence_interval'][0]:,.2f} - ${risk_metrics['confidence_interval'][1]:,.2f}")
-print(f"95% VaR: ${risk_metrics['var']:,.2f}")
-print(f"95% CVaR: ${risk_metrics['cvar']:,.2f}")
+print(f"95% VaR: ${risk_metrics['var']:.2f}")
+print(f"95% CVaR: ${risk_metrics['cvar']:.2f}")
 
 # Visualize results
 plt.figure(figsize=(12, 7))
