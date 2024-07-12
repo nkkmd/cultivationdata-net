@@ -70,7 +70,7 @@ def calculate_risk_metrics(final_values, initial_investment, confidence_level=0.
 # Portfolio configuration
 portfolio = {
     'VT': 0.6,
-    'EDV': 0.4,
+    'EDV': 0.4
 }
 
 # Data retrieval
