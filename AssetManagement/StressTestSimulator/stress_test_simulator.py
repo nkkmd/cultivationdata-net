@@ -13,66 +13,62 @@ class SimulationParams:
     rebalance_frequency: int
 
 def run_simulation(params):
-    np.random.seed(42)  # For reproducibility
-
     # Define asset class returns and volatilities
     asset_returns = {
-        'stocks': 0.10,
-        'bonds': 0.05,
-        'cash': 0.02
+        'stocks': 0.08,
+        'bonds': 0.03,
+        'cash': 0.01
     }
     asset_volatilities = {
         'stocks': 0.20,
-        'bonds': 0.05,
+        'bonds': 0.08,
         'cash': 0.01
     }
 
     # Adjust returns and volatilities based on risk tolerance
-    if params.risk_tolerance == 'conservative':
-        asset_returns = {k: v * 0.8 for k, v in asset_returns.items()}
-        asset_volatilities = {k: v * 0.8 for k, v in asset_volatilities.items()}
-    elif params.risk_tolerance == 'aggressive':
-        asset_returns = {k: v * 1.2 for k, v in asset_returns.items()}
-        asset_volatilities = {k: v * 1.2 for k, v in asset_volatilities.items()}
+    risk_multipliers = {'conservative': 0.8, 'moderate': 1.0, 'aggressive': 1.2}
+    risk_multiplier = risk_multipliers[params.risk_tolerance]
+    asset_returns = {k: v * risk_multiplier for k, v in asset_returns.items()}
+    asset_volatilities = {k: v * risk_multiplier for k, v in asset_volatilities.items()}
 
     # Calculate portfolio return and volatility
     portfolio_return = sum(params.asset_allocation[asset] * asset_returns[asset] for asset in params.asset_allocation)
     portfolio_volatility = np.sqrt(sum((params.asset_allocation[asset] * asset_volatilities[asset])**2 for asset in params.asset_allocation))
 
-    # Simulate normal scenario
-    normal_scenario = [params.initial_investment]
-    for month in range(params.investment_period * 12):
-        monthly_return = np.random.normal(portfolio_return / 12, portfolio_volatility / np.sqrt(12))
-        normal_scenario.append(normal_scenario[-1] * (1 + monthly_return))
-        
-        # Rebalance if it's time
-        if (month + 1) % params.rebalance_frequency == 0:
-            target_allocation = {asset: value * normal_scenario[-1] for asset, value in params.asset_allocation.items()}
-            normal_scenario[-1] = sum(target_allocation.values())
-
-    # Simulate stress scenario
-    stress_scenario = [params.initial_investment]
-    if params.stress_scenario == 'market_crash':
-        stress_scenario[0] *= 0.6  # 40% initial drop
-        stress_return = portfolio_return * 0.5
-        stress_volatility = portfolio_volatility * 1.5
-    elif params.stress_scenario == 'prolonged_recession':
-        stress_return = portfolio_return * 0.3
-        stress_volatility = portfolio_volatility * 1.2
-    elif params.stress_scenario == 'high_inflation':
-        stress_return = portfolio_return - params.inflation_rate / 100
-        stress_volatility = portfolio_volatility
-
-    for month in range(params.investment_period * 12):
-        monthly_return = np.random.normal(stress_return / 12, stress_volatility / np.sqrt(12))
-        stress_scenario.append(stress_scenario[-1] * (1 + monthly_return))
-        
-        # Rebalance if it's time
-        if (month + 1) % params.rebalance_frequency == 0:
-            target_allocation = {asset: value * stress_scenario[-1] for asset, value in params.asset_allocation.items()}
-            stress_scenario[-1] = sum(target_allocation.values())
+    # Simulate scenarios
+    normal_scenario = simulate_scenario(params, portfolio_return, portfolio_volatility, 'normal')
+    stress_scenario = simulate_scenario(params, portfolio_return, portfolio_volatility, params.stress_scenario)
 
     return normal_scenario, stress_scenario
+
+def simulate_scenario(params, base_return, base_volatility, scenario_type):
+    np.random.seed()  # Reset seed for each simulation
+    scenario = [params.initial_investment]
+    
+    if scenario_type == 'market_crash':
+        scenario[0] *= 0.6  # 40% initial drop
+        return_multiplier, volatility_multiplier = 0.5, 1.5
+    elif scenario_type == 'prolonged_recession':
+        return_multiplier, volatility_multiplier = 0.3, 1.2
+    elif scenario_type == 'high_inflation':
+        return_multiplier, volatility_multiplier = 1.0, 1.0
+        base_return -= params.inflation_rate / 100
+    else:  # normal scenario
+        return_multiplier, volatility_multiplier = 1.0, 1.0
+    
+    scenario_return = base_return * return_multiplier
+    scenario_volatility = base_volatility * volatility_multiplier
+
+    for month in range(params.investment_period * 12):
+        monthly_return = np.random.normal(scenario_return / 12, scenario_volatility / np.sqrt(12))
+        real_return = monthly_return - params.inflation_rate / 1200  # Adjust for inflation
+        scenario.append(scenario[-1] * (1 + real_return))
+        
+        if (month + 1) % params.rebalance_frequency == 0:
+            target_allocation = {asset: value * scenario[-1] for asset, value in params.asset_allocation.items()}
+            scenario[-1] = sum(target_allocation.values())
+
+    return scenario
 
 def plot_results(normal_scenario, stress_scenario, params):
     years = range(0, params.investment_period + 1)
@@ -83,7 +79,7 @@ def plot_results(normal_scenario, stress_scenario, params):
     plt.plot(years, normal_annual, label='Normal Scenario')
     plt.plot(years, stress_annual, label='Stress Scenario')
     plt.xlabel('Years')
-    plt.ylabel('Portfolio Value')
+    plt.ylabel('Portfolio Value (JPY)')
     plt.title('Asset Management Stress Test Simulation')
     plt.legend()
     plt.grid(True)
