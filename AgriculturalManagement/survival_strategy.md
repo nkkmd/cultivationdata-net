@@ -47,7 +47,7 @@
    - 貯蓄の着地点としては、例えばコーストFIREがわかりやすいです。コーストFIREでは、一定の資産額に到達した後は追加の貯蓄をせず、その資産が時間の経過とともに成長して十分な資金となることを目指します。
 
 4. **資産運用**
-   - 余剰資金は適切に[資産運用](https://github.com/nkkmd/cultivationdata.net/blob/main/AssetManagement/Fasset_management.md)に割り振ります。
+   - 余剰資金は適切に[資産運用](https://github.com/nkkmd/cultivationdata.net/blob/main/AssetManagement/asset_management.md)に割り振ります。
 
 5. **健康管理**
    - 腹八分目の食事、十分な睡眠、適度な運動を心がけます。お酒とたばこは控えます。
