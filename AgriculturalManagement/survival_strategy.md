@@ -48,6 +48,7 @@
 
 4. **資産運用**
    - 余剰資金は適切に[資産運用](https://github.com/nkkmd/cultivationdata.net/blob/main/AssetManagement/asset_management.md)に割り振ります。
+   - 農業に特有のリスクから切り離した財源を確保することで、持続可能性を高めます。
 
 5. **健康管理**
    - 腹八分目の食事、十分な睡眠、適度な運動を心がけます。お酒とたばこは控えます。
