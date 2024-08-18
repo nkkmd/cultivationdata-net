@@ -17,7 +17,7 @@ def calculate_savings_goal():
     expected_return = get_user_input("期待収益率（%）を入力してください（例: 7）: ") / 100
     inflation_rate = get_user_input("インフレ率（%）を入力してください（例: 1.5）: ") / 100
 
-    # 実質期待収益率を計算
+    # 実質期待収益率を計算 (参考用)
     real_return = (1 + expected_return) / (1 + inflation_rate) - 1
 
     # 残りの年数を計算
@@ -26,11 +26,11 @@ def calculate_savings_goal():
     # 目標年齢時点で必要な金額を計算（インフレ調整後の未来価値）
     future_value = target_value * (1 + inflation_rate) ** years_remaining
 
-    # 目標達成に必要な現在の貯蓄額を計算
-    present_value = future_value / (1 + real_return) ** years_remaining
+    # 目標達成に必要な現在の貯蓄額を計算 (修正: expected_returnを使用)
+    present_value = future_value / (1 + expected_return) ** years_remaining
 
     # 結果を表示
-    print(f"=====計算結果=====")
+    print(f"\n=====計算結果=====")
     print(f"現在の年齢: {current_age}歳")
     print(f"目標年齢: {target_age}歳")
     print(f"目標金額: {target_value:.2f}万円")
