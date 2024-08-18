@@ -26,7 +26,7 @@ def calculate_savings_goal():
     # 目標年齢時点で必要な金額を計算（インフレ調整後の未来価値）
     future_value = target_value * (1 + inflation_rate) ** years_remaining
 
-    # 目標達成に必要な現在の貯蓄額を計算 (修正: expected_returnを使用)
+    # 目標達成に必要な現在の貯蓄額を計算
     present_value = future_value / (1 + expected_return) ** years_remaining
 
     # 結果を表示
