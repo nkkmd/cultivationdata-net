@@ -1,4 +1,3 @@
-# 必要なモジュールをインポート
 import numpy as np
 
 # ユーザー入力関数
@@ -31,9 +30,10 @@ def calculate_savings_goal():
     present_value = future_value / (1 + real_return) ** years_remaining
 
     # 結果を表示
-    print(f"\n計算結果:")
+    print(f"=====計算結果=====")
     print(f"現在の年齢: {current_age}歳")
     print(f"目標年齢: {target_age}歳")
+    print(f"目標金額: {target_value:.2f}万円")
     print(f"残りの年数: {years_remaining}年")
     print(f"期待収益率: {expected_return:.2%}")
     print(f"インフレ率: {inflation_rate:.2%}")
