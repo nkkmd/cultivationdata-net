@@ -10,6 +10,7 @@ import pandas as pd
 import yfinance as yf
 import matplotlib.pyplot as plt
 from scipy.optimize import minimize
+from datetime import datetime
 
 def get_data(tickers, start_date, end_date):
     data = yf.download(tickers, start=start_date, end=end_date)['Adj Close']
@@ -118,19 +119,56 @@ def display_efficient_frontier(mean_returns, cov_matrix, num_portfolios, risk_fr
     plt.tight_layout()
     plt.show()
 
-# メイン処理
-tickers = ['VT', 'EDV', 'GLDM']  # ティッカーシンボル
-start_date = '2023-01-01'
-end_date = '2023-12-31'
-risk_free_rate = 0.01  # 1%と仮定
+def get_user_input():
+    # ティッカーシンボルの入力
+    while True:
+        tickers_input = input("ティッカーシンボルをカンマ区切りで入力してください（例: VT,EDV,GLDM）: ")
+        tickers = [ticker.strip() for ticker in tickers_input.split(',')]
+        if len(tickers) > 1:
+            break
+        else:
+            print("少なくとも2つ以上のティッカーシンボルを入力してください。")
 
-# データの取得
-returns = get_data(tickers, start_date, end_date)
+    # 日付の入力と検証
+    def get_valid_date(prompt):
+        while True:
+            date_str = input(prompt)
+            try:
+                return datetime.strptime(date_str, "%Y-%m-%d").strftime("%Y-%m-%d")
+            except ValueError:
+                print("無効な日付形式です。YYYY-MM-DDの形式で入力してください。")
 
-# 平均リターンと共分散行列の計算
-mean_returns = returns.mean()
-cov_matrix = returns.cov()
+    start_date = get_valid_date("開始日を入力してください（YYYY-MM-DD）: ")
+    end_date = get_valid_date("終了日を入力してください（YYYY-MM-DD）: ")
 
-# 効率的フロンティアの表示
-display_efficient_frontier(mean_returns, cov_matrix, num_portfolios=25000, risk_free_rate=risk_free_rate,
-                           tickers=tickers, start_date=start_date, end_date=end_date)
+    # リスクフリーレートの入力
+    while True:
+        try:
+            risk_free_rate = float(input("リスクフリーレートを百分率で入力してください（例: 1.0）: ")) / 100
+            break
+        except ValueError:
+            print("無効な入力です。数値を入力してください。")
+
+    return tickers, start_date, end_date, risk_free_rate
+
+def main():
+    print("ポートフォリオ最適化プログラムへようこそ！")
+    print("このプログラムは効率的フロンティアを計算し、最適なポートフォリオ配分を提示します。\n")
+
+    tickers, start_date, end_date, risk_free_rate = get_user_input()
+
+    print("\n計算を開始します...")
+
+    # データの取得
+    returns = get_data(tickers, start_date, end_date)
+
+    # 平均リターンと共分散行列の計算
+    mean_returns = returns.mean()
+    cov_matrix = returns.cov()
+
+    # 効率的フロンティアの表示
+    display_efficient_frontier(mean_returns, cov_matrix, num_portfolios=25000, risk_free_rate=risk_free_rate,
+                               tickers=tickers, start_date=start_date, end_date=end_date)
+
+if __name__ == "__main__":
+    main()
