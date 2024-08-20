@@ -8,32 +8,22 @@ class SimulationParams:
     investment_period: int
     risk_tolerance: str
     asset_allocation: dict
+    asset_returns: dict
+    asset_volatilities: dict
     inflation_rate: float
     stress_scenario: str
     rebalance_frequency: int
 
 def run_simulation(params):
-    # Define asset class returns and volatilities
-    asset_returns = {
-        'stocks': 0.08,
-        'bonds': 0.03,
-        'cash': 0.01
-    }
-    asset_volatilities = {
-        'stocks': 0.20,
-        'bonds': 0.08,
-        'cash': 0.01
-    }
-
     # Adjust returns and volatilities based on risk tolerance
     risk_multipliers = {'conservative': 0.8, 'moderate': 1.0, 'aggressive': 1.2}
     risk_multiplier = risk_multipliers[params.risk_tolerance]
-    asset_returns = {k: v * risk_multiplier for k, v in asset_returns.items()}
-    asset_volatilities = {k: v * risk_multiplier for k, v in asset_volatilities.items()}
+    adjusted_returns = {k: v * risk_multiplier for k, v in params.asset_returns.items()}
+    adjusted_volatilities = {k: v * risk_multiplier for k, v in params.asset_volatilities.items()}
 
     # Calculate portfolio return and volatility
-    portfolio_return = sum(params.asset_allocation[asset] * asset_returns[asset] for asset in params.asset_allocation)
-    portfolio_volatility = np.sqrt(sum((params.asset_allocation[asset] * asset_volatilities[asset])**2 for asset in params.asset_allocation))
+    portfolio_return = sum(params.asset_allocation[asset] * adjusted_returns[asset] for asset in params.asset_allocation)
+    portfolio_volatility = np.sqrt(sum((params.asset_allocation[asset] * adjusted_volatilities[asset])**2 for asset in params.asset_allocation))
 
     # Simulate scenarios
     normal_scenario = simulate_scenario(params, portfolio_return, portfolio_volatility, 'normal')
@@ -79,48 +69,80 @@ def plot_results(normal_scenario, stress_scenario, params):
     plt.plot(years, normal_annual, label='Normal Scenario')
     plt.plot(years, stress_annual, label='Stress Scenario')
     plt.xlabel('Years')
-    plt.ylabel('Portfolio Value (JPY)')
+    plt.ylabel('Portfolio Value ($)')
     plt.title('Asset Management Stress Test Simulation')
     plt.legend()
     plt.grid(True)
     plt.xticks(years)
     plt.show()
 
+def get_user_input(prompt, default=None):
+    if default is not None:
+        user_input = input(f"{prompt} (デフォルト: {default}): ").strip()
+        return default if user_input == "" else float(user_input)
+    else:
+        return float(input(prompt))
+
 def main():
     print("資産運用ストレステストシミュレーター")
 
-    initial_investment = float(input("初期投資額（円）を入力してください: "))
-    investment_period = int(input("投資期間（年）を入力してください: "))
+    initial_investment = get_user_input("初期投資額（$）")
+    investment_period = int(get_user_input("投資期間（年）"))
     
-    risk_tolerance_options = ['保守的', '中庸', '積極的']
-    print("リスク許容度を選択してください:")
-    for i, option in enumerate(risk_tolerance_options, 1):
-        print(f"{i}. {option}")
-    risk_choice = int(input("番号を入力してください: "))
-    risk_tolerance = ['conservative', 'moderate', 'aggressive'][risk_choice - 1]
+    risk_tolerance_options = {
+        '1': ('保守的', 'conservative'),
+        '2': ('中庸', 'moderate'),
+        '3': ('積極的', 'aggressive')
+    }
+    print("\nリスク許容度を選択してください:")
+    print("1. 保守的 - リスクを最小限に抑え、安定した運用を目指します。")
+    print("2. 中庸 - バランスの取れたリスクと収益を目指します。")
+    print("3. 積極的 - 高いリターンを目指し、より大きなリスクを取ります。")
+    risk_choice = input("番号を入力してください (1/2/3): ")
+    risk_tolerance = risk_tolerance_options[risk_choice][1]
 
-    print("資産配分を入力してください（合計が100%になるようにしてください）")
-    stocks = float(input("株式の割合（%）: "))
-    bonds = float(input("債券の割合（%）: "))
-    cash = float(input("現金の割合（%）: "))
+    print("\n資産配分を入力してください（合計が100%になるようにしてください）")
+    stocks = get_user_input("株式の割合（%）")
+    bonds = get_user_input("債券の割合（%）")
+    cash = 100 - stocks - bonds
+    print(f"現金の割合（%）: {cash:.1f}")
     asset_allocation = {'stocks': stocks/100, 'bonds': bonds/100, 'cash': cash/100}
 
-    inflation_rate = float(input("想定インフレ率（%）を入力してください: "))
+    print("\n各資産クラスの想定リターンとボラティリティを入力してください")
+    asset_returns = {
+        'stocks': get_user_input("株式の想定リターン（%）", 8.0) / 100,
+        'bonds': get_user_input("債券の想定リターン（%）", 3.0) / 100,
+        'cash': get_user_input("現金の想定リターン（%）", 1.0) / 100
+    }
+    asset_volatilities = {
+        'stocks': get_user_input("株式のボラティリティ（%）", 20.0) / 100,
+        'bonds': get_user_input("債券のボラティリティ（%）", 8.0) / 100,
+        'cash': get_user_input("現金のボラティリティ（%）", 1.0) / 100
+    }
 
-    stress_scenario_options = ['市場急落', '長期不況', '高インフレ']
-    print("ストレスシナリオを選択してください:")
-    for i, option in enumerate(stress_scenario_options, 1):
-        print(f"{i}. {option}")
-    scenario_choice = int(input("番号を入力してください: "))
-    stress_scenario = ['market_crash', 'prolonged_recession', 'high_inflation'][scenario_choice - 1]
+    inflation_rate = get_user_input("想定インフレ率（%）")
 
-    rebalance_frequency = int(input("リバランス頻度（月）を入力してください: "))
+    stress_scenario_options = {
+        '1': ('市場急落', 'market_crash'),
+        '2': ('長期不況', 'prolonged_recession'),
+        '3': ('高インフレ', 'high_inflation')
+    }
+    print("\nストレスシナリオを選択してください:")
+    print("1. 市場急落 - 株式市場が急激に下落し、その後緩やかに回復するシナリオ")
+    print("2. 長期不況 - 経済が長期間停滞し、全体的なリターンが低下するシナリオ")
+    print("3. 高インフレ - インフレ率が急上昇し、実質リターンが大きく低下するシナリオ")
+    scenario_choice = input("番号を入力してください (1/2/3): ")
+    stress_scenario = stress_scenario_options[scenario_choice][1]
+
+    rebalance_frequency = int(get_user_input("リバランス頻度（月）"))
 
     params = SimulationParams(
         initial_investment=initial_investment,
         investment_period=investment_period,
         risk_tolerance=risk_tolerance,
         asset_allocation=asset_allocation,
+        asset_returns=asset_returns,
+        asset_volatilities=asset_volatilities,
         inflation_rate=inflation_rate,
         stress_scenario=stress_scenario,
         rebalance_frequency=rebalance_frequency
@@ -128,8 +150,8 @@ def main():
 
     normal_scenario, stress_scenario = run_simulation(params)
 
-    print(f"\n通常シナリオの最終ポートフォリオ価値: {normal_scenario[-1]:,.0f}円")
-    print(f"ストレスシナリオの最終ポートフォリオ価値: {stress_scenario[-1]:,.0f}円")
+    print(f"\n通常シナリオの最終ポートフォリオ価値: ${normal_scenario[-1]:,.0f}")
+    print(f"ストレスシナリオの最終ポートフォリオ価値: ${stress_scenario[-1]:,.0f}")
 
     plot_results(normal_scenario, stress_scenario, params)
 
