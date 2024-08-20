@@ -67,53 +67,74 @@ def calculate_risk_metrics(final_values, initial_investment, confidence_level=0.
         "cvar": cvar
     }
 
-# Portfolio configuration
-portfolio = {
-    'VT': 0.6,
-    'EDV': 0.4
-}
+def get_user_input():
+    portfolio = {}
+    total_weight = 0
+    while total_weight < 1:
+        ticker = input("ティッカーシンボルを入力してください: ").upper()
+        weight = float(input(f"{ticker}の比率を入力してください（0-1の間）: "))
+        portfolio[ticker] = weight
+        total_weight += weight
+        print(f"現在の合計比率: {total_weight:.2f}")
+        if total_weight >= 1:
+            break
+        if total_weight < 1:
+            print(f"残りの比率: {1 - total_weight:.2f}")
+    
+    # Normalize weights to ensure they sum to 1
+    if total_weight != 1:
+        for ticker in portfolio:
+            portfolio[ticker] /= total_weight
+    
+    start_date = input("開始日を入力してください（YYYY-MM-DD）: ")
+    end_date = input("終了日を入力してください（YYYY-MM-DD）: ")
+    initial_investment = float(input("初期投資額を入力してください（$）: "))
+    months = int(input("シミュレーション期間（月数）を入力してください: "))
+    num_simulations = input("シミュレーション回数を入力してください（デフォルト: 1000）: ")
+    num_simulations = int(num_simulations) if num_simulations else 1000
+    rebalance_months = int(input("リバランス間隔（月数）を入力してください: "))
+    
+    return portfolio, start_date, end_date, initial_investment, months, num_simulations, rebalance_months
 
-# Data retrieval
-start_date = '2010-01-01'
-end_date = '2023-12-31'
-tickers = list(portfolio.keys())
-weights = list(portfolio.values())
+def main():
+    portfolio, start_date, end_date, initial_investment, months, num_simulations, rebalance_months = get_user_input()
+    
+    tickers = list(portfolio.keys())
+    weights = list(portfolio.values())
 
-stock_data = get_stock_data(tickers, start_date, end_date)
+    stock_data = get_stock_data(tickers, start_date, end_date)
 
-# Calculate portfolio returns
-portfolio_returns = calculate_portfolio_returns(stock_data, weights)
+    # Calculate portfolio returns
+    portfolio_returns = calculate_portfolio_returns(stock_data, weights)
 
-# Calculate expected return and volatility based on historical data
-expected_return = portfolio_returns.mean() * 252  # Annualized return
-volatility = portfolio_returns.std() * np.sqrt(252)  # Annualized volatility
+    # Calculate expected return and volatility based on historical data
+    expected_return = portfolio_returns.mean() * 252  # Annualized return
+    volatility = portfolio_returns.std() * np.sqrt(252)  # Annualized volatility
 
-# Simulation parameters
-initial_investment = 10000  # Initial investment ($10,000)
-months = 120  # Simulation period (10 years * 12 months)
-num_simulations = 10000  # Number of simulations
-rebalance_months = 12  # Rebalance annually
+    # Run simulation
+    cumulative_returns, final_values = monte_carlo_simulation(initial_investment, months, num_simulations, expected_return, volatility, rebalance_months)
 
-# Run simulation
-cumulative_returns, final_values = monte_carlo_simulation(initial_investment, months, num_simulations, expected_return, volatility, rebalance_months)
+    # Calculate risk metrics
+    risk_metrics = calculate_risk_metrics(final_values, initial_investment)
 
-# Calculate risk metrics
-risk_metrics = calculate_risk_metrics(final_values, initial_investment)
+    # Display results
+    print(f"\n結果:")
+    print(f"平均値: ${risk_metrics['mean']:.2f}")
+    print(f"中央値: ${risk_metrics['median']:.2f}")
+    print(f"最小値: ${risk_metrics['min']:.2f}")
+    print(f"最大値: ${risk_metrics['max']:.2f}")
+    print(f"90%信頼区間: ${risk_metrics['confidence_interval'][0]:,.2f} - ${risk_metrics['confidence_interval'][1]:,.2f}")
+    print(f"95% VaR: ${risk_metrics['var']:.2f}")
+    print(f"95% CVaR: ${risk_metrics['cvar']:.2f}")
 
-# Display results
-print(f"平均値: ${risk_metrics['mean']:.2f}")
-print(f"中央値: ${risk_metrics['median']:.2f}")
-print(f"最小値: ${risk_metrics['min']:.2f}")
-print(f"最大値: ${risk_metrics['max']:.2f}")
-print(f"90%信頼区間: ${risk_metrics['confidence_interval'][0]:,.2f} - ${risk_metrics['confidence_interval'][1]:,.2f}")
-print(f"95% VaR: ${risk_metrics['var']:.2f}")
-print(f"95% CVaR: ${risk_metrics['cvar']:.2f}")
+    # Visualize results
+    plt.figure(figsize=(12, 7))
+    plt.plot(cumulative_returns)
+    portfolio_str = ', '.join([f'{ticker}: {weight:.1%}' for ticker, weight in portfolio.items()])
+    plt.title(f'Monte Carlo Simulation of Portfolio Value\nPortfolio: {portfolio_str}\nSimulation Period: {months} months, Rebalance: Every {rebalance_months} months', fontsize=14)
+    plt.xlabel('Days', fontsize=12)
+    plt.ylabel('Cumulative Return', fontsize=12)
+    plt.show()
 
-# Visualize results
-plt.figure(figsize=(12, 7))
-plt.plot(cumulative_returns)
-portfolio_str = ', '.join([f'{ticker}: {weight:.1%}' for ticker, weight in portfolio.items()])
-plt.title(f'Monte Carlo Simulation of Portfolio Value\nPortfolio: {portfolio_str}\nSimulation Period: {months} months, Rebalance: Every {rebalance_months} months', fontsize=14)
-plt.xlabel('Days', fontsize=12)
-plt.ylabel('Cumulative Return', fontsize=12)
-plt.show()
+if __name__ == "__main__":
+    main()
