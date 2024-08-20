@@ -81,7 +81,7 @@ def plot_comparison(dates, periodic_values, threshold_values, non_rebalanced_val
     
     plt.title('Comparison of Portfolio Rebalancing Strategies')
     plt.xlabel('Date')
-    plt.ylabel('Portfolio Value (USD)')
+    plt.ylabel('Portfolio Value ($)')
     plt.legend()
     plt.grid(True)
     plt.tight_layout()
@@ -103,39 +103,56 @@ def calculate_performance(portfolio_values, risk_free_rate):
 
     return total_return, annual_return, sharpe_ratio, max_drawdown
 
-# シミュレーション設定
-initial_balance = 10000  # 1万ドル
-target_allocations = {
-    "VT": 0.8,  # 全世界株式ETF
-    "EDV": 0.2  # 債券ETF
-}
-start_date = "2020-01-01"
-end_date = "2023-12-31"
-risk_free_rate = 0.01  # 1%の年間リスクフリーレートを設定（ユーザーが変更可能）
+# ユーザー入力
+print("ポートフォリオリバランスシミュレーター")
+initial_balance = float(input("初期投資額（$）を入力してください: "))
+
+portfolio = {}
+total_weight = 0
+while total_weight < 1:
+    ticker = input("ETFのティッカーシンボルを入力してください: ").upper()
+    weight = float(input(f"{ticker}の比率を入力してください（0-1の間）: "))
+    portfolio[ticker] = weight
+    total_weight += weight
+    print(f"現在の合計比率: {total_weight:.2f}")
+    if total_weight >= 1:
+        break
+    if total_weight < 1:
+        print(f"残りの比率: {1 - total_weight:.2f}")
+
+# 合計が1になるように正規化
+if total_weight != 1:
+    for ticker in portfolio:
+        portfolio[ticker] /= total_weight
+
+start_date = input("開始日（YYYY-MM-DD）を入力してください: ")
+end_date = input("終了日（YYYY-MM-DD）を入力してください: ")
+risk_free_rate = float(input("年間リスクフリーレート（小数）を入力してください: "))
+periodic_rebalance_frequency = int(input("定期リバランスの頻度（営業日数）を入力してください: "))
+threshold = float(input("閾値リバランスの閾値（小数）を入力してください: "))
 
 # データ取得
-historical_data = get_historical_data(list(target_allocations.keys()), start_date, end_date)
+historical_data = get_historical_data(list(portfolio.keys()), start_date, end_date)
 
-# 定期リバランスのシミュレーション
-periodic_rebalance_frequency = 90  # 90営業日ごとにリバランス
+# シミュレーション実行
 periodic_portfolio, periodic_values, periodic_rebalance_dates = run_simulation(
-    initial_balance, target_allocations, historical_data, RebalanceMethod.PERIODIC, periodic_rebalance_frequency
+    initial_balance, portfolio, historical_data, RebalanceMethod.PERIODIC, periodic_rebalance_frequency
 )
 
-# 閾値リバランスのシミュレーション
-threshold = 0.05  # 5%の乖離でリバランス
 threshold_portfolio, threshold_values, threshold_rebalance_dates = run_simulation(
-    initial_balance, target_allocations, historical_data, RebalanceMethod.THRESHOLD, threshold
+    initial_balance, portfolio, historical_data, RebalanceMethod.THRESHOLD, threshold
 )
 
-# リバランスなしのシミュレーション
 non_rebalanced_portfolio, non_rebalanced_values, _ = run_simulation(
-    initial_balance, target_allocations, historical_data, RebalanceMethod.PERIODIC, len(historical_data)
+    initial_balance, portfolio, historical_data, RebalanceMethod.PERIODIC, len(historical_data)
 )
 
 # 結果表示
 print(f"\n期間: {start_date} から {end_date}")
-print(f"初期投資額: ¥{initial_balance:,.0f}")
+print(f"初期投資額: ${initial_balance:,.2f}")
+print("ポートフォリオ構成:")
+for ticker, weight in portfolio.items():
+    print(f"  {ticker}: {weight:.2%}")
 print(f"リスクフリーレート: {risk_free_rate:.2%}")
 
 periodic_return, periodic_annual, periodic_sharpe, periodic_max_drawdown = calculate_performance(periodic_values, risk_free_rate)
@@ -143,7 +160,7 @@ threshold_return, threshold_annual, threshold_sharpe, threshold_max_drawdown = c
 non_rebalanced_return, non_rebalanced_annual, non_rebalanced_sharpe, non_rebalanced_max_drawdown = calculate_performance(non_rebalanced_values, risk_free_rate)
 
 print("\n定期リバランス:")
-print(f"最終ポートフォリオ価値: ¥{periodic_values[-1]:,.0f}")
+print(f"最終ポートフォリオ価値: ${periodic_values[-1]:,.2f}")
 print(f"総収益率: {periodic_return:.2f}%")
 print(f"年間収益率: {periodic_annual:.2f}%")
 print(f"シャープレシオ: {periodic_sharpe:.2f}")
@@ -151,7 +168,7 @@ print(f"最大ドローダウン: {periodic_max_drawdown:.2f}%")
 print(f"リバランス回数: {len(periodic_rebalance_dates)}")
 
 print("\n閾値リバランス:")
-print(f"最終ポートフォリオ価値: ¥{threshold_values[-1]:,.0f}")
+print(f"最終ポートフォリオ価値: ${threshold_values[-1]:,.2f}")
 print(f"総収益率: {threshold_return:.2f}%")
 print(f"年間収益率: {threshold_annual:.2f}%")
 print(f"シャープレシオ: {threshold_sharpe:.2f}")
@@ -159,7 +176,7 @@ print(f"最大ドローダウン: {threshold_max_drawdown:.2f}%")
 print(f"リバランス回数: {len(threshold_rebalance_dates)}")
 
 print("\nリバランスなし:")
-print(f"最終ポートフォリオ価値: ¥{non_rebalanced_values[-1]:,.0f}")
+print(f"最終ポートフォリオ価値: ${non_rebalanced_values[-1]:,.2f}")
 print(f"総収益率: {non_rebalanced_return:.2f}%")
 print(f"年間収益率: {non_rebalanced_annual:.2f}%")
 print(f"シャープレシオ: {non_rebalanced_sharpe:.2f}")
