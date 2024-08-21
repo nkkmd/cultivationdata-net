@@ -15,35 +15,36 @@ class SimulationParams:
     rebalance_frequency: int
 
 def run_simulation(params):
-    # Adjust returns and volatilities based on risk tolerance
+    # リスク許容度に基づいてリターンとボラティリティを調整
     risk_multipliers = {'conservative': 0.8, 'moderate': 1.0, 'aggressive': 1.2}
     risk_multiplier = risk_multipliers[params.risk_tolerance]
     adjusted_returns = {k: v * risk_multiplier for k, v in params.asset_returns.items()}
     adjusted_volatilities = {k: v * risk_multiplier for k, v in params.asset_volatilities.items()}
 
-    # Calculate portfolio return and volatility
+    # ポートフォリオのリターンとボラティリティを計算
     portfolio_return = sum(params.asset_allocation[asset] * adjusted_returns[asset] for asset in params.asset_allocation)
     portfolio_volatility = np.sqrt(sum((params.asset_allocation[asset] * adjusted_volatilities[asset])**2 for asset in params.asset_allocation))
 
-    # Simulate scenarios
+    # シナリオをシミュレート
     normal_scenario = simulate_scenario(params, portfolio_return, portfolio_volatility, 'normal')
     stress_scenario = simulate_scenario(params, portfolio_return, portfolio_volatility, params.stress_scenario)
 
     return normal_scenario, stress_scenario
 
 def simulate_scenario(params, base_return, base_volatility, scenario_type):
-    np.random.seed()  # Reset seed for each simulation
+    # 各シミュレーションでシードをリセット
+    np.random.seed()
     scenario = [params.initial_investment]
     
     if scenario_type == 'market_crash':
-        scenario[0] *= 0.6  # 40% initial drop
+        scenario[0] *= 0.6  # 40%の初期下落
         return_multiplier, volatility_multiplier = 0.5, 1.5
     elif scenario_type == 'prolonged_recession':
         return_multiplier, volatility_multiplier = 0.3, 1.2
     elif scenario_type == 'high_inflation':
         return_multiplier, volatility_multiplier = 1.0, 1.0
         base_return -= params.inflation_rate / 100
-    else:  # normal scenario
+    else:  # 通常のシナリオ
         return_multiplier, volatility_multiplier = 1.0, 1.0
     
     scenario_return = base_return * return_multiplier
@@ -51,7 +52,7 @@ def simulate_scenario(params, base_return, base_volatility, scenario_type):
 
     for month in range(params.investment_period * 12):
         monthly_return = np.random.normal(scenario_return / 12, scenario_volatility / np.sqrt(12))
-        real_return = monthly_return - params.inflation_rate / 1200  # Adjust for inflation
+        real_return = monthly_return - params.inflation_rate / 1200  # インフレ調整
         scenario.append(scenario[-1] * (1 + real_return))
         
         if (month + 1) % params.rebalance_frequency == 0:
