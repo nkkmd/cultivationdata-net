@@ -59,19 +59,21 @@
    - フィードバックを活用して、資産運用の精度を高めていきます。
 
 ## 分析ツール
+1. **[貯蓄目標計算機](https://github.com/nkkmd/cultivationdata.net/tree/main/AssetManagement/CalculateFutureSavings)**
+   - 現在の年齢、目標年齢、目標金額、期待収益率、インフレ率、および毎月の積立額を基に、目標年齢時点で必要な貯蓄額と現在必要な貯蓄額を計算します。実質期待収益率も考慮に入れ、より正確な長期的な貯蓄目標を立てるのに役立ちます。
 
-1. **[ポートフォリオ最適化ツール](https://www.cultivationdata.net/app/PortfolioOptimizer)**
+2. **[ポートフォリオ最適化ツール](https://github.com/nkkmd/cultivationdata.net/tree/main/AssetManagement/PortfolioOptimizer)**
    - 効率的フロンティアを計算し、リスクとリターンのトレードオフを考慮した上で最適なポートフォリオ配分を提示します。
 
-2. **[ポートフォリオ・モンテカルロ・シミュレーター](https://www.cultivationdata.net/app/MonteCarloSimulator)**
+3. **[ポートフォリオ・モンテカルロ・シミュレーター](https://github.com/nkkmd/cultivationdata.net/tree/main/AssetManagement/MonteCarloSimulator)**
    - 投資ポートフォリオの将来のパフォーマンスを、過去のデータを使用してモンテカルロ・シミュレーションします。
    - 複数の可能な将来シナリオを生成することで、ポートフォリオのリスクとリターンの特性を分析することができます。
 
-3. **[ポートフォリオ・リバランス・シミュレーター](https://www.cultivationdata.net/app/RebalanceSimulator)**
+4. **[ポートフォリオ・リバランス・シミュレーター](https://github.com/nkkmd/cultivationdata.net/tree/main/AssetManagement/RebalanceSimulator)**
    - リバランスありとリバランスなしの投資ポートフォリオのパフォーマンスを、過去のデータを使用してシミュレーションし比較します。
    - 定期的なリバランスがポートフォリオのパフォーマンスに与える影響を分析することができます。
 
-4. **[資産運用ストレステスト・シミュレーター](https://www.cultivationdata.net/app/StressTestSimulator)**
+5. **[資産運用ストレステスト・シミュレーター](https://github.com/nkkmd/cultivationdata.net/tree/main/AssetManagement/StressTestSimulator)**
    - 通常の条件下および様々なストレスシナリオ下での投資ポートフォリオのパフォーマンスをシミュレートします。
    - 異なる市場条件下でのポートフォリオの動きを理解するのに役立ちます。
 
