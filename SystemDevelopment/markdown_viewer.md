@@ -166,3 +166,7 @@ However, when using Markdown files from different sources, note the following:
 - For security reasons, it is recommended to use Markdown files only from trusted sources.
 - Full compatibility is not guaranteed when using different Markdown dialects or extended syntax. Use of standard Markdown syntax is recommended.
 - This system provides basic functionality. Additional development is needed for more advanced features (e.g., automatic table of contents generation, styling customization).
+
+---
+- Created: 2024-9-5
+- Updated: 2024-9-5
