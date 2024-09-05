@@ -1,23 +1,10 @@
 # Markdown Viewer: Documentation
 
-## Table of Contents
-1. [Overview](#overview)
-2. [System Configuration](#system-configuration)
-3. [JavaScript File (md.js)](#javascript-file-mdjs)
-   - [Key Functions](#key-functions)
-   - [Code](#code-for-javascript-file-mdjs)
-4. [HTML File](#html-file)
-   - [Structure Explanation](#structure-explanation)
-   - [Code](#html-file-code)
-5. [Usage](#usage)
-6. [Markdown File Compatibility](#markdown-file-compatibility)
-7. [Important Notes](#important-notes)
-
-## Overview
+## 1. Overview
 
 This Markdown Viewer system is a lightweight solution for dynamically converting specified Markdown files to HTML and displaying them as web pages. It uses URL parameters to specify the Markdown file and employs JavaScript to asynchronously fetch, convert, and display the file.
 
-## System Configuration
+## 2. System Configuration
 
 The system primarily consists of two files:
 1. JavaScript file (md.js): Provides the main functionality.
@@ -25,7 +12,7 @@ The system primarily consists of two files:
 
 Additionally, it uses the external library `marked.js` to convert Markdown to HTML.
 
-## JavaScript File (md.js)
+## 3. JavaScript File (md.js)
 
 ### Key Functions
 
@@ -116,7 +103,7 @@ async function main() {
 window.onload = main;
 ```
 
-## HTML File
+## 4. HTML File
 
 ### Structure Explanation
 
@@ -146,7 +133,7 @@ window.onload = main;
 </html>
 ```
 
-## Usage
+## 5. Usage
 
 1. Host the HTML file and JavaScript file (md.js) on a web server.
 2. Use the URL parameter `md` to specify the Markdown file you want to display.
@@ -154,7 +141,7 @@ window.onload = main;
 3. When accessing the page, the specified Markdown file will be loaded and displayed as HTML.
 4. The first h1 tag in the Markdown will be used as the page title.
 
-## Markdown File Compatibility
+## 6. Markdown File Compatibility
 
 While this system is exemplified for displaying Markdown files on GitHub, it can be used with Markdown files from other sources for the following reasons:
 
@@ -172,7 +159,7 @@ However, when using Markdown files from different sources, note the following:
 - File structure and URL format: Different platforms or servers may have different file structures or URL formats, which may require adjustments.
 - Security: Caution is needed regarding security risks when displaying Markdown files from untrusted sources.
 
-## Important Notes
+## 7. Important Notes
 
 - Be aware of Cross-Origin Resource Sharing (CORS) restrictions. Appropriate server configuration may be necessary.
 - Error handling is implemented, but content may not display due to network issues or file non-existence.
