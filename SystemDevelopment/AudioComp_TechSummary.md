@@ -153,3 +153,7 @@
 **Python Implementation:** Feasible (but complex)
 - Utilize Python wrappers for Kaldi (speech recognition toolkit) or Python libraries from Bob (IDIAP Research Institute)
 - Choice between Kaldi and Bob depends on specific requirements and desired implementation complexity
+
+---
+- Created: 2024-9-12
+- Updated: 2024-9-12

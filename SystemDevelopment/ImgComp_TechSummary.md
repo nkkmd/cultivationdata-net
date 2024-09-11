@@ -154,3 +154,7 @@
   - SIFT: `cv2.SIFT_create()`
   - SURF: `cv2.xfeatures2d.SURF_create()` in OpenCV 3.x, removed in latest versions due to patent issues
   - ORB: `cv2.ORB_create()`
+
+---
+- Created: 2024-9-12
+- Updated: 2024-9-12
