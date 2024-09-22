@@ -72,3 +72,7 @@
 4. **Encoder efficiency:** Different software or libraries may produce slightly different sizes even with the same settings.
 
 The actual conversion results are determined by a combination of these factors. If you have specific requirements, it's recommended to perform conversion tests with a small sample.
+
+---
+- Created: 2024-9-22
+- Updated: 2024-9-22
