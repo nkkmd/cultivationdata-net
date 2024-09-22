@@ -105,3 +105,7 @@ python audio-to-spectrogram.py
 This script allows you to easily generate spectrogram images from audio files. The resulting spectrogram visually represents the temporal changes and frequency components of the audio signal, which is useful for audio analysis and processing tasks.
 
 To adjust the script's behavior or output, you can modify parameters within the `create_spectrogram` function (e.g., `figsize`, `cmap`) to customize the spectrogram display.
+
+---
+- Created: 2024-9-22
+- Updated: 2024-9-22
