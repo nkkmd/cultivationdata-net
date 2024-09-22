@@ -4,7 +4,7 @@
 
 This Python script is a tool for converting audio files between MP3, WAV, and M4A formats. It uses the Pydub library and ffmpeg to achieve efficient and high-quality conversions.
 
-For information on file size changes during conversion, refer to "File Size Changes During Audio Format Conversion".
+For information on file size changes during conversion, refer to "[File Size Changes When Converting Audio File Formats (MP3 / WAV / M4A)](https://www.cultivationdata.net/md-to-web.html?md=SystemDevelopment/audio_format_conversion_file_size_changes.md&bc=system-development)".
 
 ## Prerequisites
 
@@ -16,7 +16,7 @@ To run this script, you need the following software and libraries:
 
 ### Installing ffmpeg
 
-- Windows: `choco install ffmpeg` (using Chocolatey) or download from the official website
+- Windows: `choco install ffmpeg` (using Chocolatey) or download from [the official website](https://www.ffmpeg.org/download.html)
 - macOS: `brew install ffmpeg` (using Homebrew)
 - Linux: `sudo apt-get install ffmpeg` (for Ubuntu/Debian-based systems)
 
