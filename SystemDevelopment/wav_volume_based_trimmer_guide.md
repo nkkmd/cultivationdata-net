@@ -28,6 +28,67 @@ The script consists mainly of the following parts:
 2. The `trim_audio` function for processing audio files
 3. The `main` function for handling command-line arguments and executing the main process
 
+```python
+import wave
+import numpy as np
+from scipy.io import wavfile
+import argparse
+import sys
+
+def trim_audio(input_file, output_file, threshold=0.1, duration=1.0):
+    # Read the WAV file
+    try:
+        rate, data = wavfile.read(input_file)
+    except FileNotFoundError:
+        print(f"Error: Input file '{input_file}' not found.")
+        return
+    except:
+        print(f"Error: Problem occurred while reading input file '{input_file}'.")
+        return
+
+    # Convert data to float32 and normalize
+    data = data.astype(np.float32) / np.iinfo(data.dtype).max
+
+    # If stereo, take the average of channels
+    if len(data.shape) > 1:
+        data = np.mean(data, axis=1)
+
+    # Find the first index exceeding the threshold
+    threshold_indices = np.where(np.abs(data) > threshold)[0]
+    if len(threshold_indices) == 0:
+        print(f"Warning: No volume exceeding threshold {threshold} was found. Maximum volume of the entire audio: {np.max(np.abs(data))}")
+        return
+    threshold_index = threshold_indices[0]
+
+    # Extract data from the start position for the specified duration
+    end_index = min(threshold_index + int(rate * duration), len(data))
+    trimmed_data = data[threshold_index:end_index]
+
+    # Save as a new WAV file
+    trimmed_data = (trimmed_data * 32767).astype(np.int16)
+    try:
+        wavfile.write(output_file, rate, trimmed_data)
+        print(f"Audio cut from '{input_file}' to '{output_file}'.")
+        print(f"Cut start position: {threshold_index / rate:.2f} seconds")
+    except:
+        print(f"Error: Problem occurred while writing output file '{output_file}'.")
+
+def main():
+    parser = argparse.ArgumentParser(description='WAV audio file volume-based trimmer')
+    parser.add_argument('input_file', help='Path to input WAV file')
+    parser.add_argument('-o', '--output_file', help='Path to output WAV file (default: trimmed_<input_file>)')
+    parser.add_argument('-t', '--threshold', type=float, default=0.1, help='Volume threshold (0.0-1.0, default: 0.1)')
+    parser.add_argument('-d', '--duration', type=float, default=1.0, help='Duration to cut (seconds, default: 1.0)')
+    args = parser.parse_args()
+
+    input_file = args.input_file
+    output_file = args.output_file if args.output_file else f"trimmed_{input_file}"
+    trim_audio(input_file, output_file, threshold=args.threshold, duration=args.duration)
+
+if __name__ == "__main__":
+    main()
+```
+
 ## Detailed Functionality
 
 ### Main Features
