@@ -97,7 +97,7 @@ if __name__ == "__main__":
 
 This script is a useful tool for easily converting between MP3, WAV, and M4A file formats. It's particularly helpful in audio processing or speech recognition projects where input format uniformity is required. Combined with ffmpeg, it enables high-quality and efficient audio conversion.
 
-## Bonus: Converting an Entire Directory
+## Additional Feature: Converting an Entire Directory
 
 For converting multiple files, it's convenient to convert all files in a directory at once. Here's the code for that:
 
