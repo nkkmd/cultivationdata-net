@@ -184,5 +184,5 @@ print(f"SSIM score: {ssim_score:.2f}")
 ```
 
 ---
-- Created: 2024-9-23
-- Updated: 2024-9-23
+- Created: 2024-09-23
+- Updated: 2024-09-23

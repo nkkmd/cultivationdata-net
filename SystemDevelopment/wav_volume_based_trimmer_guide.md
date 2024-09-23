@@ -158,5 +158,5 @@ python wav_volume_based_trimmer.py input.wav -o output.wav -t 0.05 -d 2.0
 This script is useful for removing unnecessary silent portions from WAV audio files and cutting out a fixed duration of audio from a specified volume level. It can be used for preprocessing audio data or extracting specific audio segments. It's easy to use from the command line, and parameters such as threshold and cut-out length can be customized.
 
 ---
-- Created: 2024-9-22
-- Updated: 2024-9-22
+- Created: 2024-09-22
+- Updated: 2024-09-22

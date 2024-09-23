@@ -143,5 +143,5 @@ The following error messages can potentially be resolved by applying the above s
 These errors occur due to dependency issues, library version mismatches, or when PyInstaller fails to properly package specific modules or functions. Applying the above solutions is likely to resolve these issues as well.
 
 ---
-- Created: 2024-9-3
-- Updated: 2024-9-3
+- Created: 2024-09-03
+- Updated: 2024-09-03

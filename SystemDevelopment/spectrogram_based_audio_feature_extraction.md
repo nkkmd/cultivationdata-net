@@ -267,5 +267,5 @@ Both scripts provide error messages for file not found cases or issues during pr
 This script set is an audio processing tool centered on spectrogram-based feature extraction. It leverages the advantages of spectrograms (rich information content, integration of time-frequency information) while improving computational efficiency through PCA-based dimensionality reduction. It can be used as preprocessing for various audio analysis tasks such as speech recognition, speaker identification, and music genre classification. However, care must be taken regarding phase information loss and the impact of background noise. The flexibility to handle various audio inputs and purposes can be achieved by appropriately adjusting parameters.
 
 ---
-- Created: 2024-9-23
-- Updated: 2024-9-23
+- Created: 2024-09-23
+- Updated: 2024-09-23

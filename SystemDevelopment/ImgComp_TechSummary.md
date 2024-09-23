@@ -156,5 +156,5 @@
   - ORB: `cv2.ORB_create()`
 
 ---
-- Created: 2024-9-12
-- Updated: 2024-9-12
+- Created: 2024-09-12
+- Updated: 2024-09-12

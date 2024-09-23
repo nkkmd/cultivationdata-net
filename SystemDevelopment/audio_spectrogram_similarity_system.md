@@ -303,5 +303,5 @@ By adjusting these parameters, you can optimize the tool's behavior for various 
 This tool allows efficient identification of similar audio files among a large number of audio files.
 
 ---
-- Created: 2024-9-23
-- Updated: 2024-9-23
+- Created: 2024-09-23
+- Updated: 2024-09-23

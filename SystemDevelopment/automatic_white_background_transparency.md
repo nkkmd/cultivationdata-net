@@ -1,4 +1,4 @@
-# [Image Processing] Automatically Detect White Background and Make It Transparent Using Python
+# Automatically Detect White Background and Make It Transparent Using Python
 
 ## Overview
 
@@ -150,5 +150,5 @@ python conditional_background_transparency.py
   Memory shortage may occur when processing large images. Try with smaller images or run on a machine with more memory.
 
 ---
-- Created: 2024-9-23
-- Updated: 2024-9-23
+- Created: 2024-09-23
+- Updated: 2024-09-23

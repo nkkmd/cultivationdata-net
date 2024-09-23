@@ -273,5 +273,5 @@ This tool has several parameters that can be adjusted to fine-tune performance a
 This tool allows you to efficiently find similar audio files among a large number of files. MFCC analysis considers human auditory characteristics, enabling evaluation of audio similarity in a way close to human perception.
 
 ---
-- Created: 2024-9-23
-- Updated: 2024-9-23
+- Created: 2024-09-23
+- Updated: 2024-09-23

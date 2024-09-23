@@ -155,5 +155,5 @@
 - Choice between Kaldi and Bob depends on specific requirements and desired implementation complexity
 
 ---
-- Created: 2024-9-12
-- Updated: 2024-9-12
+- Created: 2024-09-12
+- Updated: 2024-09-12

@@ -107,5 +107,5 @@ This script allows you to easily generate spectrogram images from audio files. T
 To adjust the script's behavior or output, you can modify parameters within the `create_spectrogram` function (e.g., `figsize`, `cmap`) to customize the spectrogram display.
 
 ---
-- Created: 2024-9-22
-- Updated: 2024-9-22
+- Created: 2024-09-22
+- Updated: 2024-09-22

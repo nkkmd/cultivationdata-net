@@ -209,5 +209,5 @@ result_image = process_image_from_url(image_url)
 This additional feature allows you to process images directly from URLs, which can be useful for web-based applications or when working with online image sources.
 
 ---
-- Created: 2024-9-23
-- Updated: 2024-9-23
+- Created: 2024-09-23
+- Updated: 2024-09-23

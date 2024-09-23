@@ -168,5 +168,5 @@ However, when using Markdown files from different sources, note the following:
 - This system provides basic functionality. Additional development is needed for more advanced features (e.g., automatic table of contents generation, styling customization).
 
 ---
-- Created: 2024-9-5
-- Updated: 2024-9-5
+- Created: 2024-09-05
+- Updated: 2024-09-05

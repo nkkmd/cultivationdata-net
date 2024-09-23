@@ -74,5 +74,5 @@
 The actual conversion results are determined by a combination of these factors. If you have specific requirements, it's recommended to perform conversion tests with a small sample.
 
 ---
-- Created: 2024-9-22
-- Updated: 2024-9-22
+- Created: 2024-09-22
+- Updated: 2024-09-22
