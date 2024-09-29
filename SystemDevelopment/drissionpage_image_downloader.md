@@ -151,3 +151,7 @@ return fetch(arguments[0])
 5. **Security**: Only download images from trusted sources and be cautious of downloading potentially malicious content.
 
 6. **Browser Settings**: Refer to DrissionPage documentation for using headless mode and other configuration options, and set them appropriately for your use case.
+
+---
+- Created: 2024-09-29
+- Updated: 2024-09-29
