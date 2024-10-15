@@ -20,6 +20,8 @@ While designed for Nginx, this tool can be adapted for monitoring access to othe
 - Output CSV file: `/var/log/nginx/nginx_access_monitor.csv`
 - Script log file: `/var/log/nginx/nginx_access_monitor.log`
 
+Please adjust the file paths as necessary to suit your environment.
+
 ## Configuration
 
 Contents of the configuration file (`/etc/nginx/nginx_access_monitor.conf`):
