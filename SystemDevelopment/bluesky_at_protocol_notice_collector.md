@@ -2,7 +2,7 @@
 
 ## 1. Overview
 
-This Python script periodically retrieves posts containing the '#notice' tag from a Bluesky account through the AT Protocol and saves them in JSON format. While this data could also be obtained through RSS, using the AT Protocol allows for the flexibility to add other data as needed.
+This Python script periodically retrieves posts containing the '#notice' tag from a Bluesky account through the AT Protocol and saves them in JSON format. While this data could also be obtained through RSS, using the AT Protocol allows for the flexibility to add other data (such as image URLs and links) as needed.
 
 ## 2. Main Features
 
