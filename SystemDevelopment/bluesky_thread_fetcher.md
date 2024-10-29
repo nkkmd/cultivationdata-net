@@ -2,7 +2,7 @@
 
 ## 1. Overview
 
-BlueskyThreadFetcher is a Python module designed to fetch threads from Bluesky and save them as structured JSON files. It systematically collects post content, images, external links, and other information in a reusable format.
+BlueskyThreadFetcher is a Python module designed to fetch threads from Bluesky and save them as structured JSON files. It systematically collects post content, images, playlist, external links, and other information in a reusable format.
 
 ## 2. Key Features
 
@@ -20,7 +20,7 @@ BlueskyThreadFetcher is a Python module designed to fetch threads from Bluesky a
 Module for fetching Bluesky threads and saving them as JSON files.
 
 This module retrieves thread data from Bluesky and saves information such as
-post content, images, and external links as structured JSON data.
+post content, images, playlist, and external links as structured JSON data.
 
 Usage Examples:
     from bluesky_thread_fetcher import BlueskyThreadFetcher
@@ -95,6 +95,7 @@ class ThreadContent:
         text (str): Post text content
         created_at (str): Post timestamp (ISO 8601 format)
         images (List[Dict[str, str]]): List of attached images
+        playlist (List[Dict[str, str]]): List of playlist
         external_links (List[Dict[str, str]]): List of external links
     
     Example:
@@ -105,6 +106,7 @@ class ThreadContent:
         self.text = text
         self.created_at = created_at
         self.images: List[Dict[str, str]] = []
+        self.playlist: List[Dict[str, str]] = []
         self.external_links: List[Dict[str, str]] = []
 
     def to_dict(self) -> Dict:
@@ -120,6 +122,8 @@ class ThreadContent:
         }
         if self.images:
             content_dict["images"] = self.images
+        if self.playlist:
+            content_dict["playlist"] = self.playlist
         if self.external_links:
             content_dict["external"] = self.external_links
         return content_dict
@@ -246,8 +250,8 @@ class BlueskyThreadFetcher:
             post.record.created_at
         )
         
-        # Process images
         if hasattr(post, 'embed') and post.embed:
+            # Process images
             if hasattr(post.embed, 'images'):
                 for img in post.embed.images:
                     content.images.append({
@@ -255,6 +259,13 @@ class BlueskyThreadFetcher:
                         "fullsize": img.fullsize
                     })
                     
+            # Process playlist
+            if hasattr(post.embed, 'playlist'):
+                content.playlist.append({
+                    "alt": post.embed.alt,
+                    "playlist": post.embed.playlist
+                })
+
             # Process external links
             if hasattr(post.embed, 'external'):
                 content.external_links.append({
@@ -418,6 +429,7 @@ A class that holds structured content for individual thread posts.
 - `text`: Post text content
 - `created_at`: Post timestamp
 - `images`: List of attached images
+- `playlist`: List of playlist
 - `external_links`: List of external links (link cards)
 
 ### 3. BlueskyThreadFetcher
@@ -436,7 +448,7 @@ Main class managing thread fetching and saving operations.
 
 3. `_extract_thread_content`: Thread content extraction
    - Parses post content
-   - Collects images and external links
+   - Collects images, playlist and external links
    - Processes replies recursively
 
 4. `_save_to_json`: JSON saving
@@ -508,6 +520,16 @@ fetcher = BlueskyThreadFetcher(
     "2": {
         "text": "Post content 3",
         "datetime": "2024-01-01T12:10:00Z",
+        "playlist": [
+            {
+                "alt": "playlist description",
+                "playlist": "playlist URL"
+            }
+        ]
+    }
+    "3": {
+        "text": "Post content 4",
+        "datetime": "2024-01-01T12:15:00Z",
         "external": [
             {
                 "title": "Link title",
@@ -577,4 +599,4 @@ Log format:
 
 ---
 - Created: 2024-10-28
-- Updated: 2024-10-28
+- Updated: 2024-10-29
