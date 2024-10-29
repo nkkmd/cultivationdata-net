@@ -1,14 +1,14 @@
 # NOSTR NIP-19 Entity Converter
 
-## Overview
+## 1. Overview
 This is a Python script for handling Bech32-encoded NOSTR entities in compliance with the [NIP-19 specification](https://github.com/nostr-protocol/nips/blob/master/19.md). It enables encoding and decoding of various identifiers (such as public keys and event IDs) used in the NOSTR protocol.
 
-## Key Features
+## 2. Key Features
 1. Bech32 format encoding/decoding
 2. TLV (Type-Length-Value) data parsing
 3. Conversion of various NOSTR entities
 
-## Supported Entity Types
+## 3. Supported Entity Types
 | Prefix | Description | Data Structure |
 |--------|-------------|----------------|
 | npub | Public Key | 32-byte hexadecimal string |
@@ -16,7 +16,7 @@ This is a Python script for handling Bech32-encoded NOSTR entities in compliance
 | nevent | Event Information | Includes TLV format metadata |
 | nprofile | Profile Information | Includes TLV format metadata |
 
-## Data Class Structures
+## 4. Data Class Structures
 
 ### TLV
 ```python
@@ -34,7 +34,7 @@ Dedicated data classes are provided for each entity type:
 - `DecodedEvent`: Stores event information and metadata
 - `DecodedProfile`: Stores profile information and relay information
 
-## TLV Type Definitions
+## 5. TLV Type Definitions
 The following TLV types are defined in NIP-19:
 
 | Type Value | Description | Usage |
@@ -44,7 +44,7 @@ The following TLV types are defined in NIP-19:
 | 2 | author | Author's public key |
 | 3 | kind | Event type |
 
-## Core Methods Explanation
+## 6. Core Methods Explanation
 
 ### decode_bech32
 ```python
@@ -81,7 +81,7 @@ def hex_to_bech32(hex_str: str, type: str) -> str
 ```
 Converts a hexadecimal format string to Bech32 format.
 
-## Usage Examples
+## 7. Usage Examples
 
 ### Decoding an Event ID
 ```python
@@ -95,7 +95,7 @@ hex_pubkey = "df017e0bae04ae21548c1c49687fcace43664e77570ad992be5cbe6b885b5ffe"
 npub = Nip19.hex_to_bech32(hex_pubkey, "npub")
 ```
 
-## Complete Source Code
+## 8. Complete Source Code
 ```python
 import bech32
 from dataclasses import dataclass
@@ -245,18 +245,18 @@ if __name__ == "__main__":
     main()
 ```
 
-## Error Handling
+## 9. Error Handling
 ValueError is raised in the following cases:
 - When an invalid Bech32 string is input
 - When an unsupported Bech32 prefix is used
 - When TLV data format is invalid
 
-## Notes
+## 10. Notes
 1. Please use hexadecimal format within the actual NOSTR protocol.
 2. Unknown types are ignored during TLV data parsing.
 3. Care should be taken when processing large data sets, as TLV parsing requires loading the entire data into memory.
 
-## Dependencies
+## 11. Dependencies
 - bech32: For Bech32 encoding/decoding operations
 - dataclasses: For defining structured data classes with type annotations
 - typing: For providing type hints and improving code readability
