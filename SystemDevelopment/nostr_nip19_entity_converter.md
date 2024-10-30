@@ -1,7 +1,7 @@
 # NOSTR NIP-19 Entity Converter
 
 ## 1. Overview
-This is a Python script for handling Bech32-encoded NOSTR entities in compliance with the [NIP-19 specification](https://github.com/nostr-protocol/nips/blob/master/19.md). It enables encoding and decoding of various identifiers (such as public keys and event IDs) used in the NOSTR protocol.
+This is a Python script for handling Bech32-encoded NOSTR entities in compliance with the [NIP-19 specification](https://github.com/nostr-protocol/nips/blob/master/19.md). It enables encoding and decoding of various identifiers (such as public keys, secret keys, and event IDs) used in the NOSTR protocol.
 
 ## 2. Key Features
 1. Bech32 format encoding/decoding
@@ -12,6 +12,7 @@ This is a Python script for handling Bech32-encoded NOSTR entities in compliance
 | Prefix | Description | Data Structure |
 |--------|-------------|----------------|
 | npub | Public Key | 32-byte hexadecimal string |
+| nsec | Secret Key | 32-byte hexadecimal string |
 | note | Note ID | 32-byte hexadecimal string |
 | nevent | Event Information | Includes TLV format metadata |
 | nprofile | Profile Information | Includes TLV format metadata |
@@ -31,6 +32,7 @@ class TLV:
 Dedicated data classes are provided for each entity type:
 - `DecodedNote`: Stores note ID
 - `DecodedPubkey`: Stores public key
+- `DecodedSeckey`: Stores secret key
 - `DecodedEvent`: Stores event information and metadata
 - `DecodedProfile`: Stores profile information and relay information
 
@@ -85,7 +87,7 @@ Converts a hexadecimal format string to Bech32 format.
 
 ### Decoding an Event ID
 ```python
-nevent = "nevent1qqs8l95us0smltxjryemq0wxtd9tegwnyy6r7jcs9amz94ua5ncmqdqpz4mhxue69uhhyetvv9ujuerpd46hxtnfduhsygxlq9lqhtsy4cs4frquf958ljkwgdnyua6hptve90juhe4csk6llce3xrpy"
+nevent = "nevent1qqs8l95us0smltxjryemq0wxtd9tegwnyy6r7jcs9amz94ua5ncmqdqpz4mhxue69u"
 type_, decoded = Nip19.decode(nevent)
 ```
 
@@ -93,6 +95,15 @@ type_, decoded = Nip19.decode(nevent)
 ```python
 hex_pubkey = "df017e0bae04ae21548c1c49687fcace43664e77570ad992be5cbe6b885b5ffe"
 npub = Nip19.hex_to_bech32(hex_pubkey, "npub")
+```
+
+### Encoding/Decoding a Secret Key
+```python
+hex_seckey = "a4e9708dcc3d86d68d0b7043387b28f721d4a4459e21396320fd69a4f5725b7b"
+# hex -> nsec
+nsec = Nip19.hex_to_bech32(hex_seckey, "nsec")
+# decode nsec
+type_, decoded = Nip19.decode(nsec)
 ```
 
 ## 8. Complete Source Code
@@ -115,6 +126,10 @@ class DecodedNote:
 @dataclass
 class DecodedPubkey:
     pubkey: str
+
+@dataclass
+class DecodedSeckey:
+    seckey: str
 
 @dataclass
 class DecodedEvent:
@@ -178,6 +193,9 @@ class Nip19:
         elif hrp == "npub":
             return "npub", DecodedPubkey(data.hex())
             
+        elif hrp == "nsec":
+            return "nsec", DecodedSeckey(data.hex())
+            
         elif hrp == "nevent":
             tlvs = Nip19.parse_tlv(data)
             event_data = DecodedEvent(
@@ -234,10 +252,24 @@ def main():
         print(f"Error: {e}")
 
     # Example of encoding a public key
-    hex_pubkey = "df017e0bae04ae21548c1c49687fcace43664e77570ad992be5cbe6b885b5ffe"
+    hex_pubkey = "7e7e9c42a91bfef19fa929e5fda1b72e0ebc1a4c1141673e2794234d86addf4e"
     try:
         npub = Nip19.hex_to_bech32(hex_pubkey, "npub")
         print(f"\nEncoded pubkey: {npub}")
+    except ValueError as e:
+        print(f"Error: {e}")
+
+    # Example of encoding/decoding a secret key
+    hex_seckey = "67dea2ed018072d675f5415ecfaed7d2597555e202d85b3d65ea4e58d2d92ffa"
+    try:
+        # hex -> nsec
+        nsec = Nip19.hex_to_bech32(hex_seckey, "nsec")
+        print(f"\nEncoded secret key: {nsec}")
+        
+        # decode nsec
+        type_, decoded = Nip19.decode(nsec)
+        print(f"Decoded type: {type_}")
+        print(f"Decoded secret key: {decoded}")
     except ValueError as e:
         print(f"Error: {e}")
 
@@ -255,6 +287,7 @@ ValueError is raised in the following cases:
 1. Please use hexadecimal format within the actual NOSTR protocol.
 2. Unknown types are ignored during TLV data parsing.
 3. Care should be taken when processing large data sets, as TLV parsing requires loading the entire data into memory.
+4. Exercise extreme caution when handling secret keys (nsec), as they provide full access to NOSTR identities.
 
 ## 11. Dependencies
 - bech32: For Bech32 encoding/decoding operations
@@ -264,4 +297,4 @@ ValueError is raised in the following cases:
 
 ---
 - Created: 2024-10-29
-- Updated: 2024-10-29
+- Updated: 2024-10-30
