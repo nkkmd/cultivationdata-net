@@ -430,7 +430,7 @@ A class that holds structured content for individual thread posts.
 - `created_at`: Post timestamp
 - `images`: List of attached images
 - `video`: List of video
-- `external_link`: List of external link (link cards)
+- `external_link`: List of external link
 
 ### 3. BlueskyThreadFetcher
 
@@ -599,4 +599,4 @@ Log format:
 
 ---
 - Created: 2024-10-28
-- Updated: 2024-10-29
+- Updated: 2024-10-31
