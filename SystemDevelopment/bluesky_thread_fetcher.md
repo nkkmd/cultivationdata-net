@@ -2,7 +2,7 @@
 
 ## 1. Overview
 
-BlueskyThreadFetcher is a Python module designed to fetch threads from Bluesky and save them as structured JSON files. It systematically collects post content, images, playlist, external links, and other information in a reusable format.
+BlueskyThreadFetcher is a Python module designed to fetch threads from Bluesky and save them as structured JSON files. It systematically collects post content, images, video, external link, and other information in a reusable format.
 
 ## 2. Key Features
 
@@ -20,7 +20,7 @@ BlueskyThreadFetcher is a Python module designed to fetch threads from Bluesky a
 Module for fetching Bluesky threads and saving them as JSON files.
 
 This module retrieves thread data from Bluesky and saves information such as
-post content, images, playlist, and external links as structured JSON data.
+post content, images, video, and external link as structured JSON data.
 
 Usage Examples:
     from bluesky_thread_fetcher import BlueskyThreadFetcher
@@ -95,8 +95,8 @@ class ThreadContent:
         text (str): Post text content
         created_at (str): Post timestamp (ISO 8601 format)
         images (List[Dict[str, str]]): List of attached images
-        playlist (List[Dict[str, str]]): List of playlist
-        external_links (List[Dict[str, str]]): List of external links
+        video (List[Dict[str, str]]): List of video
+        external_link (List[Dict[str, str]]): List of external link
     
     Example:
         content = ThreadContent("Post content", "2024-01-01T12:00:00Z")
@@ -106,8 +106,8 @@ class ThreadContent:
         self.text = text
         self.created_at = created_at
         self.images: List[Dict[str, str]] = []
-        self.playlist: List[Dict[str, str]] = []
-        self.external_links: List[Dict[str, str]] = []
+        self.video: List[Dict[str, str]] = []
+        self.external_link: List[Dict[str, str]] = []
 
     def to_dict(self) -> Dict:
         """
@@ -122,10 +122,10 @@ class ThreadContent:
         }
         if self.images:
             content_dict["images"] = self.images
-        if self.playlist:
-            content_dict["playlist"] = self.playlist
-        if self.external_links:
-            content_dict["external"] = self.external_links
+        if self.video:
+            content_dict["video"] = self.video
+        if self.external_link:
+            content_dict["external"] = self.external_link
         return content_dict
 
 
@@ -259,16 +259,16 @@ class BlueskyThreadFetcher:
                         "fullsize": img.fullsize
                     })
                     
-            # Process playlist
+            # Process video
             if hasattr(post.embed, 'playlist'):
-                content.playlist.append({
+                content.video.append({
                     "alt": post.embed.alt,
                     "playlist": post.embed.playlist
                 })
 
-            # Process external links
+            # Process external link
             if hasattr(post.embed, 'external'):
-                content.external_links.append({
+                content.external_link.append({
                     "title": post.embed.external.title,
                     "uri": post.embed.external.uri
                 })
@@ -429,8 +429,8 @@ A class that holds structured content for individual thread posts.
 - `text`: Post text content
 - `created_at`: Post timestamp
 - `images`: List of attached images
-- `playlist`: List of playlist
-- `external_links`: List of external links (link cards)
+- `video`: List of video
+- `external_link`: List of external link (link cards)
 
 ### 3. BlueskyThreadFetcher
 
@@ -448,7 +448,7 @@ Main class managing thread fetching and saving operations.
 
 3. `_extract_thread_content`: Thread content extraction
    - Parses post content
-   - Collects images, playlist and external links
+   - Collects images, video and external link
    - Processes replies recursively
 
 4. `_save_to_json`: JSON saving
@@ -520,10 +520,10 @@ fetcher = BlueskyThreadFetcher(
     "2": {
         "text": "Post content 3",
         "datetime": "2024-01-01T12:10:00Z",
-        "playlist": [
+        "video": [
             {
-                "alt": "playlist description",
-                "playlist": "playlist URL"
+                "alt": "Video description",
+                "playlist": "Video URL"
             }
         ]
     }
