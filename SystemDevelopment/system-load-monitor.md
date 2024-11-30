@@ -2,7 +2,7 @@
 
 ## 1. System Overview
 
-This system monitors server CPU and memory usage, automatically restarting services when usage exceeds configured thresholds.
+This system monitors Linux (Ubuntu) server CPU and memory usage, automatically restarting services when usage exceeds configured thresholds.
 
 ## 2. Key Components
 
