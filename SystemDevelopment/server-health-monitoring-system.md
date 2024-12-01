@@ -227,14 +227,6 @@ if (responseTime > 5000) { // If over 5 seconds
 - Recommend regular spreadsheet backups
 - Save script code
 
-## Support and Feedback
-
-For issues or improvement suggestions, please check:
-- Google Apps Script documentation
-- Spreadsheet sharing settings
-- Script execution logs
-
-
 ---
 - Created: 2024-12-01
 - Updated: 2024-12-01
