@@ -42,6 +42,7 @@ $$\sum_{j=1}^{n} \left( R_j(x_j) - V_j \right) x_j \ge I_{min}$$
 *   **注意点**: $R_j(x_j)$ が非線形であるため、この制約式は非凸（Non-convex）となる可能性があります。
 
 2.  **土地資源制約 (Land Constraint)**  
+    利用可能な全耕地面積 $A$ を超えないこと。 
     
 $$\sum_{j=1}^{n} x_j \le A$$
 
