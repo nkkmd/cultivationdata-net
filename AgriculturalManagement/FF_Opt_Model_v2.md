@@ -37,19 +37,19 @@ $$R_j(x_j) = R_{base, j} + (R_{peak, j} - R_{base, j}) \cdot \frac{2 x_j P_j}{x_
 1.  **所得維持制約 (Income Constraint)**  
     規模によって変動する粗収益から変動費を引いた「粗利益」が、目標額 $I_{min}$ を上回ること。
     
-    $$\sum_{j=1}^{n} \left( R_j(x_j) - V_j \right) x_j \ge I_{min}$$
-    
-    *   $V_j$：単位面積あたり変動費（定数）。
-    *   **注意点**: $R_j(x_j)$ が非線形であるため、この制約式は非凸（Non-convex）となる可能性があります。
+$$\sum_{j=1}^{n} \left( R_j(x_j) - V_j \right) x_j \ge I_{min}$$
+
+*   $V_j$：単位面積あたり変動費（定数）。
+*   **注意点**: $R_j(x_j)$ が非線形であるため、この制約式は非凸（Non-convex）となる可能性があります。
 
 2.  **土地資源制約 (Land Constraint)**  
     
-    $$\sum_{j=1}^{n} x_j \le A$$
+$$\sum_{j=1}^{n} x_j \le A$$
 
 3.  **月別労働制約 (Monthly Labor Constraints)**  
     各月 $t$ における労働需要が、家族労働供給限界 $H_t$ を超えないこと。
     
-    $$\sum_{j=1}^{n} l_{jt} x_j \le H_t \quad (\forall t \in \{1, \dots, 12\})$$
+$$\sum_{j=1}^{n} l_{jt} x_j \le H_t \quad (\forall t \in \{1, \dots, 12\})$$
 
 ---
 
