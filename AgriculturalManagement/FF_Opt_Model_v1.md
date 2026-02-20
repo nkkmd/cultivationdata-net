@@ -27,12 +27,12 @@ $$\sum_{j=1}^{n} (R_j - V_j) x_j \ge I_{min}$$
 *   $(R_j - V_j)$ は、単位面積あたりの**粗利益（Gross Margin）**。
 *   ※本モデルでは、全作目の粗利益の合計が、固定費を含む必要キャッシュフロー $I_{min}$ を上回ることを条件とします。
 
-3.  **土地資源制約 (Land Constraint)**  
+2.  **土地資源制約 (Land Constraint)**  
 経営が利用可能な全耕地面積 $A$ を上限とします。
     
 $$\sum_{j=1}^{n} x_j \le A$$ 
 
-5.  **旬別・月別労働ピーク制約 (Seasonal Labor Constraints)**  
+3.  **旬別・月別労働ピーク制約 (Seasonal Labor Constraints)**  
 特定の農繁期において、家族の労働供給能力（マンパワー）を超えないようにします。
     
 $$\sum_{j=1}^{n} l_{jt} x_j \le H_t \quad (\forall t \in T)$$ 
@@ -40,7 +40,7 @@ $$\sum_{j=1}^{n} l_{jt} x_j \le H_t \quad (\forall t \in T)$$
 *   $l_{jt}$：作目 $j$ の時期 $t$ における単位面積あたり労働時間。
 *   $H_t$：時期 $t$ における家族の最大労働供給可能時間。
 
-7.  **非負制約 (Non-negativity Constraint)**
+4.  **非負制約 (Non-negativity Constraint)**
 
 $$x_j \ge 0 \quad (\forall j)$$ 
 
