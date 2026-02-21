@@ -188,7 +188,7 @@ res = minimize(objective, x0, method='SLSQP', bounds=bounds, constraints=cons)
 # =========================================================
 
 if res.success:
-    print("=== 適正規模考慮型 農業経営モデル 最適解 (Ver.2.1) ===")
+    print("=== 適正規模考慮型 農業経営モデル 最適解 (Ver.2) ===")
     print(f"ステータス: {res.message}")
     print("-" * 75)
     print(f"{'作目':<6} | {'面積(10a)':<10} | {'単収益':<8} | {'粗利益/10a':<10} | {'適正P':<6} | {'状態'}")
