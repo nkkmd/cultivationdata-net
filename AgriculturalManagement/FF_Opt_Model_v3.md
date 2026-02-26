@@ -46,8 +46,10 @@ $$\sum_{j=1}^{n} \left( R_j(x_j) - V_j \right) x_j + B \ge I_{living} + PMT(x)$$
 *   $B$：年間補助金（就農支援金など）。
 *   $I_{living}$：最低限必要な年間生活費。
 *   $PMT(x)$：年間返済額。以下の式で算出します。
-    $$PMT(x) = \max\left(0, \sum_{j=1}^{n} C_{init, j} x_j - S\right) \times \frac{r(1+r)^y}{(1+r)^y - 1}$$
-    （ $C_{init, j}$ ：初期投資額、 $S$ ：自己資金、 $r$ ：年利、 $y$ ：返済期間）
+
+$$PMT(x) = \max\left(0, \sum_{j=1}^{n} C_{init, j} x_j - S\right) \times \frac{r(1+r)^y}{(1+r)^y - 1}$$
+
+（ $C_{init, j}$ ：初期投資額、 $S$ ：自己資金、 $r$ ：年利、 $y$ ：返済期間）
 
 **2. 借入限度額制約 (Loan Limit Constraint)**  
 総初期投資から自己資金を引いた借入額が、与信枠を超えないこと。
