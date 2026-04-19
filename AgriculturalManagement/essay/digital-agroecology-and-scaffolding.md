@@ -1,4 +1,4 @@
-# 理論的考察（1）：Digital AgroecologyとTechnology as Scaffoldingの接続
+# テクノロジーを手放す農業論（1）：Digital AgroecologyとTechnology as Scaffoldingの接続
 
 ## ——理論的統合による仮説生成——
 
