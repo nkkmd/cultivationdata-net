@@ -4,10 +4,6 @@
 
 このドキュメントは、cultivationdata.net の Web API を使わず、利用者自身の環境で農林水産省の「青果物卸売市場調査（日別調査）」を取得するための説明と Python コードをまとめたものです。
 
-参考ページ:
-
-https://www.cultivationdata.net/mc-web-api.html
-
 元データ:
 
 https://www.seisen.maff.go.jp/seisen/bs04b040md001/BS04B040UC020SC998-Evt001.do
