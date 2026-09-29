@@ -1,24 +1,32 @@
-# Natural Area Planning / NAP-OEA-2026-08-16-v1 — Public Research Report
+# Natural Area Planning / NAP-OEA-2026-08-16-v1 — 公開研究報告書
 
-**Operational Pilotで未解決だった運用入力を、固定T0でどこまで解消できるか**  
-**― provenance・時間・地理・authority条件を結果より先に固定したprospective evidence acquisition ―**
+**運用手順の試験で未解決だった入力を、固定した判定時点でどこまで解消できるか**  
+**― 出典・時間・地理・権限の条件を先に定め、証拠を取得する ―**
 
-- レポート版: **v1.0**
+- レポート版: **v1.0.1**
+- 日本語表現の改訂: **2026-09-28（科学的結果・正式判定は変更なし）**
 - 作成日: **2026-08-24 JST**
 - 研究ID: `NAP-OEA-2026-08-16-v1`
 - 研究状態: **COMPLETE / FROZEN**
-- formal outcome: **`PARTIAL_TARGET_INPUT_RESOLUTION`**
+- 正式判定: **`PARTIAL_TARGET_INPUT_RESOLUTION`**
 - 正式評価時点: **2026-08-24 12:00 JST**
-- scientific-state snapshot: **`3788ba409956cc9806d0877a3bfa94e6fdd6258a`**
+- 科学的結果を確定した時点: **`3788ba409956cc9806d0877a3bfa94e6fdd6258a`**
 - 本文の性格: **外部公開用・単体完結型研究報告**
 
-この文書は、元のGitHubリポジトリや内部artifactを参照しなくても、本研究の背景、問い、方法、主要結果、限界、再現性、解釈境界を理解できるように構成している。完全なprovenanceとmachine-readableな正本は、末尾に示すprotocol・formal result・checkpoint等に保持されている。
+この文書は、元のGitHubリポジトリや内部の成果物を参照しなくても、本研究の背景、問い、方法、主要結果、限界、再現性、解釈境界を理解できるように構成している。出典と処理を追跡できる資料、機械で読み取れる正式な資料は、末尾に示す研究計画・正式結果・進捗記録などに収めている。
+
+
+## 初めて読む方へ
+
+この報告書は、研究05で未解決だった運用情報30件を、決められた時点までにどこまで確認できるか調べた研究です。気象に関する2件を解決し、28件は未解決でした。正式判定は `PARTIAL_TARGET_INPUT_RESOLUTION`（対象となる入力の一部を解決）です。管理の推奨や安全性の確認を意味するものではありません。
+
+本文の研究ID、正式判定コード、数値、出典識別子は、研究結果と照合できるよう原表記を残しています。
 
 # 要旨
 
-Operational Pilot v1は、local/current operational factsが不足・未検証であっても、それをpermission、safety、feasibility、recommendation、ecological meaningへ変換せずdecision-support workflowへ接続できることを検証した。一方で、正式pilotでは192のrequired operational inputsのうちusable inputは0であり、実際に未解決入力を追加の局所・制限付き・公式情報からどこまで解消できるかは未検証だった。
+先行する運用手順の試験では、不足・未検証の情報を安全性や許可の確認済み情報と取り違えず、意思決定支援の手順で扱えることを示した。しかし、必須入力192件のうち実際に使える情報は0件だった。そこで本研究は、未解決の入力そのものを、追加の資料によってどこまで解決できるかを調べた。
 
-本研究はその未解決点を別の独立prospective studyとして扱い、Operational Pilot v1の凍結状態から値を見ずに選択した30 target cellsについて、適法に利用可能なlocal/restricted/public recordsまたはprotocolled direct observationを用いて、固定されたdecision time `T0 = 2026-08-24T12:00:00+09:00` にどこまで解決できるかを検証した。
+先行研究の結果は変更せず、値を見る前に30件の対象となる入力を選んだ。法令上利用できる公開・地域・利用制限付きの情報、または手順に従った直接観察を証拠の候補とし、固定した判断時点 T0 = 2026-08-24T12:00:00+09:00 における情報の有効性を確認した。
 
 結果は次のとおりである。
 
@@ -32,25 +40,25 @@ adversarial cases = 22 / 22 PASS
 formal outcome = PARTIAL_TARGET_INPUT_RESOLUTION
 ```
 
-解決したのは2件の `CURRENT_WEATHER_CONDITION` のみで、JMA AMeDAS `86111 / 阿蘇乙姫` を事前固定した `NEAREST_OFFICIAL_REFERENCE_WEATHER` として使用した。残る28件は条件を緩和せず未解決のまま保持した。
+解決できた2件はいずれも現時点の気象に関する入力で、気象庁のアメダス「阿蘇乙姫」（86111）を、事前に定めた最も近い公式の参照気象情報として使った。残る28件は規則を緩めず未解決のまま保持した。
 
-本研究が示したのは、厳格なprovenance・temporal validity・geographic linkage・authority ceilingを維持したまま、事前固定した未解決operational inputsの一部をT0時点で解消できたという**evidence-acquisition result**である。管理行為の推奨、順位付け、安全性、許可、望ましさ、生態学的効果、人間による受容性を示すものではない。
+この結果は、出典、時間、地理的な結び付き、情報の権限に関する条件を守りながら、事前に選んだ入力の一部を判断時点で確認できたことを示す。**管理行為の推奨・順位付け、安全性、許可、生態学的な効果、人による受容性を示すものではない。**
 
 # 1. 研究の背景
 
-Natural Area Planningでは、公開情報からmanagement-specific planningへ到達する際のevidence ceilingをNAP-001で検証し、その後NAP-002 Study 1で、recommendationを作らずにmanagement-review scope、decision blockers、required informationを表現するdecision-support workflowを構築した。
+Natural Area Planningでは、公開情報だけで管理方法を明示した計画へ進む際の証拠上の限界をNAP-001で検証し、その後NAP-002 Study 1で、管理行為を推奨せずに管理の検討対象、判断を妨げる要因、次に必要な情報を表現する意思決定支援の手順を構築した。
 
-NAP-002 Study 2Aはその表現をhuman participantなしでpre-validationし、G4 Response-Transfer Validation Study v1はsource-local ecological responseを別contextへ転移するための独立validation evidenceを評価した。G4 v1はeligible held-out contextが0で `INDETERMINATE` となった。
+NAP-002 Study 2Aはその表現を人間参加者を使わずに事前検証し、G4 Response-Transfer Validation Study v1は元の調査地点で得られた生態学的応答を別の場所へ適用するための独立した検証の証拠を評価した。G4 v1は条件を満たす独立した検証対象が0で `INDETERMINATE` となった。
 
-Operational Pilot v1はさらに、local/current operational factsをworkflowへ接続するprospective validationを行った。そのformal outcomeは `WORKFLOW_VALIDATED_WITHIN_PILOT_SCOPE` だったが、usable required inputsは0/192で、30 pilot casesのいずれもoperational-workflow-readyではなかった。
+Operational Pilot v1はさらに、地域固有・現時点の運用情報を手順につなぐ方法を結果を見る前に定めて検証を行った。その正式判定は `WORKFLOW_VALIDATED_WITHIN_PILOT_SCOPE` だったが、使用できる必須入力は0/192で、30件の試験事例のいずれも運用上の判断に必要な条件を満たさなかった。
 
-そのため次の科学的問いとして、**未解決operational inputsそのものを、事前固定したルールのもとで実際にどこまで解消できるか**を独立studyとして検証する必要が生じた。
+そのため次の科学的問いとして、**未解決の運用入力そのものを、事前固定したルールのもとで実際にどこまで解消できるか**を独立した研究として検証する必要が生じた。
 
 # 2. 研究対象
 
-本研究のstudy objectは、Operational Pilot v1で未解決だったrequired operational-input cellsのうち、値を見ずにprospectively選択した30 cellsである。
+本研究の研究対象は、Operational Pilot v1で未解決だった必須の運用入力のうち、値を見ずに結果を見る前に選択した30件である。
 
-対象には次のoperational domainsが含まれた。
+対象には次の運用情報の領域が含まれた。
 
 ```text
 LOCAL_AUTHORITY_FEASIBILITY
@@ -79,21 +87,21 @@ optimization
 
 中心的研究質問は次のとおりである。
 
-> Operational Pilot v1で未解決だった運用入力のうち、結果を見る前に固定した30 target cellsについて、適法に利用可能でprovenance・時間・地理・authority条件を満たすevidenceを用いたとき、固定T0時点で何件を再現可能に解決できるか。
+> Operational Pilot v1で未解決だった運用入力のうち、結果を見る前に固定した対象となる30件の入力について、適法に利用可能で出典・時間・地理・権限の条件を満たす証拠を用いたとき、固定T0時点で何件を再現可能に解決できるか。
 
-formal outcome vocabularyは結果を見る前に固定され、all gates passのもとで `0 < resolved < targetCount` の場合は `PARTIAL_TARGET_INPUT_RESOLUTION` とするルールが採用された。
+正式判定の区分は結果を見る前に固定され、すべての判定条件に合格した場合に `0 < resolved < targetCount` の場合は `PARTIAL_TARGET_INPUT_RESOLUTION` とするルールが採用された。
 
-# 4. 先行研究との関係とnovelty boundary
+# 4. 先行研究との関係と新規性を主張できる範囲
 
-本研究は、provenance capture、prospective protocol、temporal validity、authority hierarchy、structured decision supportといった一般的方法論自体を新規発明として主張しない。
+本研究は、出典の記録や事前に定める研究手順、時間的な有効性、権限の優先順序、構造化した意思決定支援といった一般的方法論自体を新規発明として主張しない。
 
-対象固有の新規性は、Natural Area Planningの凍結済みOperational Pilot stateから未解決operational inputsを値非依存で選択し、固定T0に対して、raw-byte provenance、source authority、geographic linkage、construct-specific freshness window、explicit unresolved stateを同時に維持しながらformal acquisition endpointを評価した点にある。
+対象固有の新規性は、Natural Area Planningの確定済みの運用手順の試験結果から未解決の運用入力を値非依存で選択し、固定T0に対して、元データのバイト数と出典・処理の履歴、資料の権限、地理的な対応、確認対象ごとの情報の有効期間、未解決であることを明示した状態を同時に維持しながら正式な情報収集の結果を評価した点にある。
 
-本研究はpredecessor studyのnegative/null/indeterminate resultを救済するための再解析ではない。
+本研究は先行研究の否定的・結果なし・判定不能という結果を救済するための再解析ではない。
 
 # 5. 使用した情報・使用しなかった情報
 
-本研究では、prospective protocol上許可されたpublic-online authoritative informationを第一経路とした。lawfully accessible restricted/local recordやprotocolled direct observationもstudy design上のevidence modeとして定義されたが、formal resolutionに必須ではなかった。
+本研究では、事前に定めた研究手順で許可した、一般公開されている公式のオンライン情報を第一経路とした。適法に利用できる制限付き・地域の資料や事前手順に従った現地での直接観察も研究計画で認めた証拠の種類として定義されたが、正式な解決に必須ではなかった。
 
 本研究では次を使用していない。
 
@@ -108,9 +116,9 @@ generic regional proxyをPU-specific evidenceとみなした値
 post-T0 evidenceによるfrozen endpointの救済
 ```
 
-# 6. Prospective governance / freeze
+# 6. 結果を見る前に確定した研究規則
 
-新しいoperational valuesを確認する前に、少なくとも次を固定した。
+新しい運用情報の値を確認する前に、少なくとも次を固定した。
 
 ```text
 study identity
@@ -132,15 +140,15 @@ Package 003 domain-specific freshness windows
 weather station and spatial ceiling
 ```
 
-pre-execution validationは `PRE1-PRE11 = PASS`、T0 freeze validationもPASSした後にacquisition authorizationが発効した。
+実施前の検証は `PRE1-PRE11 = PASS`、T0を固定したことの検証もPASSした後に情報収集を開始できる状態になった。
 
 # 7. 方法
 
-## 7.1 Target frame
+## 7.1 対象となる入力
 
-30 target cellsはOperational Pilot v1の凍結stateからdeterministicに選択した。新しいlocal/current valueはselection、balancing、replacementに使用していない。
+対象となる30件の入力はOperational Pilot v1の確定済みの状態から定めた規則に従って選択した。新しい地域固有・現時点の値は選択、件数調整、差し替えに使用していない。
 
-Package構成は次のとおりである。
+資料群の構成は次のとおりである。
 
 ```text
 Package 001: LOCAL_AUTHORITY_FEASIBILITY = 7 targets
@@ -148,9 +156,9 @@ Package 002: non-short-window operational inputs = 16 targets
 Package 003: short-window current-condition inputs = 7 targets
 ```
 
-## 7.2 Provenance gate
+## 7.2 出典の確認条件
 
-formal evidenceとして使用するraw responseは、解析前に少なくともbyte sizeとSHA-256を記録することを要求した。
+正式な証拠として使用する元データは、解析前に少なくともバイト数とSHA-256を記録することを要求した。
 
 ```text
 raw acquisition
@@ -159,13 +167,13 @@ raw acquisition
 -> derived evidence state
 ```
 
-検索snippetやdiscovery-only materialはformal evidenceへ昇格させなかった。
+検索結果の抜粋や候補探しだけに用いた資料は、正式な証拠として採用しなかった。
 
-## 7.3 Temporal validity
+## 7.3 時間的な有効性
 
-retrieval timeとeffective / phenomenon / observation timeを分離した。retrieval timeをobservation timeの代用にはしていない。
+取得時刻と、情報の有効時刻・現象時刻・観測時刻を分離した。取得時刻を観測時刻の代用にはしていない。
 
-Package 003の主要windowは次のとおりである。
+資料群003の主な有効期間は次のとおりである。
 
 ```text
 CURRENT_SITE_CONDITION
@@ -181,19 +189,19 @@ CURRENT_WEATHER_CONDITION official observation
   2026-08-24 11:00–12:00 JST
 ```
 
-## 7.4 Weather selection
+## 7.4 気象データの選び方
 
-weatherについては、値を見る前にstation `86111 / 阿蘇乙姫` を、target planning-unit source geometryのbounding-box midpointに対するnearest JMA AMeDAS stationとして固定した。
+気象については、値を見る前に観測所 `86111 / 阿蘇乙姫` を、対象の計画単位の範囲を囲む長方形の中心に最も近い気象庁アメダス観測所として固定した。
 
-spatial classは次のとおりである。
+空間的な対応区分は次のとおりである。
 
 ```text
 NEAREST_OFFICIAL_REFERENCE_WEATHER
 ```
 
-これはstation-local authoritative observationをPUへのreference proxyとして使用する分類であり、PU内観測またはPU-exact microclimate measurementではない。
+これは観測所で得た公式の観測値を計画単位の参考値として使用する分類であり、計画単位内で観測した値やその場所の局所気象を正確に測った値ではない。
 
-required tupleは次の5項目で固定した。
+確認する気象項目は次の5種類に固定した。
 
 ```text
 hourly precipitation
@@ -203,15 +211,15 @@ hourly mean wind speed
 hourly wind direction
 ```
 
-11:00–12:00 JST内のlatest complete official hourly tupleを使用し、forecast fallback、favorable-value selection、station switchingを禁止した。
+11:00–12:00 JST内の最新の欠測のない公式の1時間ごとの観測値を使用し、予報での代用、都合の良い値の選択、観測所の変更を禁止した。
 
-## 7.5 Unresolved handling
+## 7.5 未解決の入力の扱い
 
-凍結条件を満たすcase-specific authoritative recordを取得できない場合、条件を緩和してresolutionを作らず、`NO_COMPLIANT_RECORD_ACQUIRED` 等のterminal unresolved stateを保持した。
+凍結条件を満たす事例の場所と時点を特定できる公式記録を取得できない場合、条件を緩和して解決したことにせず、`NO_COMPLIANT_RECORD_ACQUIRED` 等の最終的に未解決となった状態を保持した。
 
 # 8. 主要結果
 
-formal endpointは次のとおりである。
+正式な結果は次のとおりである。
 
 ```text
 target cells = 30
@@ -223,7 +231,7 @@ EA1-EA11 = PASS
 formal outcome = PARTIAL_TARGET_INPUT_RESOLUTION
 ```
 
-Package別結果:
+資料群ごとの結果:
 
 ```text
 Package 001 = 0 / 7 resolved
@@ -237,14 +245,14 @@ Package 003 weather = 2 / 2 resolved
 
 解決したのは、事前固定された2件の `CURRENT_WEATHER_CONDITION` のみである。
 
-T0時点のJMA raw responseはparse前に次のidentityを記録した。
+T0時点で気象庁から取得した元データについて、解析前に次の識別情報を記録した。
 
 ```text
 raw bytes = 8375
 SHA-256 = f7b7e2c570b8ea924619eb831bb23f5ed689a39ea10b7dddf7ea630fcc6eb0e2
 ```
 
-凍結済み11:00–12:00 JST window内で利用可能だったlatest complete exact-hour tupleは11:00 JST観測だった。
+事前に定めた11:00–12:00 JSTの時間帯内で利用可能だった最新の欠測のない1時間単位の観測値は11:00 JST観測だった。
 
 ```text
 station = 86111 / 阿蘇乙姫
@@ -259,71 +267,71 @@ verification ceiling = VERIFIED_PERMITTED_NONCONTROLLING_SOURCE
 
 ## 8.2 解決しなかった28件
 
-Package 001の7件、Package 002の16件、Package 003 site conditionの3件、fuel/biomass conditionの2件は解決しなかった。
+資料群001の7件、資料群002の16件、資料群003の現地状態3件と燃料・バイオマス状態2件は解決しなかった。
 
-適格なrecordを取得できなかった場合は条件を緩和せず未解決を維持した。`NO_COMPLIANT_RECORD_ACQUIRED` は、現実世界で情報、権限、現況、燃料状態が存在しないことを意味しない。
+条件を満たす記録を取得できなかった場合は条件を緩和せず未解決を維持した。`NO_COMPLIANT_RECORD_ACQUIRED` は、現実世界で情報、権限、現況、燃料状態が存在しないことを意味しない。
 
 # 9. 本研究が支持すること
 
 本研究は次を支持する。
 
-1. 事前固定した30 unresolved operational-input targetsのうち、厳格なevidence rulesを維持したままT0時点で2件をformalに解決できた。
-2. provenance gate、temporal validity、spatial ceiling、authority ceiling、missingness disciplineを保持したままformal materializationを完了できた。
-3. 28件について適格evidenceが取得できなかった場合にも、target replacementやproxy relaxationを行わずunresolved stateを保持できた。
-4. primary materializationとindependent recomputationが同一の30/2/28およびformal outcomeを再現した。
+1. 事前固定した未解決の運用入力30件のうち、厳格な証拠の確認規則を維持したままT0時点で2件を正式に解決できた。
+2. 出典の確認、時間的な有効性、地理的に言える範囲、資料の権限、不明を不明のまま扱う規則を保持したまま正式な資料の作成を完了できた。
+3. 28件について条件を満たす証拠が取得できなかった場合にも、対象の差し替えや代替値を認める条件の緩和を行わず未解決という状態を保持できた。
+4. 最初の資料作成と独立した再計算が同一の30/2/28および正式判定を再現した。
 
 # 10. 本研究が支持しないこと
 
 本研究は次を支持しない。
 
 ```text
-2件のweather conditionが「好条件」だった
-weather referenceがPU-exact microclimateを表す
-blockerが2件減ったためmanagement actionを推奨できる
-resolution rateがaction priorityを表す
-NO_COMPLIANT_RECORD_ACQUIREDが情報や現況のabsenceを表す
-current operational evidenceがecological response evidenceを表す
-G4 ecological transferabilityが解決した
-human validationが完了した
-planning coefficientやoptimizer inputが得られた
+気象に関する2件が「管理に好都合な条件」だった
+観測所の参考値が計画単位内の局所気象を正確に表す
+判断を妨げる要因が2件減ったので管理行為を推奨できる
+解決できた割合が管理行為の優先順位を表す
+NO_COMPLIANT_RECORD_ACQUIRED が、情報や現地の状態が実際に存在しないことを表す
+現時点の運用情報が生態学的な管理への応答を示す
+G4の生態学的な応答を別の場所に適用できることが確かめられた
+実在する人による検証が完了した
+計画用の係数や最適化計算の入力が得られた
 ```
 
 # 11. 実務的含意
 
-本研究の実務的含意は、operational decision supportに必要なcurrent/local factsを扱う際、**取得できた値だけでなく、取得できなかった状態をformalなblockerとして保持する必要がある**という点にある。
+本研究の実務的含意は、運用上の意思決定支援に必要な現時点・地域固有の事実を扱う際、**取得できた値だけでなく、取得できなかった状態を正式な判断を妨げる要因として保持する必要がある**という点にある。
 
-また、公式sourceであっても地理的にreference proxyである場合には、そのceilingを明示して利用する必要がある。今回のweather evidenceはその例であり、official station observationであることとPU-exact observationであることは区別された。
+また、公式の出典であっても地理的に参考値である場合には、その適用範囲の限界を明示して利用する必要がある。今回の気象の証拠はその例であり、公式の観測所での観測であることと計画単位内での観測であることは区別された。
 
 # 12. 研究上の限界
 
 主な限界は次のとおりである。
 
-1. **Evidence coverage ceiling**: 30 targets中28件はformal resolutionに至らなかった。
-2. **Temporal limitation**: current-condition evidenceは固定T0と短いfreshness windowに強く依存する。
-3. **Spatial limitation**: weatherはnearest official referenceであり、planning-unit内部観測ではない。
-4. **Access limitation**: restricted/local recordsが存在しても、lawful access、case linkage、effective interval、authority条件を満たさなければformal evidenceにはできない。
-5. **Direct observation limitation**: direct observationはprotocol上許可可能だったが、本研究のformal resolutionを構成する必須経路ではなく、今回の解決2件はpublic official weatherによる。
-6. **Ecological limitation**: operational evidence acquisitionはmanagement responseやecological effectivenessを測定しない。
-7. **Human-validation limitation**: practitioner / administrative participantを使用していない。
-8. **Retrieval limitation**: public-online sourceの検索・公開timingによって、現実に存在する情報を取得できない可能性がある。no-recordはabsenceではない。
+1. **証拠の対象範囲の限界**: 30件中28件は正式な解決に至らなかった。
+2. **時間上の限界**: 現時点の状態を示す証拠は固定T0と短い有効期間に強く依存する。
+3. **地理的な限界**: 気象の情報は最も近い公式観測所による参考値であり、計画単位内の観測ではない。
+4. **資料の利用に関する限界**: 利用に制限のある地域資料が存在しても、適法な利用、事例との対応、有効期間、権限の条件を満たさなければ正式な証拠にはできない。
+5. **直接観察に関する限界**: 現地での直接観察は手順上認められていたが、本研究の正式な解決を構成する必須経路ではなく、今回の解決2件は公開された公式の気象情報による。
+6. **生態学上の限界**: 運用情報の収集は管理への応答や生態学的な有効性を測定しない。
+7. **人間参加者による検証に関する限界**: 実務者や行政担当者を研究参加者としていない。
+8. **資料の取得に関する限界**: 公開されたオンライン資料の検索・公開の時期によって、現実に存在する情報を取得できない可能性がある。記録が見つからないことは、実際に存在しないことを意味しない。
 
 # 13. 第三者資料・データの取扱い
 
-本研究では、repositoryがprivateであることをlawful-access basisやredistribution rightとはみなしていない。restricted/confidential raw dataをrepositoryへcommitすることをdefaultにはしていない。
+本研究では、リポジトリが非公開であることを適法な利用の根拠や再配布する権利とはみなしていない。利用に制限のある元データや機密の元データをリポジトリに登録することを原則にはしていない。
 
-第三者sourceについては、formal reproductionに必要なprovenance identity、derived status、hash等を記録し、不必要な個人情報やrestricted raw contentsの再配布を避ける方針を採用した。
+第三者の資料については、正式な結果の再現に必要な出典の識別情報、分析後の状態、ハッシュ値等を記録し、不必要な個人情報や利用に制限のある元資料の内容の再配布を避ける方針を採用した。
 
 # 14. 後続研究との境界
 
-OEA v1はscientific closure済みであり、後から取得したpost-T0 evidenceを追加して28 unresolved targetsを救済してはならない。
+OEA v1は科学的な結果を確定済みであり、T0の後に取得した証拠を追加して未解決の28件を救済してはならない。
 
-後続研究で追加のoperational evidence acquisitionを行う場合は、新study identity、新T0またはtime frame、新target frame、新source/access rulesをprospectively固定する必要がある。
+後続研究で追加の運用情報の収集を行う場合は、新しい研究ID、新しい判定時点または期間、新しい対象範囲、新しい出典・利用規則を結果を見る前に確定する必要がある。
 
-G4 successor、NAP-002 Study 2B、Future Stage A/B、NAP-003はそれぞれ別の研究routeであり、OEA v1の結果から自動的には開始されない。
+G4の後続研究、NAP-002 Study 2B、将来のStage A/B、NAP-003はそれぞれ別の研究経路であり、OEA v1の結果から自動的には開始されない。
 
 # 15. 再現性・検証
 
-formal gates:
+正式な判定条件:
 
 ```text
 EA1  PASS  target traceability
@@ -339,14 +347,14 @@ EA10 PASS  independent recomputation
 EA11 PASS  registered adversarial cases
 ```
 
-Adversarial validation:
+誤読を想定した検証:
 
 ```text
 registered = 22
 passed = 22
 ```
 
-Primary materialization and independent terminal-group recomputationは、いずれも次を返した。
+最初の資料作成と独立した再計算は、いずれも次を返した。
 
 ```text
 30 total
@@ -370,9 +378,9 @@ materialization canonical SHA-256 = b5516c84628bb038b18fe6520e17bd01f85e47c7b84a
 T0 weather raw SHA-256 = f7b7e2c570b8ea924619eb831bb23f5ed689a39ea10b7dddf7ea630fcc6eb0e2
 ```
 
-# 17. Repository内の主要資料
+# 17. リポジトリ内の主要資料
 
-## Protocol / governance
+## 研究計画と運用規則
 
 - `doc/operational-evidence-acquisition/OPERATIONAL_EVIDENCE_ACQUISITION_PROSPECTIVE_PROTOCOL.md`
 - `analysis/operational-evidence-acquisition/oea_design_registry.json`
@@ -381,7 +389,7 @@ T0 weather raw SHA-256 = f7b7e2c570b8ea924619eb831bb23f5ed689a39ea10b7dddf7ea630
 - `analysis/operational-evidence-acquisition/oea_provenance_access_rules.json`
 - `analysis/operational-evidence-acquisition/oea_t0_registry.json`
 
-## Package 003 execution
+## パッケージ003の実行
 
 - `analysis/operational-evidence-acquisition/oea_package_003_execution_rule.json`
 - `analysis/operational-evidence-acquisition/oea_package_003_site_condition_status.json`
@@ -390,7 +398,7 @@ T0 weather raw SHA-256 = f7b7e2c570b8ea924619eb831bb23f5ed689a39ea10b7dddf7ea630
 - `analysis/operational-evidence-acquisition/oea_pkg003_weather_t0_result.json`
 - `analysis/operational-evidence-acquisition/oea_package_003_formal_status.json`
 
-## Formal result / validation
+## 正式結果と検証
 
 - `analysis/operational-evidence-acquisition/oea_formal_result.json`
 - `analysis/operational-evidence-acquisition/oea_formal_validation.json`
@@ -400,34 +408,34 @@ T0 weather raw SHA-256 = f7b7e2c570b8ea924619eb831bb23f5ed689a39ea10b7dddf7ea630
 
 # 18. 結論
 
-事前固定した30 unresolved operational-input targetsのうち、厳格なprovenance・temporal・geographic・authority条件を維持したまま、T0時点でformalに解決できたのは2件だった。残る28件は条件を緩和せず未解決として保持された。
+事前に選んだ未解決の運用入力30件のうち、出典、時間、地域、権限の条件を守ったうえで、判断時点T0に正式に解決できたのは2件だった。残る28件は条件を緩めず未解決のまま保持した。正式判定は PARTIAL_TARGET_INPUT_RESOLUTION（対象となる入力の一部を解決）である。
 
-したがってformal outcomeは `PARTIAL_TARGET_INPUT_RESOLUTION` である。
+これは気象に関する2件が管理上望ましい状態だったという意味ではない。**必要な形式の証拠を2件について取得・確認でき、ほかの28件については証拠不足を隠さず残した**ことが結果である。
 
-この結果の中心的意味は「2件が管理上好ましい状態だった」ことではなく、**2件について必要な形式のoperational evidenceをprospective rulesのもとで取得・検証でき、28件については証拠不足を証拠不足のまま保持できた**ことにある。
+---
 
 # 用語
 
 **T0**  
-formal operational evidence snapshotを評価する共通decision time。本研究では2026-08-24 12:00 JST。
+運用情報の証拠を評価するために、共通に定めた判断時点。本研究では2026-08-24 12:00 JST。
 
 **NO_COMPLIANT_RECORD_ACQUIRED**  
-凍結されたsource・construct・geographic・temporal条件を満たすrecordを取得できなかったterminal acquisition state。absenceを意味しない。
+事前に定めた出典・確認対象・地理・時間の条件を満たす記録を取得できなかった状態。現実に情報や現地の状態が存在しないという意味ではない。
 
 **NEAREST_OFFICIAL_REFERENCE_WEATHER**  
-target planning unitに対して事前固定されたnearest official weather stationのstation-local observationをreference proxyとして用いるclass。PU-exact observationではない。
+対象となる計画単位について、事前に選んだ最も近い公式観測所の値を参考値として用いる区分。計画単位内での観測を意味しない。
 
 **VERIFIED_PERMITTED_NONCONTROLLING_SOURCE**  
-source自体は正式・検証可能だが、target contextを直接controlするsourceではない場合のverification ceiling。
+正式な手順で確認できる資料だが、対象となる現地の状況を直接示す資料ではない場合の確認上の区分。
 
-**blocker release**  
-required inputがformal evidenceによって解決され、対応するdecision blockerがevidence-only ruleに従って解除されること。recommendationやpriorityを意味しない。
+**判断を妨げる要因の解除（blocker release）**  
+必須入力が正式な証拠で解決し、対応する判断を妨げる要因を規則に従って解除すること。管理の推奨や優先順位を意味しない。
 
-# Selected methodological references / prior art
+# 参考文献・関連する先行研究
 
-本研究が依拠する一般的方法論は、prospective study governance、data provenance、temporal validity、authority/source hierarchy、structured decision support、explicit uncertainty/missingness handlingである。これら一般的方法の発明を本研究のnoveltyとして主張しない。
+本研究が用いた一般的な方法には、結果を見る前に研究規則を定めること、出典と処理の履歴を記録すること、情報の時間的な有効性と権限を確認すること、不明な状態を明示した意思決定支援がある。これらの方法そのものを新たに発明したとは主張しない。
 
-Natural Area Planning内の直接的predecessorとして、次の公開報告を参照する。
+本研究に直接つながる先行報告書は次のとおりである。
 
 - `NAP001_PUBLIC_RESEARCH_REPORT.md`
 - `NAP002_STUDY1_PUBLIC_RESEARCH_REPORT.md`
@@ -440,9 +448,9 @@ Natural Area Planning内の直接的predecessorとして、次の公開報告を
 ```text
 Natural Area Planning / NAP-OEA-2026-08-16-v1 (2026).
 Public Research Report:
-「Operational Pilotで未解決だった運用入力を、固定T0でどこまで解消できるか
-― provenance・時間・地理・authority条件を結果より先に固定したprospective evidence acquisition ―」
-Version 1.0, 2026-08-24.
+「運用手順の試験で未解決だった入力を、固定した判定時点でどこまで解消できるか
+― 出典・時間・地理・権限の条件を先に定め、証拠を取得する ―」
+Version 1.0.1, 日本語表現改訂 2026-09-28（科学的結果は2026-08-24確定）。
 Formal outcome: PARTIAL_TARGET_INPUT_RESOLUTION.
 Study snapshot: nkkmd/natural-area-planning @ 3788ba409956cc9806d0877a3bfa94e6fdd6258a.
 ```

@@ -1,16 +1,17 @@
-# Natural Area Planning / NAP-001 — Public Research Report
+# Natural Area Planning / NAP-001 — 公開研究報告書
 
 **公開情報だけで阿蘇半自然草原の管理計画はどこまで構築できるか**  
 **― 最適化の前に、証拠が許す境界を明示する ―**
 
-- レポート版: **v1.0**
+- レポート版: **v1.0.1**
 - 作成日: **2026-08-12 JST**
+- 日本語表現の改訂: **2026-09-28（科学的結果・判定は変更なし）**
 - 研究プロジェクト: **Natural Area Planning / NAP-001**
-- 研究状態: **Stage C public-only study complete**
-- 研究正本スナップショット: `nkkmd/natural-area-planning` / commit `a6e6a806bfdec127e573df4b9af59b6f5df626f0`
+- 研究状態: **公開情報のみを用いたStage Cの研究は完了**
+- 研究結果を確定したコミット: `nkkmd/natural-area-planning` / コミット `a6e6a806bfdec127e573df4b9af59b6f5df626f0`
 - 本文の性格: **単体公開用研究レポート**
 
-> この文書は、元のGitHubリポジトリ、内部の研究ログ、checkpoint、CSV、コードを参照しなくても、研究の背景、問い、方法、主要結果、限界、再現性、今後の研究課題を理解できるように構成している。GitHub外へこのファイル単体をコピーして公開しても、研究レポートとして成立することを意図している。
+> この文書は、元のGitHubリポジトリ、内部の研究ログ、途中経過の記録、CSV、コードを参照しなくても、研究の背景、問い、方法、主要結果、限界、再現性、今後の研究課題を理解できるように構成している。GitHub外へこのファイル単体をコピーして公開しても、研究レポートとして成立することを意図している。
 
 ---
 
@@ -18,15 +19,15 @@
 
 半自然草原の保全では、土地を単に「保護する／利用する」に二分するだけでは不十分な場合がある。野焼き、採草、放牧などの反復的な人為管理によって成立・維持されてきた草原では、管理の停止そのものが植生遷移や木本化を引き起こし得る一方、管理の種類、強度、時期によって植物、希少種、昆虫、植生構造などの応答は異なる。
 
-Natural Area Planning / NAP-001 は、熊本県阿蘇地域の半自然草原を対象として、**誰でも追跡・再取得できる公開情報だけを用いた場合に、management-specific systematic conservation planning（管理方法を明示した体系的保全計画）をどこまで科学的に構築できるか**を検討した研究である。
+Natural Area Planning / NAP-001 は、熊本県阿蘇地域の半自然草原を対象として、**誰でも追跡・再取得できる公開情報だけを用いた場合に、管理方法を明示した体系的な保全計画をどこまで科学的に構築できるか**を検討した研究である。
 
-研究では、公開行政資料、査読論文、公開GIS、公開植生データ、Landsat・Sentinel-2等の公開衛星データ、公開統計・政策情報を用い、193のplanning unitsを固定した。管理を単なる「農業／保全」ではなく、野焼き、放牧強度、採草・刈取り、管理停止・再開等を区別したoperational management regimesとして表現し、保全対象も草原性専門植物、群集組成・遷移、希少種、開放草原構造、草原依存性動物等に分離した。さらに13の管理regimeと11のfeatureからなるregime–feature evidence architectureを構築し、既存のmulti-zone conservation planning、特にMarxan with Zones型の構造へ対応付けた。
+研究では、公開行政資料、査読論文、公開GIS、公開植生データ、Landsat・Sentinel-2等の公開衛星データ、公開統計・政策情報を用い、193の計画単位を固定した。管理を単なる「農業／保全」ではなく、野焼き、放牧の強さ、採草・刈取り、管理の停止・再開などを区別した具体的な管理方法として表現し、保全対象も草原性専門植物、群集組成・遷移、希少種、開放草原構造、草原依存性動物等に分離した。さらに13種類の管理方法と11種類の保全対象を組み合わせた証拠の枠組みを構築し、既存の複数の管理区域を扱う保全計画、特にMarxan with Zones型の構造へ対応付けた。
 
-その結果、**計画問題の構造表現自体は成立した**。公開植生データからplanning-unit単位の植生組成base stateおよびopen/semi-natural grasslandのpresence/areaを構築でき、source-localな管理応答も複数確認できた。しかし、公開証拠だけでは、mandatory featureに対する数値目標、planning-unitごとのtarget-specific amount、source siteからplanning contextへの定量的response transfer、hard feasibility、牧野単位の生産・費用・労働・capacity、hard safeguard thresholdを同時に満たすことができなかった。
+その結果、**計画問題の構造表現自体は成立した**。公開植生データから計画単位ごとの植生構成に関する基礎的な状態および開放・半自然草原の有無と面積を構築でき、元の調査地点で確認された管理への応答も複数確認できた。しかし、公開証拠だけでは、必ず扱う保全対象の数値目標、計画単位ごと・保全対象ごとの現状の量、証拠が得られた場所から計画対象地へ管理効果を定量的に適用するための根拠、管理を実行できるかの必須条件、牧野単位の生産量・費用・労働量・対応能力、必ず守るべき条件のしきい値を同時に満たすことができなかった。
 
-最終的なplanning-readinessは、直接利用可能なplanning response（Q3）= 0、local management × context model（Q4）= 0、最高readiness class（G4）= 0、zone-contribution coefficient = 0、formal optimizer = **NOT AUTHORIZED** となった。
+最終的な計画への準備状況は、直接利用できる管理への応答（Q3）= 0、地域の管理方法と条件を結ぶモデル（Q4）= 0、最も高い準備段階に達した保全対象（G4）= 0、区域への寄与を示す係数 = 0、正式な最適化計算 = **NOT AUTHORIZED** となった。
 
-本研究の中心的成果は、最適なゾーニング図ではない。**公開証拠を管理計画へ変換できるところと、数値を作ればpseudo-precision（擬似的な精密さ）になるため変換を止めるべきところを、再現可能な形で区別したこと**である。
+本研究の中心的成果は、最適なゾーニング図ではない。**公開証拠を管理計画へ変換できるところと、数値を作れば擬似的な精密さになるため変換を止めるべきところを、再現可能な形で区別したこと**である。
 
 ---
 
@@ -34,9 +35,9 @@ Natural Area Planning / NAP-001 は、熊本県阿蘇地域の半自然草原を
 
 ## 1.1 生産と自然保全は常に対立するのか
 
-農業や林業などの生産活動は、土地改変や集約化を通じて自然環境に負荷を与えることがある。一方で、世界には、継続的な人間利用そのものが生物多様性や半自然生態系の維持に関わるworking landscapesも存在する。
+農業や林業などの生産活動は、土地改変や集約化を通じて自然環境に負荷を与えることがある。一方で、世界には、人が継続的に利用することで生物多様性や半自然生態系が維持される景観も存在する。
 
-Ecoagriculture、working lands conservation、landscape approach、High Nature Value farming、multifunctional agriculture、GIAHS、OECM、IUCN Category Vなどは、生産・生活・保全を完全に分離しない土地利用を扱ってきた。したがって本研究は、「生産しながら保全する」という発想自体を新規理論として提案するものではない。
+エコアグリカルチャー、農地など利用を続ける土地での保全、景観アプローチ、自然価値の高い農業、農業の多面的機能、世界農業遺産、OECM、IUCN保護地域カテゴリーVなどは、生産・生活・保全を完全に分離しない土地利用を扱ってきた。したがって本研究は、「生産しながら保全する」という発想自体を新規理論として提案するものではない。
 
 本研究が扱うのは、より具体的な実証・計画上の問題である。
 
@@ -48,9 +49,9 @@ Ecoagriculture、working lands conservation、landscape approach、High Nature V
 
 本研究は当初、**Productive Conservation（生産的保全）**という作業概念から出発した。生産活動が収益を生みながら自然環境の維持管理費用の一部を内部化できるのではないか、という問題意識である。
 
-しかし先行研究を検討すると、生産景観・多機能農業・working lands・保全と生産のPareto/frontier分析・systematic conservation planningなどに強いprior artが存在した。そのため、Productive Conservationを新しい保全制度や新理論として押し出すのではなく、研究の焦点を、**管理行為の実証と、その空間計画への接続**へ移した。
+しかし先行研究を検討すると、生産景観、多面的機能をもつ農業、利用が続く土地、生産と保全のパレート境界、体系的保全計画には多くの先行研究が存在した。そのため、Productive Conservationを新しい保全制度や新理論として押し出すのではなく、研究の焦点を、**管理行為の実証と、その空間計画への接続**へ移した。
 
-ここでいうNatural Area Planningは、新しいoptimizerの名称ではない。既存の体系的保全計画手法を再発明するのではなく、**現実の管理証拠を、どこまで既存planning structureへ科学的に入力できるかを検証するempirical problem-definition / decision-support layer**である。
+ここでいうNatural Area Planningは、新しい最適化計算の名称ではない。既存の体系的保全計画手法を再発明するのではなく、**現実の管理証拠を、どこまで既存の計画手法へ科学的に入力できるかを検証し、判断を支える際に何が不足するかを示す研究**である。
 
 ---
 
@@ -73,7 +74,7 @@ Ecoagriculture、working lands conservation、landscape approach、High Nature V
   ×
 背景管理
   ×
-立地・生態学的context
+立地・生態学的な条件
 ```
 
 「管理あり／なし」だけでは、この構造を表現できない。
@@ -84,14 +85,14 @@ Ecoagriculture、working lands conservation、landscape approach、High Nature V
 
 NAP-001 Stage Cの中心的研究質問は次のとおりである。
 
-> **阿蘇半自然草原について、誰でも独立に入手・追跡できる公開証拠だけを用いて、管理方法を明示したsystematic conservation planningをどこまで構築できるか。そして、どのinterfaceから先は、定量的配分に必要な精度を公開証拠が正当化できなくなるのか。**
+> **阿蘇半自然草原について、誰でも独立に入手・追跡できる公開証拠だけを用いて、管理方法を明示した体系的な保全計画をどこまで構築できるか。そして、どの段階から先は、定量的配分に必要な精度を公開証拠が正当化できなくなるのか。**
 
 ここで「成功」を最適化結果が出ることとは定義しなかった。
 
 本研究では、
 
 ```text
-solverが数値を必要とする
+計算ソフトが数値を必要とする
 !=
 その数値について科学的証拠が存在する
 ```
@@ -100,7 +101,7 @@ solverが数値を必要とする
 
 ---
 
-# 4. public-only研究設計
+# 4. 公開情報だけを用いた研究設計
 
 ## 4.1 使用した証拠
 
@@ -119,19 +120,19 @@ solverが数値を必要とする
 
 ## 4.2 使用しなかった証拠
 
-以下はcurrent NAP-001 Stage Cの経験的証拠に含まれない。
+以下はこのNAP-001 Stage Cの経験的証拠に含まれない。
 
 - 申請制の2011・2016・2021年阿蘇草原維持再生基礎調査原データ
 - 許可制の牧野カルテ等
 - 非公開・限定公開の希少種詳細位置
 - 個別生産者の非公開経営データ
-- private correspondence
-- 新規field survey
-- 新規prospective monitoring
+- 非公開の通信
+- 新規現地調査
+- 新たに計画・実施する継続観測
 
-将来のrestricted/local-data研究を想定したprotocolや申請準備文書は作成したが、**申請は一度も提出していない**。restricted/local empirical dataは、受領、アクセス、閲覧、変換、解析、利用のいずれも行っていない。
+将来、利用制限のある地域資料を扱う研究を想定した手順書や申請準備文書は作成したが、**申請は一度も提出していない**。利用制限のある地域資料については、受領、アクセス、閲覧、変換、解析、利用のいずれも行っていない。
 
-このため、Stage Cはpublic-only studyとして完結している。
+このため、Stage Cは公開情報のみを用いた研究として完結している。
 
 ---
 
@@ -149,37 +150,37 @@ NAP-001 Planning layer
         P-001の証拠をsystematic conservation planningへ接続する
 ```
 
-P-001は「公開証拠から何が言えるか」を扱い、NAP-001は「その証拠をplanning inputへどこまで変換できるか」を扱う。
+P-001は「公開証拠から何が言えるか」を扱い、NAP-001は「その証拠を計画に必要な入力へどこまで変換できるか」を扱う。
 
 ## 5.2 P-001の6モジュール
 
 P-001は以下の6モジュールで構成した。
 
-| モジュール | 内容 | planning上の役割 |
+| モジュール | 内容 | 計画上の役割 |
 |---|---|---|
-| P1 | 保全上の重要性 | study-system justification |
-| P2 | 管理 × 保全対象の証拠 | management-response evidence |
-| P3 | 公開GISによる空間状態 | planning-unit / spatial context |
-| P4 | 公開衛星による時間的context | state / temporal uncertainty |
-| P5 | 生産・労働・管理継続性 | burden / continuity context |
-| P6 | leakage | displacement scenario |
+| P1 | 保全上の重要性 | 阿蘇を研究対象とする根拠 |
+| P2 | 管理 × 保全対象の証拠 | 管理に対する生態学的な応答の証拠 |
+| P3 | 公開GISによる空間状態 | 計画単位の空間的な条件 |
+| P4 | 公開衛星による時間的な情報 | 状態と時間変化の不確実性 |
+| P5 | 生産・労働・管理継続性 | 負担と継続可能性に関する条件 |
+| P6 | 区域外への負荷の移転 | 域外に負荷が移る可能性 |
 
 これらを一つの「持続可能性スコア」に集約しなかった。
 
-## 5.3 planning units
+## 5.3 計画単位
 
-公開GISから、planning対象となる空間単位を構築し、**193 planning units**を固定した。
+公開GISから、計画対象となる空間単位を構築し、**193の計画単位**を固定した。
 
-planning-unit identityは研究正本でhash固定されている。
+計画単位を識別するデータは、研究の正本にハッシュ値を記録して確定した。
 
 ```text
 planning units = 193
 SHA-256 = 46ef4dd475ec7645d78130722e8ddfcae9f51c6244ce95dc22ea9f7dcaa6609d
 ```
 
-P3で得られる土地利用、地被、野焼き状態、地形等はcontext/stateとして扱い、それだけから生物多様性や管理効果を推定しない。
+P3で得られる土地利用、地被、野焼き状態、地形等は条件・状態として扱い、それだけから生物多様性や管理効果を推定しない。
 
-## 5.4 保全feature
+## 5.4 保全対象
 
 「生物多様性」を一つの総合値にせず、少なくとも次の保全次元を分離した。
 
@@ -194,9 +195,9 @@ T6  一般的な種数・多様性指標（補助）
 
 この分離により、例えば総種数の増加が、希少種の減少や草原構造の喪失を自動的に相殺することを防いだ。
 
-## 5.5 management regimes
+## 5.5 管理方法
 
-planning variableは、土地を抽象的な「保全」「農業」に分けるのではなく、**operational management regime**をplanning zoneとして割り当てる形で定義した。
+計画で割り当てる変数は、土地を単純に「保全」「農業」と分けるのではなく、**野焼きや放牧など、具体的に定めた管理方法**を各計画単位に割り当てる形で定義した。
 
 概念的には、
 
@@ -206,23 +207,23 @@ x_i,k = planning unit i を management regime k に割り当てるか
 
 である。
 
-候補regimeには、例えば次が含まれる。
+候補に含めた管理方法には、例えば次がある。
 
-- burn-only
-- burning + low grazing
-- burning + customary/moderate grazing
-- burning + high grazing
-- burning + mowing/hay
-- mixed management
-- restoration / restart
-- active conservation-only management
-- management cessation / succession trajectory
+- 野焼きのみ
+- 野焼きと低強度の放牧
+- 野焼きと慣行的・中程度の放牧
+- 野焼きと高強度の放牧
+- 野焼きと採草・刈取り
+- 複数の管理方法の併用
+- 管理の再開・植生の回復
+- 生産を伴わない積極的な保全管理
+- 管理の停止と、その後の植生遷移
 
-現在のregime-feature evidence architectureは**13 management regimes × 11 conservation features**で構成される。
+管理方法と保全対象の関係を示す現在の証拠の枠組みは**13種類の管理方法と11種類の保全対象**で構成される。
 
-## 5.6 management-response evidenceのreadiness
+## 5.6 管理への応答を示す証拠の準備状況
 
-source studyで観測された差を、そのままplanning coefficientへ変換しないため、response evidenceを以下のように分類した。
+元の研究で観測された差を、そのまま計画に使う係数へ変換しないため、管理への応答を示す証拠を以下のように分類した。
 
 ```text
 Q0  usable evidenceなし
@@ -232,7 +233,7 @@ Q3  planningで直接利用できるresponse
 Q4  local management × context response model
 ```
 
-さらに、planning-readinessを次の4 interfaceに分けた。
+さらに、計画に進むための準備状況を次の4つの観点に分けた。
 
 ```text
 Q-A  target semantics
@@ -254,9 +255,9 @@ spectral trajectory != biodiversity outcome
 optimizer input need != evidence of numeric precision
 ```
 
-## 5.7 公開植生base state
+## 5.7 公開植生図から得た基礎的な状態
 
-公開植生データを193 planning unitsへ対応させ、二つの主要base-state artifactを構築した。
+公開植生データを193の計画単位へ対応させ、基礎的な状態を示す二つの主要資料を構築した。
 
 ```text
 planning_unit_vegetation_composition
@@ -268,21 +269,21 @@ rows = 193
 SHA-256 = c6aee6d304e223189289e8b2f8bcbf5f42042b037304741365091eea77a4a93c
 ```
 
-前者はT2に対するplanning-unit vegetation-composition vector、後者はT4に対するopen/semi-natural grassland presence/areaを与える。
+前者はT2に関して各計画単位の植生構成を表す数値列、後者はT4に対する開放・半自然草原の有無と面積を与える。
 
-ただし、公開植生源は時間的にheterogeneousであり、同一日に行われた2024年field censusではない。また、植生図のclassは管理応答やtarget attainmentそのものではない。
+ただし、公開植生図には作成時期の異なる情報が含まれ、2024年に同じ日に実施した現地調査の結果ではない。また、植生図の分類は、管理に対する応答や保全目標の達成そのものを示さない。
 
-## 5.8 remote sensing
+## 5.8 衛星観測
 
-P4ではLandsatをprimary、Sentinel-2をrecent-period secondary validationとして使用し、NDVI、NDMI、NBRをcontext/state指標として扱った。
+P4ではLandsatを主な資料、Sentinel-2を近年の結果を補助的に確認する資料として用い、NDVI、NDMI、NBRを条件や状態を示す指標として扱った。
 
-これらを直接のbiodiversity indicatorやmanagement coefficientとは解釈しなかった。
+これらを直接の生物多様性の指標や管理効果の係数とは解釈しなかった。
 
-## 5.9 planning softwareへの構造対応
+## 5.9 計画ソフトへの構造対応
 
-management-specific planning structureを、既存のsystematic conservation planning、とくにMarxan with Zones型のmulti-zone structureへ対応付けた。
+管理方法を明示した計画の構造を、既存の体系的保全計画、とくにMarxan with Zones型の複数区域の構造へ対応付けた。
 
-structural pilotでは、少なくとも以下の表現が可能であることを確認した。
+構造を表現できるかの試験では、少なくとも以下の表現が可能であることを確認した。
 
 ```text
 planning units
@@ -293,9 +294,9 @@ resource burdens
 scenario families
 ```
 
-このstructural pilotはPASSした。
+この構造の表現可能性を検証した結果はPASSだった。
 
-したがって、後述するformal optimization未実施の理由は、softwareが問題を表現できないからではない。
+したがって、後述する正式な最適化未実施の理由は、ソフトで計画の問題を表現できないからではない。
 
 ---
 
@@ -303,7 +304,7 @@ scenario families
 
 ## 6.1 管理効果を単一の「良い／悪い」にできなかった
 
-公開証拠から最も一貫して得られた知見は、管理効果がconditionalであることだった。
+公開証拠から最も一貫して得られた知見は、管理の効果が条件によって変わるということだった。
 
 概念的には、
 
@@ -321,41 +322,41 @@ management effect
 
 と表現する必要がある。
 
-Yamamoto et al. (2002)の火入れ停止・植生変化、Murata et al. (2008)の放牧強度とオオルリシジミ生息環境、Murata & Matsuura (2011)の放牧強度と蝶類群集、農研機構の刈取り時期に関する公開研究成果などは、管理がtarget-specificであり、単純な「強いほど良い」「使わないほど良い」という普遍順位を支持しない。
+Yamamoto et al. (2002)の火入れ停止・植生変化、Murata et al. (2008)の放牧強度とオオルリシジミ生息環境、Murata & Matsuura (2011)の放牧強度と蝶類群集、農研機構の刈取り時期に関する公開研究成果などは、管理の効果が保全対象ごとに異なり、単純な「強いほど良い」「使わないほど良い」という普遍順位を支持しない。
 
-これは、management mosaicを将来検討する理由にはなるが、「mosaicが必ず最適」という結論ではない。
+これは、複数の管理方法の組み合わせを将来検討する理由にはなるが、「管理方法を組み合わせれば必ず最適」という結論ではない。
 
-## 6.2 193 planning unitsの空間architectureは構築できた
+## 6.2 193の計画単位からなる空間的な枠組みを構築できた
 
-public GISだけでも、193 planning unitsの固定、空間context、adjacency、公開植生base stateを構築できた。
+公開GISだけでも、193の計画単位の固定、空間的な条件、隣接関係、公開植生図から得た基礎的な状態を構築できた。
 
-したがって、公開データだけでも「どこをplanning unitとして扱うか」「現在どのようなmapped vegetation stateがあるか」というplanningの空間骨格は相当程度まで構築できる。
+したがって、公開データだけでも「どこを計画単位として扱うか」「現在どのような地図上の植生の状態があるか」という計画の空間骨格は相当程度まで構築できる。
 
-## 6.3 remote sensingは有用だが、uncertaintyも示した
+## 6.3 衛星観測は有用だが、不確実性も示した
 
 2017–2025年について、景観全体の方向は以下のように保持された。
 
 | 指標 | Landsat | Sentinel-2 |
 |---|---|---|
-| NDVI | negative | positive |
-| NDMI | negative | positive |
-| NBR | negative | positive |
+| NDVI | 負の方向 | 正の方向 |
+| NDMI | 負の方向 | 正の方向 |
+| NBR | 負の方向 | 正の方向 |
 
-三指標すべてでrecent directionがdiscordantだった。
+三つの指標すべてで、近年の変化方向は両センサーで一致しなかった。
 
 本研究では、
 
-- 二つのsensorを平均して一つのtrendにしない
-- 望ましい物語を与えるsensorだけを選ばない
-- sensor差をbiodiversity差と読み替えない
+- 二つのセンサーを平均して一つの変化方向にしない
+- 望ましい物語を与えるセンサーだけを選ばない
+- センサー差を生物多様性差と読み替えない
 
 という判断を採用した。
 
-P4の最終用途は**context_state_only**である。
+P4の資料は、条件・状態の把握に限って利用した（正式な用途コードは `context_state_only`）。
 
-## 6.4 T2 — vegetation composition / succession
+## 6.4 T2 — 植生構成と遷移
 
-T2では、公開植生データによってplanning-unit単位のmapped vegetation-composition vectorを構築できた。
+T2では、公開植生データによって計画単位ごとの地図から得た植生構成を表す数値列を構築できた。
 
 最終判定は次のとおりである。
 
@@ -367,11 +368,11 @@ Q-D = CONSTRAINT_SIGNAL_ONLY
 workflow class = G3
 ```
 
-重要なのは、mapped compositionが**現在のmapped state**であって、時間的なsuccession rateや特定管理に対するresponseではないことである。
+重要なのは、地図上の植生構成は**地図で確認した状態**であり、植生遷移の速度や特定の管理行為に対する応答ではないことである。
 
-## 6.5 T4 — open-grassland structure
+## 6.5 T4 — 開放草原の構造
 
-T4では、公開mappingからopen/semi-natural grasslandのpresence/areaをplanning-unit単位で表現できた。
+T4では、公開の地図情報から開放・半自然草原の有無と面積を計画単位ごとに表現できた。
 
 最終判定は次のとおりである。
 
@@ -383,17 +384,17 @@ Q-D = CONSTRAINT_SIGNAL_ONLY
 workflow class = G3
 ```
 
-しかし、mapped open-grassland areaは、植生高、被度、stem density、litter、woody encroachment等の直接的structural metricではない。
+しかし、地図上の開放草原の面積は、植生高、被度、茎の密度、枯れ草などの堆積物、木本の侵入を直接測定した構造指標ではない。
 
 ## 6.6 希少種・草原依存性動物
 
-公開研究には、特定希少植物やオオルリシジミ等についてmanagement-specificなsource evidenceが存在する。しかし、planning-unitごとの現在量・occurrenceと、source siteから193 planning unitsへのtransferable response functionを同時に確立できなかった。
+公開研究には、特定希少植物やオオルリシジミ等について管理方法を区別した、元の調査地点で得られた証拠が存在する。しかし、計画単位ごとの現在量・分布と、元の調査地点での効果を193の計画単位へ適用できることを示す関係を同時に確立できなかった。
 
-特に希少種について、公開情報で記録が見つからないことを「そのplanning unitには存在しない」というゼロに変換していない。
+特に希少種について、公開情報で記録が見つからないことを「その計画単位には存在しない」というゼロに変換していない。
 
-## 6.7 workflow-readiness
+## 6.7 研究手順上の準備状況
 
-public auditで評価した主要featureのreadinessは以下となった。
+公開情報の監査で評価した主要な保全対象の準備状況は以下となった。
 
 ```text
 G4 = 0
@@ -403,17 +404,17 @@ G1 = 4
 G0 = 2
 ```
 
-ここでG0–G4は**研究workflow / transformation readiness**であり、生物多様性の良し悪しを示すscoreではない。
+ここでG0–G4は**研究手順上の利用・変換の準備状況**であり、生物多様性の良し悪しを示す点数ではない。
 
-最高のG4へ到達したfeatureはゼロだった。
+最も高い準備段階であるG4に到達した保全対象はゼロだった。
 
 ---
 
-# 7. formal optimizationを実行しなかった理由
+# 7. 正式な最適化を実行しなかった理由
 
-## 7.1 最終hard readiness
+## 7.1 最終的な計画への移行条件
 
-Stage C終了時のhard readinessは次のとおりである。
+Stage C終了時の正式な計画への移行条件は次のとおりである。
 
 ```text
 static_allocation_eligible_regimes   = 0
@@ -427,22 +428,22 @@ zone contribution data rows          = 0
 formal_optimizer_authorized          = false
 ```
 
-すべてのformal conservation target valueは未設定のままであり、regime–feature relationshipはformal zone contributionへ移行していない。
+正式な保全目標値はすべて未設定のままであり、管理方法と保全対象の関係は正式な区域寄与量へ移行していない。
 
-## 7.2 software failureではない
+## 7.2 ソフトの機能が不足したわけではない
 
-structural software pilotはPASSしている。
+ソフトで計画の構造を表現できるかの試験はPASSしている。
 
 つまり、
 
 ```text
-optimizerを実行できない
+最適化計算を実行できない
 ```
 
 のではなく、
 
 ```text
-optimizerへ科学的に正当化された数値を渡せない
+最適化計算に科学的根拠のある数値を渡せない
 ```
 
 のである。
@@ -451,27 +452,27 @@ optimizerへ科学的に正当化された数値を渡せない
 
 ## 7.3 なぜ仮の係数を置かなかったのか
 
-source studyで、management Aの方がBより良い結果だったとしても、それだけから、
+元の研究で管理方法Aの方がBより良い結果だったとしても、それだけから、
 
 ```text
 A = 1.0
 B = 0.5
 ```
 
-のようなzone contributionを作ることはできない。
+のような区域への寄与量を作ることはできない。
 
 そのような正規化は、
 
-- source site固有の差
-- background management
-- targetの違い
-- measurement unitの違い
-- planning-unit context
-- transfer uncertainty
+- 元の調査地点に固有の差
+- 背景にある管理方法
+- 保全対象の違い
+- 測定単位の違い
+- 計画単位ごとの条件
+- 別の場所への適用に伴う不確実性
 
 を隠す。
 
-solverは入力された数値から必ず何らかの解を返し得る。しかし、**解が計算できることは、入力値が科学的に妥当であることを意味しない。**
+最適化ソフトは入力された数値から必ず何らかの解を返し得る。しかし、**解が計算できることは、入力値が科学的に妥当であることを意味しない。**
 
 NAP-001はこの段階で停止することを正式な研究結果として採用した。
 
@@ -479,20 +480,20 @@ NAP-001はこの段階で停止することを正式な研究結果として採�
 
 # 8. 本研究が支持すること
 
-public-only Stage Cは、少なくとも以下を支持する。
+公開情報のみを用いたStage Cは、少なくとも以下を支持する。
 
-1. 阿蘇半自然草原をmanagement-specific planning problemとして定義できる。
-2. planning unitsを公開GISから再現可能に構築できる。
-3. managementをoperational regimeとして分離できる。
-4. 保全対象を非代替的なfeatureとして分離できる。
-5. source-relativeなmanagement × target evidenceを体系化できる。
-6. 公開植生情報からT2/T4のbase-state候補を構築できる。
-7. remote sensingをcontext / uncertainty layerとして利用できる。
-8. management-specific structureを既存multi-zone planning softwareへ構造的に対応付けられる。
-9. どのplanning inputが不足しているかをinterface別に特定できる。
-10. unknownをzeroへ変換せずにplanning-readinessを閉じられる。
+1. 阿蘇半自然草原を管理方法を明示した計画問題として定義できる。
+2. 計画単位を公開GISから再現可能に構築できる。
+3. 管理を、実際に行う方法ごとに区別できる。
+4. 保全対象を互いに代替できない個別の対象として扱うできる。
+5. 元の研究内で比較できる管理方法と保全対象の関係を示す証拠を体系化できる。
+6. 公開植生情報からT2・T4に関する基礎的な状態の候補を構築できる。
+7. 衛星観測を条件と不確実性を示す資料として利用できる。
+8. 管理方法を区別した構造を既存の複数区域を扱う計画ソフトへ構造的に対応付けられる。
+9. どの計画への入力が不足しているかを段階別に特定できる。
+10. 不明な値をゼロに置き換えずに、計画への準備状況を判定できる。
 
-これらはformal optimizerがなくてもdecision supportとして利用可能である。
+これらは正式な最適化計算がなくても意思決定を支える情報として利用できる。。
 
 ---
 
@@ -503,22 +504,22 @@ public-only Stage Cは、少なくとも以下を支持する。
 - 「農業は一般に生物多様性に良い」
 - 「管理しない土地は一般に悪い」
 - 「放牧は強いほど良い」
-- 「customary grazingがすべての保全対象で最良」
+- 「慣行的な放牧がすべての保全対象にとって最良」
 - 「総種数が高ければ保全状態も必ず良い」
-- 「衛星指標のtrendがbiodiversity trendを直接表す」
+- 「衛星指標の変化方向が生物多様性の変化方向を直接表す」
 - 「公開記録がない希少種は不在である」
-- 「mapped vegetation classがmanagement effectを表す」
-- 「source-local responseを193 planning unitsへ直接移植できる」
-- 「multi-regime mosaicがuniform managementより必ず優れる」
-- 「193 planning unitsの最適管理配置を本研究が提示した」
+- 「植生図の分類が管理の効果を表す」
+- 「元の調査地点で確認された管理への応答を193の計画単位へ直接移植できる」
+- 「複数の管理方法の組み合わせが単一の管理方法より必ず優れる」
+- 「193の計画単位の最適管理配置を本研究が提示した」
 
-また、本研究は新しいspatial optimizerを発明したというnovelty claimも行わない。
+また、本研究は新しい空間的な最適化手法を発明したという新規性の主張も行わない。
 
 ---
 
-# 10. public-only integrity statement
+# 10. 公開情報のみを使用したことの確認
 
-current NAP-001 Stage Cについて、以下を明示する。
+このNAP-001 Stage Cについて、以下を明示する。
 
 ```text
 Nos.013–015 request submitted               = NO
@@ -531,7 +532,7 @@ restricted rare-species request submitted  = NO
 confidential producer-data request          = NO
 ```
 
-restricted/local data routeは将来研究として検討できるが、current Stage Cを成立させるために必要なものではない。
+利用に制限のある地域資料を取得する方法は将来研究として検討できるが、今回のStage Cを成立させるために必要なものではない。
 
 したがって、
 
@@ -545,34 +546,34 @@ Stage B = future / deferred / optional field/monitoring successor
 
 ---
 
-# 11. 再現性とprovenance
+# 11. 再現性と出典・処理の履歴
 
-## 11.1 frozen identities
+## 11.1 確定した識別情報
 
 本研究の主要な再現性識別子は以下である。
 
-### planning units
+### 計画単位
 
 ```text
 count = 193
 SHA-256 = 46ef4dd475ec7645d78130722e8ddfcae9f51c6244ce95dc22ea9f7dcaa6609d
 ```
 
-### vegetation composition
+### 植生構成
 
 ```text
 rows = 1426
 SHA-256 = ac01c133cf8d366dc02d0da2b8e1ff1334e5b997f31b74553cd60f0afc4b5413
 ```
 
-### open-grassland state
+### 開放草原の状態
 
 ```text
 rows = 193
 SHA-256 = c6aee6d304e223189289e8b2f8bcbf5f42042b037304741365091eea77a4a93c
 ```
 
-### public report provenance
+### 公開報告書の来歴
 
 ```text
 repository = nkkmd/natural-area-planning
@@ -582,7 +583,7 @@ study date = 2026-08-12 JST
 
 ## 11.2 再現性の考え方
 
-再現性は、「同じoptimizer resultが出ること」だけを意味しない。本研究では、次のdecision chainが追跡可能であることを重視した。
+再現性は、「同じ最適化計算の結果が出ること」だけを意味しない。本研究では、次の判断の流れが追跡可能であることを重視した。
 
 ```text
 public source
@@ -594,29 +595,29 @@ public source
  -> optimizer authorization decision
 ```
 
-negative decisionやnon-readinessもprovenanceを持つ研究成果として保存した。
+否定的な判定や準備が整わないという判定も、出典と処理の履歴を持つ研究成果として保存した。
 
 ---
 
 # 12. 第三者資料・データの取扱い
 
-このpublic reportは、単体での外部公開を想定し、第三者著作物の再配布を必要最小限に抑えている。
+この公開報告書は、単体での外部公開を想定し、第三者著作物の再配布を必要最小限に抑えている。
 
 本レポートには、
 
 - 原著論文PDFそのもの
 - 原著論文の表の大量な逐語・逐セル転記
-- 原著figure画像
-- 原著figureからdigitizeした時系列点群の全データ
-- restricted/local raw data
+- 原著の図の画像
+- 原著の図から数値を読み取った時系列データの全データ
+- 利用に制限のある地域の元データ
 - 個人・生産者識別情報
-- sensitive rare-species coordinates
+- 公開に慎重な扱いを要する希少種の詳細な座標
 
 を収録していない。
 
-本文では、研究上必要なsource-level conclusionを要約し、主要論文には著者・年・DOIを付している。
+本文では、研究上必要な各出典から言える結論を要約し、主要論文には著者・年・DOIを付している。
 
-研究内部では、再現性・監査のため、source-level extractionやdigitizationの詳細記録を保持している場合があるが、それらはこの単体公開レポートの配布物には含めない。
+研究内部では、再現性・監査のため、出典からの情報抽出や画像からの数値の読み取りの詳細記録を保持している場合があるが、それらはこの単体公開レポートの配布物には含めない。
 
 この区別により、**研究結果の公開**と**第三者原資料・詳細抽出物の再配布**を分離する。
 
@@ -624,65 +625,65 @@ negative decisionやnon-readinessもprovenanceを持つ研究成果として保�
 
 # 13. 限界
 
-## 13.1 public-only ceilingは「世界にデータが存在しない」という意味ではない
+## 13.1 公開情報のみで到達できる限界は「世界にデータが存在しない」という意味ではない
 
-本研究が示したのは、定義されたpublic corpusのevidence ceilingである。申請制・許可制・現地保有・非公開データに、より強い管理履歴や生物情報が存在する可能性は否定しない。
+本研究が示したのは、対象として定めた公開資料から到達できる限界である。申請制・許可制・現地保有・非公開データに、より強い管理履歴や生物情報が存在する可能性は否定しない。
 
-## 13.2 vegetation base stateの時間的一貫性
+## 13.2 植生の基礎的な状態の時間的一貫性
 
-公開植生データはtemporally heterogeneousであり、同一時点のfield censusとして扱えない。
+公開植生データには作成時期の異なる資料が含まれ、同一時点の現地調査として扱えない。
 
-## 13.3 management responseのtransfer
+## 13.3 管理への応答を別の場所に適用できるか
 
-阿蘇内のsource studyであっても、site history、背景管理、処理定義、measurement supportが異なるため、そのresponseをplanning unitへそのまま転用できない。
+阿蘇内の元の調査であっても、調査地点の履歴、背景管理、処理定義、測定対象の範囲が異なるため、そこで確認した応答を各計画単位へそのまま転用できない。
 
-## 13.4 economic / labor data
+## 13.4 経済・労働に関する資料
 
-公開情報は地域レベルの管理継続性・支援構造を理解するには有用だが、各牧野のprofit、cost、labor hours、capacityをformal allocationへ使用できる粒度ではない。
+公開情報は地域レベルの管理継続性・支援構造を理解するには有用だが、各牧野の利益・費用・労働時間・対応能力を正式な配分へ使用できる粒度ではない。
 
-## 13.5 remote sensing
+## 13.5 衛星観測
 
-Landsat / Sentinel-2のrecent direction discordanceは未解決であり、biodiversity coefficientには変換していない。
+Landsat / Sentinel-2の近年の変化方向の不一致は未解決であり、生物多様性の係数には変換していない。
 
-## 13.6 optimized mapがない
+## 13.6 最適な配置図がない
 
-本研究は最適配置図を出していない。これは未完了の計算ではなく、evidence-readiness ruleに従った研究上の停止判断である。
+本研究は最適配置図を出していない。これは未完了の計算ではなく、証拠の準備状況について事前に定めた規則に従った研究上の停止判断である。
 
 ---
 
 # 14. 今後の研究
 
-Stage Cを変更せず、独立したsuccessor studyとして次を検討できる。
+Stage Cを変更せず、別の独立した後続研究として次を検討できる。
 
-## 14.1 Future Stage A — restricted/local data
+## 14.1 将来のStage A — 利用に制限のある地域資料
 
 候補となる情報は、例えば以下である。
 
-- application/permission-based management history
-- planning-unit / pasture-level operational feasibility
-- local production / cost / labor / capacity
-- lawfulなtarget occurrence data
+- 申請や許可を要する管理履歴
+- 計画単位・牧野単位の実行可能性
+- 地域の生産量・費用・労働量・対応能力
+- 適法に取得できる保全対象の分布資料
 
-ただし、restrictedであること自体はhigh qualityやcausal identificationを保証しない。受領後もeligibility auditが必要である。
+ただし、利用に制限があるからといって、資料の品質が高いことや因果関係を特定できることは保証されない。受領後にも、研究に使えるかの監査が必要である。
 
-## 14.2 Future Stage B — prospective field / monitoring
+## 14.2 将来のStage B — 事前に計画した現地調査・継続観測
 
-formal quantitative allocationへ進むには、むしろprospective designが重要になる可能性がある。
+正式な数値に基づく配分へ進むには、むしろ結果を見る前に定める研究計画が重要になる可能性がある。
 
 必要となり得るのは、
 
-- operational management vectorの事前定義
-- target / threshold semanticsの事前定義
-- target-relevant outcomeの直接測定
-- management intensity / timing / backgroundの記録
-- planning context modifier
-- repeated observation
-- causal / counterfactual design
-- management burden / labor / economic measurement
+- 実際の管理内容を組み合わせた条件の事前定義
+- 保全対象としきい値の事前定義
+- 保全対象に関係する結果の直接測定
+- 管理の強さ・時期・背景となる管理の記録
+- 計画対象地の条件による違いの記録
+- 繰り返し行う観測
+- 因果関係と、管理しなかった場合を比較する研究設計
+- 管理に伴う負担・労働・経済面の測定
 
 である。
 
-このfuture researchは、Stage Cのnegative resultを「救済」するための再解析ではなく、新しい研究である。
+こうした将来の研究は、Stage Cの否定的な結果を「救済」するための再解析ではなく、新しい研究である。
 
 ---
 
@@ -690,92 +691,92 @@ formal quantitative allocationへ進むには、むしろprospective designが�
 
 NAP-001の結果は、阿蘇だけに限定されない。
 
-working landscapesでspatial optimizationを行う際、GISやsolverを用意するより前に、少なくとも以下を区別する必要がある。
+人の利用が続く景観で空間的な最適化を行う際、GISや最適化ソフトを用意するより前に、少なくとも以下を区別する必要がある。
 
 ```text
 どこに何があるか                 spatial/base state
 何を守りたいか                   target semantics
 どの管理が何に作用するか         management response
-そのresponseを別地点へ移せるか    transfer domain
+その応答を別の場所へ適用できるか    transfer domain
 その管理を実行できるか            feasibility
 誰が費用・労働を負担するか         capacity / burden
-守るべきhard conditionは何か       safeguards
+必ず守るべき条件は何か       safeguards
 ```
 
-これらのうち一つが不明だからといって、ゼロや仮の正規化係数を入れると、optimizer outputは精密に見えても、evidence contentを超えてしまう。
+これらのうち一つが不明だからといって、ゼロや仮の正規化係数を入れると、最適化計算の出力は精密に見えても、証拠が支える範囲を超えてしまう。
 
-したがって、保全計画の品質はsolverの高度さだけでは決まらない。**入力値を「作らない」規律も計画手法の一部である。**
+したがって、保全計画の品質は最適化ソフトの高度さだけでは決まらない。**入力値を「作らない」規律も計画手法の一部である。**
 
 ---
 
 # 16. 結論
 
-Natural Area Planning / NAP-001は、公開かつ再現可能な情報だけを用いて、阿蘇半自然草原についてmanagement-specific conservation planningの相当部分を構築できることを示した。
+Natural Area Planning / NAP-001は、公開かつ再現可能な情報だけを用いて、阿蘇半自然草原について管理方法を区別した保全計画の相当部分を構築できることを示した。
 
 構築できたものは、
 
-- 193 planning units
-- operational management-regime architecture
-- feature-specific conservation architecture
-- 13 × 11 regime–feature evidence architecture
-- public spatial/context state
-- public vegetation base state
-- remote-sensing context / uncertainty
-- source-relative management-response evidence
-- explicit evidence/readiness classes
-- established multi-zone planning softwareへのstructural mapping
+- 193の計画単位
+- 実際に行う管理方法の枠組み
+- 個別に扱う保全対象の枠組み
+- 13種類の管理方法と11種類の保全対象を組み合わせた証拠の枠組み
+- 公開情報による空間的な状態
+- 公開植生情報による基礎的な状態
+- 衛星観測から分かる条件と不確実性
+- 元の調査地点で比較できる管理への応答の証拠
+- 証拠の強さと計画に使えるかを区別した段階
+- 既存の複数区域を扱う計画ソフトへの構造上の対応付け
 
 である。
 
 一方で、公開証拠だけでは、
 
-- formal numeric target
-- planning-unit target-specific zone contribution
-- Q3/Q4 management response
-- hard feasibility
-- pasture-level production/cost/labor/capacity
-- hard safeguard threshold
+- 正式な数値目標
+- 計画単位と保全対象ごとの区域寄与量
+- Q3・Q4に相当する管理への応答
+- 管理を実行できるかの必須条件
+- 牧野単位の生産量・費用・労働量・対応能力
+- 必ず守るべき条件のしきい値
 
 を正当化できなかった。
 
-そのためformal optimizerは実行しなかった。
+そのため正式な最適化計算は実行しなかった。
 
 本研究の最終的な到達点は、次の一文に要約できる。
 
-> **再現可能な保全計画研究は、証拠が止まるところで止まるべきである。solverが係数を要求することは、その係数の存在を証明しない。**
+> **再現可能な保全計画研究は、証拠が止まるところで止まるべきである。最適化ソフトが係数を要求することは、その係数の存在を証明しない。**
 
-この停止点を明示することは「分析できなかった」という失敗ではない。どの情報がdecision supportに使え、どの情報から先がpseudo-precisionになるかを区別し、次に必要な観測・データ・研究設計を特定すること自体が、management-dependent working landscapeにおける重要な研究成果である。
+この停止点を明示することは「分析できなかった」という失敗ではない。どの情報が意思決定の支援に使え、どの情報から先が根拠のない見かけ上の精密さになるかを区別し、次に必要な観測・データ・研究設計を特定すること自体が、人の管理によって維持される景観における重要な研究成果である。
 
 ---
 
 # 用語
 
-**planning unit**  
-空間計画で割当・評価の単位となる土地の区画。本研究では193 unitsを固定した。
+**計画単位**  
+空間計画で割当・評価の単位となる土地の区画。本研究では193単位を固定した。
 
-**management regime**  
+**管理方法**  
 野焼き、放牧、採草、停止、再開などを、その強度・時期・背景を含めて定義した運用上の管理状態。
 
-**conservation feature**  
+**保全対象**  
 計画上、個別に扱う保全対象。種、群集、植生構造など。
 
-**zone contribution**  
-あるplanning unitをあるmanagement regimeへ割り当てた場合、そのconservation featureへどれだけ寄与するかを表すplanning input。本研究ではformal numeric valueを作成していない。
+**区域への寄与量**  
+ある計画単位をある管理方法へ割り当てた場合、その保全対象へどれだけ寄与するかを表す計画への入力。本研究では正式な数値を作成していない。
 
-**systematic conservation planning**  
+**体系的な保全計画**  
 明示された保全目標、空間単位、費用・制約等に基づき、保全行動を体系的に空間配置する計画アプローチ。
 
-**pseudo-precision**  
+**根拠のない見かけ上の精密さ**  
 証拠が支える精度以上に細かな数値を与えることで、科学的根拠以上の確実性があるように見せてしまうこと。
 
-**public-only**  
-本研究では、申請・特権的アクセスを要さず、第三者が独立に追跡・再取得可能な証拠のみをcurrent empirical studyに採用したことを指す。
+**公開情報のみ（public-only）**  
+本研究では、申請や特別なアクセス権を要さず、第三者が独立に追跡・再取得できる情報だけを今回の実証研究に使用したことを指す。
 
 ---
 
 # 参考文献・主要公開情報源
 
-## 体系的保全計画・working landscapes
+## 体系的保全計画・人の利用が続く景観
 
 1. Watts, M. E., Ball, I. R., Stewart, R. S., et al. (2009). *Marxan with Zones: Software for optimal conservation based land- and sea-use zoning*. Environmental Modelling & Software, 24, 1513–1521. DOI: https://doi.org/10.1016/j.envsoft.2009.06.005
 2. Scherr, S. J. & McNeely, J. A. (2008). *Biodiversity conservation and agricultural sustainability: towards a new paradigm of “ecoagriculture” landscapes*. Philosophical Transactions of the Royal Society B. DOI: https://doi.org/10.1098/rstb.2007.2165
@@ -810,7 +811,7 @@ Natural Area Planning / NAP-001は、公開かつ再現可能な情報だけを�
 Natural Area Planning / NAP-001 (2026).
 Public Research Report: 公開情報だけで阿蘇半自然草原の管理計画はどこまで構築できるか
 — 最適化の前に、証拠が許す境界を明示する —.
-Version 1.0, 2026-08-12.
+Version 1.0.1, 日本語表現改訂 2026-09-28（科学的結果は2026-08-12確定）。
 Study snapshot: nkkmd/natural-area-planning @ a6e6a806bfdec127e573df4b9af59b6f5df626f0.
 ```
 
