@@ -162,7 +162,7 @@ $$S_{t+T} \geq S_t$$
 以上を統合すると、本モデルの基本形は次のようになる。
 
 $$\begin{aligned}
-\text{minimize}_{\mathbf{x}}\quad
+\underset{\mathbf{x}}{\text{minimize}}\quad
 & \left(R_1(\mathbf{x}),\ldots,R_n(\mathbf{x})\right) \\
 \text{subject to}\quad
 & Y(\mathbf{x}) \geq Y_{\min}, \\
