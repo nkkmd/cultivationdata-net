@@ -33,22 +33,22 @@ The current implementation fetches files from `https://raw.githubusercontent.com
 
 ### JavaScript: js/md-to-web.js
 
-The following is the deployed script as checked on 2026-11-28; comments are retained in Japanese.
+The following matches the deployed script checked on 2026-11-28, with comments translated into English.
 
 ```javascript
-// URLパラメーターからMarkdownファイルのパスを取得
+// Get the Markdown file path from the URL parameters
 function getMarkdownUrlFromParams() {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get('md');
 }
 
-// URLパラメーターからパンくずリンクの種類を取得
+// Get the breadcrumb category from the URL parameters
 function getBreadcrumbsFromParams() {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get('bc');
 }
 
-// HTML内のテキストとして使えるようにエスケープ
+// Escape text for insertion into HTML
 function escapeHtml(text) {
     return String(text)
         .replace(/&/g, '&amp;')
@@ -58,7 +58,7 @@ function escapeHtml(text) {
         .replace(/'/g, '&#39;');
 }
 
-// Markdownを取得し、数式を保護してHTMLに変換
+// Fetch Markdown and convert it to HTML while protecting equations
 async function convertMarkdownToHtml(url) {
     try {
         const response = await fetch(url);
@@ -70,14 +70,14 @@ async function convertMarkdownToHtml(url) {
         const markdown = await response.text();
         const equations = [];
 
-        // 元の文書に存在しない、一時置換用の識別子を作成
+        // Create a placeholder prefix that does not occur in the source document
         let placeholderPrefix = 'MATHBLOCKPLACEHOLDER';
 
         while (markdown.includes(placeholderPrefix)) {
             placeholderPrefix += 'X';
         }
 
-        // $$ ... $$ の内容をMarkdown変換から保護
+        // Protect $ ... $ expressions from Markdown conversion
         const protectedMarkdown = markdown.replace(
             /\$\$[\s\S]*?\$\$/g,
             (equation) => {
@@ -96,7 +96,7 @@ async function convertMarkdownToHtml(url) {
             'g'
         );
 
-        // 数式を戻す。数式中の \\ や _ はそのまま維持する
+        // Restore equations while preserving \\ and _ in the TeX source
         return html.replace(
             placeholderPattern,
             (_, index) => escapeHtml(equations[Number(index)])
@@ -107,7 +107,7 @@ async function convertMarkdownToHtml(url) {
     }
 }
 
-// HTMLから最初のh1のテキストを取得
+// Extract the text of the first h1 element from the HTML
 function extractH1Content(html) {
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
@@ -116,7 +116,7 @@ function extractH1Content(html) {
     return h1 ? h1.textContent : null;
 }
 
-// メイン処理
+// Main processing
 async function main() {
     const mdFile = getMarkdownUrlFromParams();
     const bcLink = getBreadcrumbsFromParams();
@@ -160,7 +160,7 @@ async function main() {
 
     contentElement.innerHTML = html;
 
-    // 最初のh1をページタイトルとパンくずに使用
+    // Use the first h1 for the page title and breadcrumbs
     const h1Content = extractH1Content(html);
     const pageTitle = h1Content || mdFile;
 
@@ -185,7 +185,7 @@ async function main() {
     }
 }
 
-// ページ読み込み完了後に実行
+// Run after the page has finished loading
 window.addEventListener('load', main);
 ```
 
