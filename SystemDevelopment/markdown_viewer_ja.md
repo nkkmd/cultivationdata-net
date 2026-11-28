@@ -1,185 +1,287 @@
 # Markdown Viewer: ドキュメント
 
-## 目次
-1. [概要](#概要)
-2. [システム構成](#システム構成)
-3. [JavaScriptファイル (md.js)](#javascriptファイル-mdjs)
-   - [主要な関数](#主要な関数)
-   - [コード](#javascriptファイル-mdjs-のコード)
-4. [HTMLファイル](#htmlファイル)
-   - [構造説明](#構造説明)
-   - [コード](#htmlファイルのコード)
-5. [使用方法](#使用方法)
-6. [Markdownファイルの互換性](#markdownファイルの互換性)
-7. [注意点](#注意点)
+## 1. 概要
 
-## 概要
+指定されたMarkdownファイルを取得し、marked.jsでHTMLに変換してWebページとして表示します。コンテンツの挿入後にMathJax 3でTeX数式を描画します。`$$ ... $$` で囲まれた別行立て数式はMarkdown変換前に保護し、TeX命令・下付き・改行を維持します。
 
-このMarkdown Viewerシステムは、指定されたMarkdownファイルを動的にHTMLに変換し、Webページとして表示するための軽量なソリューションです。URLパラメータを使用してMarkdownファイルを指定し、JavaScriptを使用して非同期でファイルを取得、変換、表示します。
+## 2. システム構成
 
-## システム構成
+- `md-to-web.html`：ページ構造、ライブラリの読み込み、MathJaxの設定、コンテンツの変更監視。
+- `js/md-to-web.js`：URLパラメーターの取得、ファイル取得、数式保護、Markdown変換、タイトルとパンくずの設定。
+- marked.js：MarkdownからHTMLへの変換。
+- MathJax 3（`tex-mml-chtml.js`）：TeX数式の描画。
 
-システムは主に2つのファイルで構成されています：
-1. JavaScriptファイル (md.js): 主要な機能を提供します。
-2. HTMLファイル: 基本的なページ構造を提供し、必要なスクリプトを読み込みます。
+HTMLには `header`、`error`、`breadcrumbs`、`content` の各IDを持つ要素が必要です。公開ページにあるスタイル、お知らせ、フッターは、以下の最小構成例では省略しています。
 
-また、外部ライブラリとして`marked.js`を使用して、MarkdownをHTMLに変換します。
+## 3. パラメーターと処理
 
-## JavaScriptファイル (md.js)
+| パラメーター | 意味 |
+|---|---|
+| `md`（必須） | リポジトリ内のMarkdown相対パス。例：`AgriculturalManagement/model/sustainable_resource_optimization_model.md`。 |
+| `bc`（任意） | パンくずの分類。`agricultural-management` を指定すると `./blog-agricultural-management.html` にリンクします。 |
+
+現在の取得元は `https://raw.githubusercontent.com/nkkmd/cultivationdata-net/main/` です。`md` は相対パスであり、任意の外部URLを直接指定するものではありません。ディレクトリ区切りを保ち、パスの各部分をURLエンコードします。
 
 ### 主要な関数
 
-1. `getMarkdownUrlFromParams()`
-   - 目的: URLパラメータからMarkdownファイルのURLを取得します。
-   - 動作: `window.location.search`からURLパラメータを解析し、`md`パラメータの値を返します。
+- `getMarkdownUrlFromParams()`：`md` を取得します。
+- `getBreadcrumbsFromParams()`：`bc` を取得します。
+- `escapeHtml(text)`：HTMLに挿入する文字列をエスケープします。変換後のMarkdown全体を無害化する関数ではありません。
+- `convertMarkdownToHtml(url)`：Markdownを取得し、別行立て数式を一意な仮の文字列に置換してから `marked.parse()` を実行し、HTMLエスケープした数式を戻します。取得・変換失敗時は `null` を返します。
+- `extractH1Content(html)`：Markdown由来の最初の `h1` のテキストを取得します。
+- `main()`：本文、取得元リンク、タイトル、パンくずを挿入します。`h1` がない場合はMarkdownのパスをタイトルに使います。`load` イベントリスナーで起動します。
 
-2. `convertMarkdownToHtml(url)`
-   - 目的: 指定されたURLからMarkdownファイルを取得し、HTMLに変換します。
-   - 動作:
-     - `fetch`を使用してMarkdownファイルを非同期に取得します。
-     - 取得に成功した場合、`marked.parse()`を使用してMarkdownをHTMLに変換します。
-     - エラーが発生した場合は、コンソールにエラーを出力し、`null`を返します。
+### JavaScript：js/md-to-web.js
 
-3. `extractH1Content(html)`
-   - 目的: 変換されたHTMLから最初のh1タグの内容を抽出します。
-   - 動作: DOMParserを使用してHTMLを解析し、最初のh1タグのテキスト内容を返します。
-
-4. `main()`
-   - 目的: アプリケーションのメイン処理を行います。
-   - 動作:
-     - MarkdownファイルのベースURLを設定します。
-     - URLパラメータからMarkdownファイル名を取得します。
-     - パラメータが存在しない場合、エラーメッセージを表示して処理を終了します。
-     - Markdownを取得してHTMLに変換し、ページに表示します。
-     - h1タグの内容を抽出してページタイトルに設定します。
-     - 変換に失敗した場合、エラーメッセージを表示します。
-
-### JavaScriptファイル (md.js) のコード
+以下は2026-11-28に確認した公開中のスクリプトです。
 
 ```javascript
-// URLパラメータからMarkdownファイルのURLを取得する関数
+// URLパラメーターからMarkdownファイルのパスを取得
 function getMarkdownUrlFromParams() {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get('md');
 }
- 
-// Markdownファイルを取得し、HTMLに変換する関数
+
+// URLパラメーターからパンくずリンクの種類を取得
+function getBreadcrumbsFromParams() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('bc');
+}
+
+// HTML内のテキストとして使えるようにエスケープ
+function escapeHtml(text) {
+    return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+// Markdownを取得し、数式を保護してHTMLに変換
 async function convertMarkdownToHtml(url) {
     try {
         const response = await fetch(url);
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
+
         const markdown = await response.text();
-        return marked.parse(markdown);
+        const equations = [];
+
+        // 元の文書に存在しない、一時置換用の識別子を作成
+        let placeholderPrefix = 'MATHBLOCKPLACEHOLDER';
+
+        while (markdown.includes(placeholderPrefix)) {
+            placeholderPrefix += 'X';
+        }
+
+        // $$ ... $$ の内容をMarkdown変換から保護
+        const protectedMarkdown = markdown.replace(
+            /\$\$[\s\S]*?\$\$/g,
+            (equation) => {
+                const key =
+                    `${placeholderPrefix}${equations.length}END`;
+
+                equations.push(equation);
+                return key;
+            }
+        );
+
+        const html = marked.parse(protectedMarkdown);
+
+        const placeholderPattern = new RegExp(
+            `${placeholderPrefix}(\\d+)END`,
+            'g'
+        );
+
+        // 数式を戻す。数式中の \\ や _ はそのまま維持する
+        return html.replace(
+            placeholderPattern,
+            (_, index) => escapeHtml(equations[Number(index)])
+        );
     } catch (error) {
-        console.error('Error:', error);
+        console.error('Markdown conversion failed:', error);
         return null;
     }
 }
- 
-// HTMLからh1タグの内容を抽出する関数
+
+// HTMLから最初のh1のテキストを取得
 function extractH1Content(html) {
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
     const h1 = doc.querySelector('h1');
+
     return h1 ? h1.textContent : null;
 }
- 
+
 // メイン処理
 async function main() {
-    const URL = 'https://raw.githubusercontent.com/ユーザ名/リポジトリ名/ブランチ名/'; // Markdownファイルが置かれているURL
     const mdFile = getMarkdownUrlFromParams();
+    const bcLink = getBreadcrumbsFromParams();
+
     const errorElement = document.getElementById('error');
+    const headerElement = document.getElementById('header');
+    const breadcrumbsElement = document.getElementById('breadcrumbs');
     const contentElement = document.getElementById('content');
- 
+
     if (!mdFile) {
-        errorElement.textContent = 'URLパラメータにMarkdownファイルが指定されていません。(?md=sample/file.md)';
+        errorElement.textContent =
+            'No Markdown file specified in the URL parameters.';
         return;
     }
- 
-    const html = await convertMarkdownToHtml(`${URL}${mdFile}`);
-    if (html) {
-        contentElement.innerHTML = html;
-        
-        // h1タグの内容を抽出してタイトルに設定
-        const h1Content = extractH1Content(html);
-        if (h1Content) {
-            document.title = `${h1Content}`;
-        }
+
+    const encodedPath = mdFile
+        .split('/')
+        .map((part) => encodeURIComponent(part))
+        .join('/');
+
+    const markdownUrl =
+        `https://raw.githubusercontent.com/nkkmd/cultivationdata-net/main/${encodedPath}`;
+
+    const githubUrl =
+        `https://github.com/nkkmd/cultivationdata-net/blob/main/${encodedPath}`;
+
+    const html = await convertMarkdownToHtml(markdownUrl);
+
+    if (html === null) {
+        errorElement.textContent =
+            'Conversion failed or file not found.';
+        return;
+    }
+
+    errorElement.textContent = '';
+
+    headerElement.innerHTML =
+        `<div>This page displays content loaded from a Markdown file on ` +
+        `<a href="${escapeHtml(githubUrl)}" target="_blank" ` +
+        `rel="noopener noreferrer">GitHub</a>.</div>`;
+
+    contentElement.innerHTML = html;
+
+    // 最初のh1をページタイトルとパンくずに使用
+    const h1Content = extractH1Content(html);
+    const pageTitle = h1Content || mdFile;
+
+    document.title = `${pageTitle} - cultivationdata.net`;
+
+    if (bcLink) {
+        const blogUrl =
+            `./blog-${encodeURIComponent(bcLink)}.html`;
+
+        breadcrumbsElement.innerHTML =
+            `<div><small>` +
+            `<a href="./">Home</a> &gt; ` +
+            `<a href="${escapeHtml(blogUrl)}">Blog</a> &gt; ` +
+            `${escapeHtml(pageTitle)}` +
+            `</small></div><br />`;
     } else {
-        errorElement.textContent = '変換に失敗したか、ファイルが見つかりません。';
+        breadcrumbsElement.innerHTML =
+            `<div><small>` +
+            `<a href="./">Home</a> &gt; ` +
+            `${escapeHtml(pageTitle)}` +
+            `</small></div><br />`;
     }
 }
- 
-// ページ読み込み時に実行
-window.onload = main;
+
+// ページ読み込み完了後に実行
+window.addEventListener('load', main);
 ```
 
-## HTMLファイル
+## 4. HTMLとMathJax
 
-### 構造説明
-
-1. `<head>`セクション
-   - 文字エンコーディングをUTF-8に設定します。
-   - 動的に変更可能な`<title>`タグを含みます。
-   - `marked`ライブラリ（CDNから）とカスタムJavaScriptファイル（md.js）を読み込みます。
-
-2. `<body>`セクション
-   - `<div id="error">`: エラーメッセージを表示するための要素です。
-   - `<div id="content">`: 変換されたMarkdownコンテンツを表示するための要素です。
-
-### HTMLファイルのコード
+MathJax本体の読み込み前に `window.MathJax` を設定します。`content` に変換済みHTMLが挿入されると、変更監視から数式の描画を要求します。以下は公開ページの設定と変更監視に合わせた最小構成例です。
 
 ```html
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>Markdown to Web Page - cultivationdata.net</title>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="./md.js"></script>
+    <script src="./js/md-to-web.js"></script>
 </head>
 <body>
+    <div id="header"></div>
     <div id="error"></div>
+    <div id="breadcrumbs"></div>
     <div id="content"></div>
+    <script>
+        const targetNode = document.getElementById('content');
+        const observer = new MutationObserver(() => {
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                MathJax.typesetPromise([targetNode]);
+            }
+        });
+        observer.observe(targetNode, { childList: true });
+    </script>
 </body>
 </html>
 ```
 
-## 使用方法
+JavaScriptファイルは取得とMarkdown変換を担当し、MathJaxによる描画はHTML側が担当します。TeXがそのまま表示される場合は、MathJaxの読み込みと、挿入後の描画処理を確認してください。変更監視は `typesetPromise()` が利用できる場合だけ呼び出し、初期化待ちや失敗時の再試行は行いません。
 
-1. HTMLファイルとJavaScriptファイル（md.js）をWebサーバーにホストします。
-2. URLパラメータ`md`を使用して表示したいMarkdownファイルを指定します。
-   例: `https://yourserver.com/index.html?md=sample/file.md`
-3. ページにアクセスすると、指定されたMarkdownファイルが読み込まれ、HTMLとして表示されます。
-4. Markdownの最初のh1タグがページタイトルとして使用されます。
+## 5. 数式の書き方と保護処理
 
-## Markdownファイルの互換性
+別行立て数式には通常のTeX記法を使います。下付きは `_`、`aligned` 内の行区切りはバックスラッシュ2個（`\\`）です。保護対象の数式内にMarkdown用のエスケープを追加する必要はありません。
 
-このシステムは、GitHub上のMarkdownファイルを表示することを想定して例示されていますが、他のソースのMarkdownファイルでも利用可能です。以下の理由により、様々なソースからのMarkdownファイルに対応できます：
+```latex
+$$
+\begin{aligned}
+\text{minimize}_{\mathbf{x}}\quad
+& \left(R_1(\mathbf{x}),\ldots,R_n(\mathbf{x})\right) \\
+\text{subject to}\quad
+& Y(\mathbf{x}) \geq Y_{\min}, \\
+& \Pi(\mathbf{x}) \geq \Pi_{\min}, \\
+& \mathbf{S}_{t+T}(\mathbf{x}) \succeq \mathbf{S}_t.
+\end{aligned}
+$$
+```
 
-1. 汎用的なfetch API: `convertMarkdownToHtml`関数は`fetch`APIを使用しており、これは任意のURLからリソースを取得できます。
+保護せずにMarkdown変換すると、バックスラッシュ2個が1個になり、MathJaxに改行命令が届かなくなる場合があります。そのため、次の順序で処理します。
 
-2. 柔軟なURL設定: `main`関数内の`URL`変数を適切に設定することで、任意のベースURLを指定できます。
+1. `$$ ... $$` の数式を保存し、元の文書に存在しない仮の文字列へ置換します。
+2. 残りのMarkdownをHTMLに変換します。
+3. TeXの文字を維持し、HTMLエスケープした数式を戻します。
+4. HTMLを挿入し、MathJaxで描画します。
 
-3. marked.jsの汎用性: 使用している`marked`ライブラリは、標準的なMarkdown構文を広くサポートしており、ソースに依存しない変換が可能です。
+HTMLエスケープにより、整列に使う `&` などをHTMLとして解釈させず、DOM内の文字としてMathJaxへ渡します。
 
-4. パラメータベースの設計: URLパラメータを使用してMarkdownファイルを指定する設計により、任意のファイルパスやURLを柔軟に扱えます。
+現在の保護対象は `$$ ... $$` だけです。インライン数式（`$ ... $`、`\(...\)`）と `\[...\]` はMathJax側で設定されていますが、Markdown変換からは保護されません。また、正規表現はMarkdown全体の構造を解析しないため、コード例内の対になった二重ドル記号にも一致します。コードと数式のあらゆる組み合わせへの対応を保証するものではありません。
 
-ただし、異なるソースのMarkdownファイルを使用する場合は、以下の点に注意が必要です：
+## 6. 使用方法と問題の確認
 
-- CORS（クロスオリジンリソース共有）ポリシー: 外部ソースからのファイル取得には、適切なCORS設定が必要です。
-- ファイルの構造やURL形式: 異なるプラットフォームやサーバーでは、ファイルの構造やURLの形式が異なる場合があるため、それに応じた調整が必要になる可能性があります。
-- セキュリティ: 信頼できないソースからのMarkdownファイルを表示する場合、セキュリティリスクに注意する必要があります。
+1. HTMLと `js/md-to-web.js` をWebサーバーに配置します。
+2. 次のようなURLを開きます。
+   `https://www.cultivationdata.net/md-to-web.html?md=AgriculturalManagement/model/sustainable_resource_optimization_model.md&bc=agricultural-management`
+3. 本文、タイトル、パンくず、数式の改行を確認します。
+4. JavaScriptの更新後はCtrl＋F5で再読み込みします。旧版が残る場合は、サーバーやCDNのキャッシュも確認します。
 
-## 注意点
+本文が表示されない場合は、ブラウザーのコンソールとNetworkパネルでJavaScriptエラー、ライブラリの読み込み失敗、CORSエラー、Markdownファイルの不存在を確認します。数式の改行だけが失われる場合は、更新後のスクリプトが読み込まれていることと、元の数式の行区切りがバックスラッシュ2個であることを確認してください。
 
-- クロスオリジンリソース共有（CORS）の制限に注意してください。適切なサーバー設定が必要な場合があります。
-- エラー処理が実装されていますが、ネットワークの問題やファイルの不存在などにより、コンテンツが表示されない場合があります。
-- セキュリティ上の理由から、信頼できるソースからのMarkdownファイルのみを使用することをお勧めします。
-- 異なるMarkdownの方言や拡張構文を使用している場合、完全な互換性は保証されません。標準的なMarkdown構文の使用を推奨します。
-- このシステムは基本的な機能を提供しています。より高度な機能（例：目次の自動生成、スタイリングのカスタマイズなど）が必要な場合は、追加の開発が必要になります。
+## 7. 互換性と制限
+
+他のリポジトリやホストを利用する場合は、`main()` 内の取得元URLと取得元リンクを変更します。外部ホストにはブラウザーからの取得を許可するCORS設定が必要です。
+
+変換済みHTMLを `innerHTML` で挿入するため、信頼できるMarkdownを使用してください。数式のエスケープは文書全体の無害化ではありません。相対リンクや画像は別途書き換えない限り、ビューアーページを基準に解決されます。GitHub固有の構文や表示との完全一致は保証されません。ライブラリのURLは完全なバージョン固定ではないため、ライブラリ更新によって動作が変わる可能性があります。
 
 ---
-- 作成日: 2024-09-05
-- 更新日: 2024-09-05
+
+- 作成日：2024-09-05
+- 更新日：2026-11-28
